@@ -1,11 +1,11 @@
-# portfolio
+# Portfolio Project
 A place to store portfolio work.
 
 I'm doing this fast, just to get a full stack app react running.
 
-# Setup
+View it here: [http://24.64.174.212/](http://24.64.174.212/)
 
-[http://24.64.174.212/](http://24.64.174.212/)
+Note: It is WIP and actively updated.
 
 Setting up Apache2 and MySql.
 
