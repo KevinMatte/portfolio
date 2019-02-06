@@ -1,0 +1,39 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+  <title>KM Software Designs Inc.</title>
+  <meta name="author" content="Kevin Matte">
+  <meta name="description" content="Just putting something here.">
+</head>
+<body>
+<OBJECT
+  classid = "clsid:CAFEEFAC-0014-0002-0004-ABCDEFFEDCBA"
+  codebase = "http://java.sun.com/update/1.4.2/jinstall-1_4_2_04-windows-i586.cab#Version=1,4,2,40"
+  width="20%" height="100%" align="baseline" 
+  codebaseX="http://java.sun.com/products/plugin/autodl/jinstall-1_4_2-windows-i586.cab#Version=1,4,2,0">
+  <PARAM name="code" value="com.kmsdi.applet.Scatter.class" />
+  <PARAM name="codebase" value="." />
+  <PARAM name="type" value="application/x-java-applet;jpi-version=1.4.2" />
+  <PARAM name="archive" value="./circles.jar" />
+
+  <COMMENT>
+    <APPLET
+      type="application/x-java-applet;jpi-version=1.4"
+      width="20%"
+      height="100%"
+      align="baseline"
+      code="com.kmsdi.applet.Scatter.class" 
+      codebase="."
+      archive="./circles.jar"
+      pluginspage="http://java.sun.com/products/plugin/1.4/plugin-install.html">
+      <NOEMBED>
+        No Java 2 SDK, Standard Edition v 1.4 support for APPLET!!
+      </NOEMBED>
+    </APPLET>
+  </COMMENT>
+</OBJECT>
+
+<img src="images/Logo.GIF" title="" alt="KM Software Designs Inc."
+ style="width: 75%;"><br>
+</body>
+</html>

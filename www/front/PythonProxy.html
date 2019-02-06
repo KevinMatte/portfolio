@@ -1,0 +1,122 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+  <meta content="text/html; charset=ISO-8859-1"
+ http-equiv="content-type">
+  <title>Mod_Python Proxy</title>
+</head>
+<body>
+The following python code is
+used to re-direct the client requests to the scheduler:<br>
+<hr style="width: 100%; height: 2px;"><small><span
+ style="font-family: courier;"></span><span
+ style="font-family: courier;"></span>#!/usr/bin/python<br>
+<br>
+from mod_python import apache<br>
+from mod_python import util<br>
+import socket<br>
+import sys<br>
+<br>
+HOST = '127.0.0.1'&nbsp;&nbsp;&nbsp; # The server's local INET address.<br>
+PORT = 9124&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+# The server's port.<br>
+<br>
+# Python handler to route all XML requests to the server.<br>
+#<br>
+# The request is expected to be a multi-part request with a 'data'<br>
+# part. Everything else is ignored, for now.<br>
+#<br>
+# The return value is the scheduler's response, or an error response.<br>
+#<br>
+# All XML responses are documented in the scheduler design document.<br>
+def handler(req):<br>
+<br>
+&nbsp;&nbsp;&nbsp; # Lookup the server and connect to it.<br>
+&nbsp;&nbsp;&nbsp; serverSocket = None<br>
+&nbsp;&nbsp;&nbsp; for res in socket.getaddrinfo(HOST,<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+PORT,<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+socket.AF_UNSPEC,<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+socket.SOCK_STREAM):<br>
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; # Create a client socket<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; af, socktype, proto,
+canonname, sa = res<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; try:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+serverSocket = socket.socket(af, socktype, proto)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; except socket.error, msg:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+serverSocket = None<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+error(req, msg)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+continue<br>
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; # Connect to the server<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; try:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+serverSocket.connect(sa)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; except socket.error, msg:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+serverSocket.close()<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; msg
+= str(msg)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; if
+msg.find("Connection refused") == -1:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+error(req, msg)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; else:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+error(req, "Server is not available")<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+serverSocket = None<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+continue<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; break<br>
+<br>
+&nbsp;&nbsp;&nbsp; if serverSocket != None:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; # Extract the 'data' part of the
+multi-part request.<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; fs = util.FieldStorage(req)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; if fs.has_key("data"):<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; lVal = fs.getlist("data")<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; for val in lVal:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+serverSocket.send(val.value)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+serverSocket.shutdown(socket.SHUT_WR)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; strResponse =
+serverSocket.recv(4096)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; if strResponse
+!= None:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+req.write(strResponse)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; break<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; else:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; error(req, "No 'data' in
+multipart post")<br>
+<br>
+&nbsp;&nbsp;&nbsp; # TBU: ip =
+req.get_remote_host(apache.REMOTE_NOLOOKUP)<br>
+&nbsp;&nbsp;&nbsp; return apache.OK<br>
+<br>
+# Creates a server compliant error response.<br>
+#<br>
+# This is used to inform the client of a failure to connect to the
+server.<br>
+#<br>
+def error(req, strMessage):<br>
+&nbsp;&nbsp;&nbsp; req.write('&lt;?xml version="1.0"
+encoding=""?&gt;\n')<br>
+&nbsp;&nbsp;&nbsp; req.write('&lt;Response&gt;\n')<br>
+&nbsp;&nbsp;&nbsp; req.write('&nbsp; &lt;Status state="unavailable"
+message="' + strMessage + '"/&gt;\n')<br>
+&nbsp;&nbsp;&nbsp; req.write('&lt;/Response&gt;\n')<br>
+<br style="font-family: courier;">
+<br style="font-family: courier;">
+</small>
+</body>
+</html>
