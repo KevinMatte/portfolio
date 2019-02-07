@@ -1,0 +1,23 @@
+{
+  "name": "portfolio",
+  "version": "1.0.0",
+  "description": "A place to store portfolio work.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/KevinMatte/portfolio.git"
+  },
+  "author": "Kevin Matte",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/KevinMatte/portfolio/issues"
+  },
+  "homepage": "https://github.com/KevinMatte/portfolio#readme",
+  "dependencies": {
+    "mustache": "^3.0.1",
+    "showdown": "^1.9.0"
+  }
+}

@@ -20,12 +20,12 @@
         }
 
         .toc ul {
-            padding: 0px 0px 0px 15px;
+            padding: 0 0 0 15px;
         }
 
         .toc ul ul {
-            padding: 0px 0px 0px 5px;
-            border-width: 0px 30px 10px 15px;
+            padding: 0 0 0 5px;
+            border-width: 0 30px 10px 15px;
             border-style: solid;
             border-color: blanchedalmond;
             background-color: white;
@@ -58,15 +58,17 @@
     <div id="body" class="flexVStretched flexHDisplay">
         <div id="toc" class="flexFixed toc">
             <ul>
+                <li><a href="front/About.html" target="work">About</a></li>
                 <li><a href="front/Resume.html" target="work">Resume</a></li>
-                <li class="demo">Paint (ReactJS/Material UI) Demo</li>
-                <ul>
-                    <li><a href="front/PaintDemo.html" target="work">READ ME</a></li>
-                    <li><a href="../../paint" target="work">Run it</a></li>
-                </ul>
+                <li class="demo">Full Stack Demo
+                    <ul>
+                        <li><a href="front/PaintDemo.html" target="work">READ ME</a></li>
+                        <li><a href="../../paint" target="work">Paint</a></li>
+                    </ul>
+                </li>
             </ul>
         </div>
-        <iframe name="work" src="front/Resume.html" class="flexHStretched"></iframe>
+        <iframe name="work" src="front/About.html" class="flexHStretched"></iframe>
     </div>
     <iframe name="footer" src="front/Bottom.html" class="flexFixed footer" height="80px"></iframe>
 </div>

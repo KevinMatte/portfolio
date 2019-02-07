@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Kevin Matte</title>
+    <link rel="stylesheet" href="css/styles.css">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <style>
+        li p {
+            margin: 5px
+        }
+    </style>
+
+</head>
+
+<body>
+{{{body}}}
+</body>
+
+</html>

@@ -1,69 +1,54 @@
 # Portfolio Project
-A place to store portfolio work.
 
-I'm doing this fast, just to get a full stack app react running.
+This Web Site hosts my Portfolio.
 
-View it here: [http://24.64.174.212/](http://24.64.174.212/)
+I've just really started Feb 5th, 2019 and going fast, just to get a full stack app react running
+before my next career move.
 
-Note: It is WIP and actively updated.
+* Web Site: [http://24.64.174.212/](http://24.64.174.212/)
 
-Setting up Apache2 and MySql.
+* GitHub: [https://github.com/KevinMatte/portfolio](https://github.com/KevinMatte/portfolio)
 
-## Apache
-apache2 and MySql already installed.
+**Note**: It is WIP and actively updated.
 
-apache with mod_wsgi and python 3.
+The Portfolio contains:
+* full stack development with:
 
-## /etc/apache2/ports.conf
-Specified external host IP with **Listen**.
+  * MySql _(Future)_
+  * Apache2
+  * WSGI
+  * Python 3
+  * Flask
+  * ReactJS
+  * Material-UI
+  * HTML5
+  * Kubernetes (with Docker for containers) _(Future)_
 
-```
-apt-get install libapache2-mod-wsgi
-apt-get install libapache2-mod-wsgi-py3
-```
-
-## Opened up Firewall port 80
-
-## /etc/apache2/sites-available/000-default.conf
-
-Changed VirtualHost to: <VirtualHost 127.0.0.1:80>
+* Linux (Ubuntu) administration & networking
 
 
-## /etc/apache2/sites-available/public.conf
+As EOD February 6, 2019, it currently demonstrates the full stack, but with very little ReactJS, and isn’t yet using Kubernetes. It just shows a ‘Hello World’ button.
+
+In the future, I’ll also be adding AngularJS, EmberJS and hosting it in Amazon Web Services, all of which I’ve done before, but not for myself or a portfolio.
+
+Having fun while I wait for my next career move!
 
 
-Port forwarded from 24.64.174.212:80 
+# Text Pages
 
-```
-<VirtualHost 192.168.1.10:80>
-	ServerName http://192.168.1.10:80
+* The front page uses HTML5 with flex (www/css/styles.css) and iFrame.
 
-	ServerAdmin matte.kevin@gmail.com
-	DocumentRoot /var/www/public
+* HTML pages handle their own loayouts and customized colouring in a `style` element.
 
-	ErrorLog ${APACHE_LOG_DIR}/public_error.log
-	CustomLog ${APACHE_LOG_DIR}/public_access.log combined
+* This README.md markdown pages will be converted to HTML for viewing
+in the Portfolio pages.
 
-  <Directory /var/www/public/paint/server>
-    #WSGIProcessGroup paint
-    WSGIApplicationGroup %{GLOBAL}
-    Order deny,allow
-    Allow from all
-  </Directory>
+    * Using https://github.com/showdownjs/showdown to convert Markdown to HTML.
+    * Using https://github.com/janl/mustache.js to wrap HTML with Body element and include styles.
+    * Using NodeJS. See showdown.js to see how its done.
 
-   ErrorLog /var/www/public/paint/logs/error.log
-   CustomLog /var/www/public/paint/logs/access.log combined
+* More complex text pages, such as my resume, will be exported from LibreWriter
+as HTML. It's not perfect, but it gets me to the end faster.
 
-</VirtualHost>
-```
-## /etc/apache2/mods-available/wsgi.conf
 
-Note: Yes, I'm doing this fast, running right out of my dev directory.
-I'll create a Makefile to do a proper push to public later.
 
-```xml
-    WSGIScriptAlias /paint /var/www/public/paint/server/paint.py
-    WSGIPythonPath /home/kevin/.virtualenvs/paint/lib/python3.6/site-packages
-    WSGIPythonHome /home/kevin/.virtualenvs/paint
-
-```

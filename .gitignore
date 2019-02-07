@@ -109,3 +109,5 @@ t.*
 *~
 *.bak
 *#
+
+node_modules/
