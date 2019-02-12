@@ -1,73 +1,32 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
+  <component name="AnalysisUIOptions">
+    <option name="SCOPE_TYPE" value="3" />
+  </component>
   <component name="ChangeListManager">
     <list default="true" id="e359f1da-c026-486a-9dea-dda0721f6f36" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/paint/.gitignore" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/paint/package-lock.json" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/paint/package.json" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/paint/paint.conf" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/paint/src/App.css" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/paint/src/App.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/paint/src/App.test.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/paint/src/index.css" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/paint/src/index.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/paint/src/logo.svg" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/paint/src/serviceWorker.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/www/css/styles.css" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/www/front/AboutUs.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/www/front/Availability.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/www/front/Blank.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/www/front/Body.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/www/front/Bottom.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/www/front/Contact.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/www/front/Kevin_Matte_Resume.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/www/front/Kevin_Matte_Resume_html_5c52347e.gif" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/www/front/Kevin_Matte_Resume_html_mbf79a54.gif" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/www/front/KofC" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/www/front/KofC.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/www/front/Languages.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/www/front/PaintDemo.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/www/front/PaintDemo.odt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/www/front/Platforms.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/www/front/Products.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/www/front/Products_files/filelist.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/www/front/Products_files/image001.gif" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/www/front/Products_files/image002.gif" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/www/front/Products_files/image004.wmz" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/www/front/Products_files/image005.wmz" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/www/front/Prototype.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/www/front/PythonProxy.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/www/front/Resume.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/www/front/Resume.odt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/www/front/Toc.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/www/front/Top.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/www/front/Top.html.org" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/www/front/Top.odt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/www/front/UIClient.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/www/front/circles.jar" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/www/front/files.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/www/front/images/KevinMatteSoftwareDesignsInc.GIF" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/www/front/images/Logo.GIF" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/www/front/images/Logo2.GIF" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/www/front/images/LogoOrg.GIF" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/www/front/index.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/www/front/index.html.org" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/www/front/main.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/www/front/testing.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/www/paint" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/webResources.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Notes/ReactReduxNotes.md" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/paint/src/Counter.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/paint/src/actionCreators.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/paint/src/general/Utils.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/paint/src/redux/actions.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/paint/src/redux/initialState.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/paint/src/redux/reducers/index.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/paint/src/redux/reducers/options.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/paint/src/redux/reducers/session.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/paint/src/redux/store/index.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/portfolio.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/portfolio.iml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/paint/logs/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/paint/logs/.gitignore" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/paint/server/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/paint/server/README.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/paint/server/paint.py" beforeDir="false" afterPath="$PROJECT_DIR$/paint/server/paint.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/paint/server/requirements.txt" beforeDir="false" afterPath="$PROJECT_DIR$/paint/server/requirements.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/react-demo/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/react-demo/package-lock.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/react-demo/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/react-demo/package.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/react-demo/public/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/react-demo/public/index.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/react-demo/src/App.js" beforeDir="false" afterPath="$PROJECT_DIR$/react-demo/src/App.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/www/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/www/index.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Makefile" beforeDir="false" afterPath="$PROJECT_DIR$/Makefile" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/paint/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/paint/package-lock.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/paint/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/paint/package.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/paint/src/App.js" beforeDir="false" afterPath="$PROJECT_DIR$/paint/src/App.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/paint/src/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/paint/src/index.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/paint/src/serviceWorker.js" beforeDir="false" afterPath="$PROJECT_DIR$/paint/src/serviceWorker.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/showdown.js" beforeDir="false" afterPath="$PROJECT_DIR$/showdown.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/www/front/PaintDemo.odt" beforeDir="false" afterPath="$PROJECT_DIR$/www/front/PaintDemo.odt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/www/front/Top.odt" beforeDir="false" afterPath="$PROJECT_DIR$/www/front/Top.odt" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -78,101 +37,109 @@
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/README.md">
-          <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
-            <state split_layout="SPLIT">
-              <first_editor relative-caret-position="90">
-                <caret line="6" selection-start-line="6" selection-end-line="6" />
-              </first_editor>
-              <second_editor />
+        <entry file="file://$PROJECT_DIR$/paint/src/index.js">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="150">
+              <caret line="10" column="9" selection-start-line="10" selection-start-column="9" selection-end-line="10" selection-end-column="9" />
+              <folding>
+                <element signature="e#0#26#0" expanded="true" />
+              </folding>
             </state>
           </provider>
         </entry>
       </file>
       <file pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/paint/src/serviceWorker.js">
+        <entry file="file://$PROJECT_DIR$/paint/src/App.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state>
+            <state relative-caret-position="179">
+              <caret line="152" selection-start-line="152" selection-end-line="152" />
               <folding>
-                <element signature="n#!!doc" expanded="true" />
+                <element signature="e#0#39#0" expanded="true" />
               </folding>
             </state>
           </provider>
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/paint/src/index.js">
+        <entry file="file://$PROJECT_DIR$/paint/src/actionCreators.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="105">
-              <caret line="11" selection-start-line="11" selection-end-line="11" />
+            <state relative-caret-position="255">
+              <caret line="17" column="23" selection-start-line="17" selection-start-column="23" selection-end-line="17" selection-end-column="23" />
             </state>
           </provider>
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/www/index.html">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="358">
-              <caret line="44" column="39" selection-start-line="44" selection-start-column="39" selection-end-line="44" selection-end-column="39" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/www/front/Top.html">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="238">
-              <caret line="95" column="9" lean-forward="true" selection-start-line="95" selection-start-column="9" selection-end-line="95" selection-end-column="9" />
-              <folding>
-                <element signature="n#style#0;n#body#0;n#html#0;n#!!top" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/www/front/AboutUs.html">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="180">
-              <caret line="12" column="28" selection-start-line="12" selection-start-column="28" selection-end-line="12" selection-end-column="28" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/www/front/Resume.html">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-872" />
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/www/front/Contact.html">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="45">
-              <caret line="3" column="13" selection-start-line="3" selection-start-column="13" selection-end-line="3" selection-end-column="13" />
-              <folding>
-                <element signature="n#style#0;n#span#0;n#!!top" expanded="true" />
-                <element signature="n#style#0;n#span#1;n#!!top" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/www/front/Bottom.html">
+        <entry file="file://$PROJECT_DIR$/paint/src/redux/initialState.js">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="90">
-              <caret line="6" column="7" lean-forward="true" selection-start-line="6" selection-start-column="7" selection-end-line="6" selection-end-column="7" />
+              <caret line="6" column="17" selection-start-line="6" selection-start-column="8" selection-end-line="6" selection-end-column="17" />
             </state>
           </provider>
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/www/css/styles.css">
+        <entry file="file://$PROJECT_DIR$/paint/src/Counter.js">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="330">
+              <caret line="22" selection-start-line="17" selection-end-line="22" />
+              <folding>
+                <element signature="e#0#39#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/paint/src/redux/store/index.js">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="45">
+              <caret line="3" selection-start-line="3" selection-end-line="3" />
+              <folding>
+                <element signature="e#0#32#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/paint/src/redux/reducers/index.js">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="90">
+              <caret line="6" column="11" selection-start-line="6" selection-start-column="11" selection-end-line="6" selection-end-column="11" />
+              <folding>
+                <element signature="e#0#38#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/paint/src/redux/reducers/options.js">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="90">
+              <caret line="7" selection-start-line="7" selection-end-line="7" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/paint/src/redux/reducers/session.js">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="195">
+              <caret line="13" lean-forward="true" selection-start-line="13" selection-end-line="13" />
+              <folding>
+                <element signature="e#0#57#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/paint/src/redux/actions.js">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="30">
-              <caret line="2" selection-start-line="2" selection-end-line="2" />
+              <caret line="2" column="20" selection-start-line="2" selection-start-column="20" selection-end-line="2" selection-end-column="20" />
             </state>
           </provider>
         </entry>
@@ -183,24 +150,51 @@
     <option name="RECENT_TEMPLATES">
       <list>
         <option value="Python Script" />
+        <option value="JavaScript File" />
       </list>
     </option>
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>temp</find>
-      <find>tmp</find>
-      <find>'/path/to/project'</find>
-      <find>URL_BASE</find>
-      <find>.header</find>
-      <find>Inc</find>
-      <find>Kevin Matte Software Designs Inc</find>
-      <find>underlined2</find>
-      <find>serviceWorker</find>
+      <find>showdown</find>
+      <find>classes</find>
+      <find>getState</find>
+      <find>actionCreators</find>
+      <find>store=</find>
+      <find>handleNoMatch</find>
+      <find>prop-types</find>
+      <find>Workflow Administration</find>
+      <find>advancedMode</find>
+      <find>loggedIn</find>
+      <find>backgroundColor</find>
+      <find>sessionLogout</find>
+      <find>flexVDisplay</find>
+      <find>sessionLogin</find>
+      <find>auth</find>
+      <find>isLoggedIn</find>
+      <find>ui/editor</find>
+      <find>renderSwitch</find>
+      <find>open</find>
+      <find>handleLeftMenuClose</find>
+      <find>handleLogout</find>
+      <find>handleClose</find>
+      <find>Advanced Mode</find>
+      <find>anchorEl</find>
+      <find>leftMenuAnchor</find>
+      <find>sessionMenuOpen</find>
+      <find>sessionMenuAnchor</find>
+      <find>handleAppMenuOpen</find>
+      <find>handleLeftMenuOpen</find>
+      <find>handleOption</find>
     </findStrings>
     <replaceStrings>
       <replace>PROJ_DIR</replace>
       <replace>Kevin Matte Software Designs</replace>
+      <replace>0</replace>
+      <replace>this.state</replace>
+      <replace>paint</replace>
+      <replace>appMenuAnchor</replace>
+      <replace>appMenuAnchor: null</replace>
     </replaceStrings>
   </component>
   <component name="Git.Settings">
@@ -223,26 +217,56 @@
         <option value="$PROJECT_DIR$/paint/package.json" />
         <option value="$PROJECT_DIR$/paint/README.md" />
         <option value="$PROJECT_DIR$/paint/server/README.md" />
-        <option value="$PROJECT_DIR$/README.md" />
         <option value="$PROJECT_DIR$/www/front/Contact.html" />
         <option value="$PROJECT_DIR$/www/front/Bottom.html" />
         <option value="$PROJECT_DIR$/www/css/styles.css" />
-        <option value="$PROJECT_DIR$/www/index.html" />
         <option value="$PROJECT_DIR$/www/front/Top.html" />
+        <option value="$PROJECT_DIR$/www/showdown.js" />
+        <option value="$PROJECT_DIR$/apache/README.md" />
+        <option value="$PROJECT_DIR$/Makefile" />
+        <option value="$PROJECT_DIR$/www/index.html" />
+        <option value="$PROJECT_DIR$/www/front/About.html" />
+        <option value="$PROJECT_DIR$/www/front/About.template" />
+        <option value="$PROJECT_DIR$/README.md" />
+        <option value="$PROJECT_DIR$/paint/src/Counter.js" />
+        <option value="$PROJECT_DIR$/Notes/ReactReduxNotes.md" />
+        <option value="$PROJECT_DIR$/paint/src/general/Utils.js" />
+        <option value="$PROJECT_DIR$/paint/src/serviceWorker.js" />
+        <option value="$PROJECT_DIR$/showdown.js" />
+        <option value="$PROJECT_DIR$/paint/src/store/index.js" />
+        <option value="$PROJECT_DIR$/paint/src/reducers/index.js" />
+        <option value="$PROJECT_DIR$/paint/src/actions.js" />
+        <option value="$PROJECT_DIR$/paint/src/reducers/session.js" />
+        <option value="$PROJECT_DIR$/paint/src/index.js" />
+        <option value="$PROJECT_DIR$/paint/src/redux/initialState.js" />
+        <option value="$PROJECT_DIR$/paint/src/redux/reducers/index.js" />
+        <option value="$PROJECT_DIR$/paint/src/redux/store/index.js" />
+        <option value="$PROJECT_DIR$/paint/src/actionCreators.js" />
+        <option value="$PROJECT_DIR$/paint/src/redux/reducers/session.js" />
+        <option value="$PROJECT_DIR$/paint/src/redux/reducers/options.js" />
+        <option value="$PROJECT_DIR$/paint/src/App.js" />
       </list>
     </option>
   </component>
-  <component name="ProjectFrameBounds">
-    <option name="x" value="473" />
-    <option name="y" value="68" />
-    <option name="width" value="1300" />
-    <option name="height" value="961" />
+  <component name="JsFlowSettings">
+    <service-enabled>true</service-enabled>
+    <exe-path />
+    <other-services-enabled>true</other-services-enabled>
+    <auto-save>true</auto-save>
+  </component>
+  <component name="ProjectFrameBounds" extendedState="6">
+    <option name="x" value="67" />
+    <option name="y" value="27" />
+    <option name="width" value="1576" />
+    <option name="height" value="968" />
   </component>
   <component name="ProjectLevelVcsManager">
     <ConfirmationsSetting value="2" id="Add" />
   </component>
   <component name="ProjectView">
     <navigator proportions="" version="1">
+      <autoscrollToSource ProjectPane="true" />
+      <autoscrollFromSource ProjectPane="true" />
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
@@ -263,6 +287,72 @@
               <item name="portfolio" type="b2602c69:ProjectViewProjectNode" />
               <item name="portfolio" type="462c0819:PsiDirectoryNode" />
               <item name="paint" type="462c0819:PsiDirectoryNode" />
+              <item name="build" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="portfolio" type="b2602c69:ProjectViewProjectNode" />
+              <item name="portfolio" type="462c0819:PsiDirectoryNode" />
+              <item name="paint" type="462c0819:PsiDirectoryNode" />
+              <item name="node_modules" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="portfolio" type="b2602c69:ProjectViewProjectNode" />
+              <item name="portfolio" type="462c0819:PsiDirectoryNode" />
+              <item name="paint" type="462c0819:PsiDirectoryNode" />
+              <item name="node_modules" type="462c0819:PsiDirectoryNode" />
+              <item name="redux-thunk" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="portfolio" type="b2602c69:ProjectViewProjectNode" />
+              <item name="portfolio" type="462c0819:PsiDirectoryNode" />
+              <item name="paint" type="462c0819:PsiDirectoryNode" />
+              <item name="public" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="portfolio" type="b2602c69:ProjectViewProjectNode" />
+              <item name="portfolio" type="462c0819:PsiDirectoryNode" />
+              <item name="paint" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="portfolio" type="b2602c69:ProjectViewProjectNode" />
+              <item name="portfolio" type="462c0819:PsiDirectoryNode" />
+              <item name="paint" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="general" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="portfolio" type="b2602c69:ProjectViewProjectNode" />
+              <item name="portfolio" type="462c0819:PsiDirectoryNode" />
+              <item name="paint" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="redux" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="portfolio" type="b2602c69:ProjectViewProjectNode" />
+              <item name="portfolio" type="462c0819:PsiDirectoryNode" />
+              <item name="paint" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="redux" type="462c0819:PsiDirectoryNode" />
+              <item name="reducers" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="portfolio" type="b2602c69:ProjectViewProjectNode" />
+              <item name="portfolio" type="462c0819:PsiDirectoryNode" />
+              <item name="paint" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="redux" type="462c0819:PsiDirectoryNode" />
+              <item name="store" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="portfolio" type="b2602c69:ProjectViewProjectNode" />
+              <item name="portfolio" type="462c0819:PsiDirectoryNode" />
+              <item name="react-demo" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="portfolio" type="b2602c69:ProjectViewProjectNode" />
+              <item name="portfolio" type="462c0819:PsiDirectoryNode" />
+              <item name="react-demo" type="462c0819:PsiDirectoryNode" />
               <item name="src" type="462c0819:PsiDirectoryNode" />
             </path>
           </expand>
@@ -272,12 +362,19 @@
     </panes>
   </component>
   <component name="PropertiesComponent">
+    <property name="JavaScriptWeakerCompletionTypeGuess" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="js.last.introduce.type" value="LET" />
+    <property name="last_opened_file_path" value="$USER_HOME$/ThirdParty/material-ui" />
+    <property name="nodejs_package_manager_path" value="npm" />
+    <property name="run.code.analysis.last.selected.profile" value="pProject Default" />
     <property name="settings.editor.selected.configurable" value="preferences.pluginManager" />
+    <property name="ts.external.directory.path" value="$APPLICATION_HOME_DIR$/plugins/JavaScriptLanguage/jsLanguageServicesImpl/external" />
   </component>
   <component name="RecentsManager">
     <key name="MoveFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/paint/src/redux" />
+      <recent name="$PROJECT_DIR$" />
       <recent name="$PROJECT_DIR$/www" />
       <recent name="$PROJECT_DIR$/paint" />
     </key>
@@ -294,15 +391,34 @@
       </list>
     </option>
   </component>
-  <component name="RunManager" selected="JavaScript Debug.index.html">
+  <component name="RunManager" selected="Node.js.index.js">
+    <configuration name="About.html" type="JavascriptDebugType" temporary="true" nameIsGenerated="true" uri="http://localhost:63342/portfolio/www/front/About.html" useBuiltInWebServerPort="true">
+      <method v="2" />
+    </configuration>
     <configuration name="Top.html" type="JavascriptDebugType" temporary="true" nameIsGenerated="true" uri="http://localhost:63342/portfolio/www/front/Top.html" useBuiltInWebServerPort="true">
       <method v="2" />
     </configuration>
     <configuration name="index.html" type="JavascriptDebugType" temporary="true" nameIsGenerated="true" uri="http://localhost:63342/portfolio/www/index.html" useBuiltInWebServerPort="true">
       <method v="2" />
     </configuration>
+    <configuration name="index.js" type="NodeJSConfigurationType" temporary="true" nameIsGenerated="true" path-to-js-file="$PROJECT_DIR$/paint/src/index.js" working-dir="$PROJECT_DIR$">
+      <method v="2" />
+    </configuration>
+    <configuration name="showdown.js" type="NodeJSConfigurationType" temporary="true" nameIsGenerated="true" node-parameters="showdown.js README.md www/front/About.template www/front/About.html" path-to-js-file="showdown.js" working-dir="$PROJECT_DIR$">
+      <method v="2" />
+    </configuration>
+    <list>
+      <item itemvalue="JavaScript Debug.index.html" />
+      <item itemvalue="JavaScript Debug.Top.html" />
+      <item itemvalue="JavaScript Debug.About.html" />
+      <item itemvalue="Node.js.showdown.js" />
+      <item itemvalue="Node.js.index.js" />
+    </list>
     <recent_temporary>
       <list>
+        <item itemvalue="Node.js.index.js" />
+        <item itemvalue="JavaScript Debug.About.html" />
+        <item itemvalue="Node.js.showdown.js" />
         <item itemvalue="JavaScript Debug.index.html" />
         <item itemvalue="JavaScript Debug.Top.html" />
       </list>
@@ -329,32 +445,48 @@
       <workItem from="1549481122769" duration="240000" />
       <workItem from="1549481376125" duration="2051000" />
       <workItem from="1549483699422" duration="9508000" />
+      <workItem from="1549494196101" duration="8125000" />
+      <workItem from="1549512092936" duration="3041000" />
+      <workItem from="1549649065703" duration="9840000" />
+      <workItem from="1549910649057" duration="10851000" />
+      <workItem from="1549986441073" duration="732000" />
+      <workItem from="1549987383804" duration="6314000" />
     </task>
+    <task id="LOCAL-00001" summary="Improved text of first section.">
+      <created>1549494339596</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1549494339596</updated>
+    </task>
+    <option name="localTasksCounter" value="2" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="35409000" />
+    <option name="totallyTimeSpent" value="74312000" />
   </component>
   <component name="ToolWindowManager">
-    <frame x="473" y="68" width="1300" height="961" extended-state="0" />
+    <frame x="67" y="25" width="1853" height="1055" extended-state="6" />
     <editor active="true" />
     <layout>
-      <window_info active="true" content_ui="combo" id="Project" order="0" sideWeight="0.49828768" visible="true" weight="0.3165869" />
-      <window_info id="Structure" order="1" sideWeight="0.5017123" weight="0.20828603" />
+      <window_info content_ui="combo" id="Project" order="0" sideWeight="0.49828768" weight="0.22910902" />
+      <window_info active="true" id="Structure" order="1" sideWeight="0.5017123" visible="true" weight="0.21250692" />
       <window_info id="Favorites" order="2" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
-      <window_info anchor="bottom" id="Find" order="1" sideWeight="0.49920255" visible="true" weight="0.32932693" />
-      <window_info anchor="bottom" id="Run" order="2" />
-      <window_info anchor="bottom" id="Debug" order="3" sideWeight="0.6020734" weight="0.3064904" />
+      <window_info anchor="bottom" id="Find" order="1" sideWeight="0.49920255" weight="0.32829374" />
+      <window_info anchor="bottom" id="Run" order="2" weight="0.32932693" />
+      <window_info anchor="bottom" id="Debug" order="3" sideWeight="0.6008353" weight="0.3963283" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
       <window_info anchor="bottom" id="TODO" order="6" />
       <window_info anchor="bottom" id="Docker" order="7" show_stripe_button="false" />
       <window_info anchor="bottom" id="Version Control" order="8" />
       <window_info anchor="bottom" id="Database Changes" order="9" />
-      <window_info anchor="bottom" id="Event Log" order="10" sideWeight="0.50079745" side_tool="true" visible="true" weight="0.32932693" />
-      <window_info anchor="bottom" id="Terminal" order="11" />
+      <window_info anchor="bottom" id="Event Log" order="10" sideWeight="0.39916468" side_tool="true" weight="0.40745193" />
+      <window_info anchor="bottom" id="Terminal" order="11" visible="true" weight="0.32937366" />
       <window_info anchor="bottom" id="Python Console" order="12" weight="0.43883792" />
+      <window_info anchor="bottom" id="TypeScript" order="13" />
+      <window_info anchor="bottom" id="Inspection Results" order="14" weight="0.32937366" />
       <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
       <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
       <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
@@ -367,37 +499,11 @@
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="1" />
   </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="Improved text of first section." />
+    <option name="LAST_COMMIT_MESSAGE" value="Improved text of first section." />
+  </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/react-demo/public/index.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="150">
-          <caret line="10" column="107" selection-start-line="10" selection-start-column="107" selection-end-line="10" selection-end-column="107" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/react-demo/public/manifest.json">
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/react-demo/src/App.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="375">
-          <caret line="29" selection-start-line="29" selection-end-line="29" />
-          <folding>
-            <element signature="e#0#39#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/paint/src/App.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state>
-          <folding>
-            <element signature="e#0#41#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/tmp/create-react-app/src/pages/index.js" />
     <entry file="file://$PROJECT_DIR$/tmp/create-react-app/src/index.js" />
     <entry file="file://$PROJECT_DIR$/.gitignore">
       <provider selected="true" editor-type-id="text-editor">
@@ -434,23 +540,6 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/react-demo/package.json">
       <provider selected="true" editor-type-id="text-editor" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/paint/package.json">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="180">
-          <caret line="12" column="14" selection-start-line="12" selection-start-column="14" selection-end-line="12" selection-end-column="14" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/paint/server/paint.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1770">
-          <caret line="132" column="29" selection-start-line="132" selection-start-column="29" selection-end-line="132" selection-end-column="29" />
-          <folding>
-            <element signature="e#0#10#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/paint/server/db/database.py">
       <provider selected="true" editor-type-id="text-editor">
@@ -500,6 +589,19 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/www/front/Top.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1425">
+          <caret line="95" column="9" selection-start-line="95" selection-start-column="9" selection-end-line="95" selection-end-column="9" />
+          <folding>
+            <element signature="n#style#0;n#body#0;n#html#0;n#!!top" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/www/front/Resume.html">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
     <entry file="file://$PROJECT_DIR$/www/front/Contact.html">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="45">
@@ -511,16 +613,11 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/www/front/AboutUs.html">
+    <entry file="file://$PROJECT_DIR$/www/front/Bottom.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="180">
-          <caret line="12" column="28" selection-start-line="12" selection-start-column="28" selection-end-line="12" selection-end-column="28" />
+        <state relative-caret-position="90">
+          <caret line="6" column="7" selection-start-line="6" selection-start-column="7" selection-end-line="6" selection-end-column="7" />
         </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/www/front/Resume.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-872" />
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/www/css/styles.css">
@@ -530,52 +627,251 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/www/front/Bottom.html">
+    <entry file="file://$PROJECT_DIR$/www/front/AboutUs.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="90">
-          <caret line="6" column="7" lean-forward="true" selection-start-line="6" selection-start-column="7" selection-end-line="6" selection-end-column="7" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/www/index.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="358">
-          <caret line="44" column="39" selection-start-line="44" selection-start-column="39" selection-end-line="44" selection-end-column="39" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/www/front/Top.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="238">
-          <caret line="95" column="9" lean-forward="true" selection-start-line="95" selection-start-column="9" selection-end-line="95" selection-end-column="9" />
-          <folding>
-            <element signature="n#style#0;n#body#0;n#html#0;n#!!top" expanded="true" />
-          </folding>
+        <state relative-caret-position="180">
+          <caret line="12" column="28" selection-start-line="12" selection-start-column="28" selection-end-line="12" selection-end-column="28" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/README.md">
       <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
         <state split_layout="SPLIT">
-          <first_editor relative-caret-position="90">
-            <caret line="6" selection-start-line="6" selection-end-line="6" />
+          <first_editor relative-caret-position="664">
+            <caret line="47" column="56" selection-start-line="47" selection-start-column="56" selection-end-line="47" selection-end-column="56" />
           </first_editor>
           <second_editor />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/paint/src/index.js">
+    <entry file="file://$PROJECT_DIR$/apache/README.md">
+      <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
+        <state split_layout="SPLIT">
+          <first_editor relative-caret-position="585">
+            <caret line="39" column="47" selection-start-line="39" selection-start-column="47" selection-end-line="39" selection-end-column="47" />
+          </first_editor>
+          <second_editor />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/www/index.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="105">
+        <state relative-caret-position="541">
+          <caret line="60" column="36" selection-start-line="60" selection-start-column="36" selection-end-line="60" selection-end-column="36" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Makefile">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="30">
+          <caret line="2" column="4" selection-start-line="2" selection-start-column="4" selection-end-line="2" selection-end-column="4" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/www/front/About.template">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="165">
           <caret line="11" selection-start-line="11" selection-end-line="11" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/www/front/About.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="195">
+          <caret line="13" selection-start-line="8" selection-end-line="13" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/www/paint/db/database.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-315" />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/www/paint/README.md">
+      <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
+        <state split_layout="SPLIT">
+          <first_editor />
+          <second_editor />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/www/paint/paint.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-315">
+          <folding>
+            <element signature="e#0#10#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/paint/public/index.html">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Notes/ReactReduxNotes.md">
+      <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
+        <state split_layout="SPLIT">
+          <first_editor relative-caret-position="270">
+            <caret line="18" column="34" selection-start-line="18" selection-start-column="34" selection-end-line="18" selection-end-column="34" />
+          </first_editor>
+          <second_editor />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/paint/server/paint.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1770">
+          <caret line="132" column="29" selection-start-line="132" selection-start-column="29" selection-end-line="132" selection-end-column="29" />
+          <folding>
+            <element signature="e#0#10#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/paint/src/general/Utils.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="30">
+          <caret line="2" selection-start-line="2" selection-end-line="2" />
+          <folding>
+            <element signature="n#!!doc" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/paint/build/index.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state>
+          <caret column="513" selection-start-column="513" selection-end-column="513" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/react-demo/src/serviceWorker.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="197">
+          <caret line="23" column="6" selection-start-line="23" selection-start-column="6" selection-end-line="23" selection-end-column="6" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/paint/src/serviceWorker.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state>
+        <state relative-caret-position="188">
+          <caret line="25" column="6" selection-start-line="25" selection-start-column="6" selection-end-line="25" selection-end-column="6" />
           <folding>
             <element signature="n#!!doc" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/showdown.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="188">
+          <caret line="20" column="35" selection-start-line="20" selection-start-column="35" selection-end-line="20" selection-end-column="35" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/paint/src/App.test.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="60">
+          <caret line="4" selection-start-line="4" selection-end-line="4" />
+          <folding>
+            <element signature="e#0#26#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/paint/node_modules/redux-thunk/index.d.ts">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/paint/package.json">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="180">
+          <caret line="12" column="14" selection-start-line="12" selection-start-column="14" selection-end-line="12" selection-end-column="14" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/paint/src/Counter.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="330">
+          <caret line="22" selection-start-line="17" selection-end-line="22" />
+          <folding>
+            <element signature="e#0#39#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/paint/src/redux/store/index.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="45">
+          <caret line="3" selection-start-line="3" selection-end-line="3" />
+          <folding>
+            <element signature="e#0#32#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/paint/src/redux/actions.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="30">
+          <caret line="2" column="20" selection-start-line="2" selection-start-column="20" selection-end-line="2" selection-end-column="20" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/paint/src/redux/reducers/index.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="90">
+          <caret line="6" column="11" selection-start-line="6" selection-start-column="11" selection-end-line="6" selection-end-column="11" />
+          <folding>
+            <element signature="e#0#38#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/paint/src/redux/reducers/session.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="195">
+          <caret line="13" lean-forward="true" selection-start-line="13" selection-end-line="13" />
+          <folding>
+            <element signature="e#0#57#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/paint/src/redux/initialState.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="90">
+          <caret line="6" column="17" selection-start-line="6" selection-start-column="8" selection-end-line="6" selection-end-column="17" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/paint/src/actionCreators.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="255">
+          <caret line="17" column="23" selection-start-line="17" selection-start-column="23" selection-end-line="17" selection-end-column="23" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/paint/src/redux/reducers/options.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="90">
+          <caret line="7" selection-start-line="7" selection-end-line="7" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/paint/src/index.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="150">
+          <caret line="10" column="9" selection-start-line="10" selection-start-column="9" selection-end-line="10" selection-end-column="9" />
+          <folding>
+            <element signature="e#0#26#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/paint/src/App.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="179">
+          <caret line="152" selection-start-line="152" selection-end-line="152" />
+          <folding>
+            <element signature="e#0#39#0" expanded="true" />
           </folding>
         </state>
       </provider>
