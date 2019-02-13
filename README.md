@@ -36,7 +36,7 @@ Having fun while I wait for my next career move!
 
 # Text Pages
 
-* The front page uses HTML5 with flex (www/css/styles.css) and iFrame.
+* The front page uses HTML5 with flex (css/styles.css) and iFrame.
 
 * HTML pages handle their own loayouts and customized colouring in a `style` element.
 
