@@ -14,8 +14,15 @@ from flask import send_from_directory, redirect, send_file
 from flask.helpers import NotFound
 from flask.wrappers import Response
 
+if __name__ == '__main__':
+    ROOT_URL = '/paint'
+else:
+    ROOT_URL = ''
+
 PROJ_DIR = os.path.dirname(sys.argv[0])
-sys.path.insert(0, PROJ_DIR)
+if PROJ_DIR not in sys.path:
+    sys.path.insert(0, PROJ_DIR)
+
 
 # from app import app as application
 # application.root_path = PROJ_DIR
@@ -46,6 +53,7 @@ def get_literal(value):
         pass
 
     return value
+
 
 class RequestParameters:
     """Handles parameter retrievals that may come from a POST, PUT, or GET.
@@ -99,12 +107,9 @@ def change_int_key_strings_to_int(old_value):
 
     return new_value
 
-URL_BASE = os.environ.get('PAINT_URL_ROOT', '').rstrip('/')
-URL_ROOT = f'{URL_BASE}/'
-
 APP = Flask(
     __name__.split('.')[0],
-    static_url_path=URL_ROOT + 'static',
+    static_url_path=ROOT_URL+'/static',
     static_folder='../build/static',
     # static_folder=os.environ.get('APP_STATIC_FOLDER', '../build/static'),
     # static_url_path='',
@@ -114,21 +119,35 @@ APP = Flask(
 )
 application = APP
 
+if __name__ == '__main__':
+    @APP.route('/')
+    def redirect_to_paint():
+        return redirect(ROOT_URL)
 
-@APP.route(URL_ROOT + '', defaults={'filename': 'index.html'})
-@APP.route(URL_ROOT + '<path:filename>')
+
+@APP.route(ROOT_URL + '/', defaults={'filename': 'index.html'})
+@APP.route(ROOT_URL + '/<path:filename>')
 def ui_root(filename):
     """Displays the root UI."""
-    return send_from_directory('../build', filename)
+    try:
+        return send_from_directory('../build', filename)
+    except NotFound:
+        if '.' in filename:
+            raise
+        return send_from_directory('../build', 'index.html')
 
-@APP.route(URL_ROOT + 'api/info', methods=['GET', 'POST'])
+
+@APP.route(ROOT_URL + '/api/info', methods=['GET', 'POST'])
 def get_info():
     """Stub. Does nothing. Just including this to hide the fact from the UI."""
 
     return json_response({
         'status': 'success',
-        'URL_BASE': URL_BASE,
-        'URL_ROOT': URL_ROOT,
+        'ROOT_URL': request.path,
         'env': dict(os.environ),
         '__name__': __name__,
     })
+
+
+if __name__ == '__main__':
+    APP.run(debug=True, host='0.0.0.0', port=5000, threaded=False)
