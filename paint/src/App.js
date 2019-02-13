@@ -109,7 +109,10 @@ class App extends Component {
             appMenuAnchor: null,
             sessionMenuAnchor: null,
             loggedIn: false,
-        }
+            isProduction: process.env.NODE_ENV === "production",
+        };
+        let e = process.env.NODE_ENV;
+        console.log(`The environment is ${e}`);
     }
 
 
@@ -160,7 +163,12 @@ class App extends Component {
         let isAdvancedMode = this.props.options.advancedMode;
         let isLoggedIn = this.props.session.sessionId !== null;
         if (isLoggedIn)
-            sessionMenuItem = <MenuItem onClick={this.handleSessionLogout}>Logout</MenuItem>;
+            sessionMenuItem = (
+                <MenuItem onClick={this.handleSessionLogout}>
+                    <Link to="/paint">
+                        Logout
+                    </Link>
+                </MenuItem>);
         else
             sessionMenuItem = <MenuItem onClick={this.handleSessionLogin}>Login</MenuItem>;
         return (
@@ -183,12 +191,12 @@ class App extends Component {
                             onClose={() => this.handleAppMenuClose(null)}
                         >
                             <MenuItem onClick={() => this.handleAppMenuClose("Main App")}>
-                                <Link to={"/ui/circles"}>
+                                <Link to="/paint/main">
                                     Main App
                                 </Link>
                             </MenuItem>
                             <MenuItem onClick={() => this.handleAppMenuClose("Circles")}>
-                                <Link to={"/ui/circles"}>
+                                <Link to="/paint/circles">
                                     Circles
                                 </Link>
                             </MenuItem>
@@ -205,13 +213,13 @@ class App extends Component {
                             </MenuItem>
                             {isAdvancedMode &&
                             <MenuItem onClick={() => this.handleAppMenuClose()}>
-                                <Link to={"/ui/about"}>
+                                <Link to="/paint/about">
                                     Advanced About :=)
                                 </Link>
                             </MenuItem>
                             }
                             <MenuItem onClick={() => this.handleAppMenuClose()}>
-                                <Link to={"/ui/about"}>
+                                <Link to="/paint/about">
                                     About
                                 </Link>
                             </MenuItem>
@@ -253,19 +261,31 @@ class App extends Component {
         if (isLoggedIn) {
             return (
                 <Switch>
-                    <Route path="/ui/circles" render={props => (
+                    <Route path="/paint/main" render={() => (
+                        <div>
+                            <h1>Main App</h1>
+                            <p>You can view the redux state with Redux DevTools extension for Chrome.</p>
+                            <p>Only the advanced mode and session state are present.</p>
+                        </div>
+                    )}/>
+                    <Route path="/paint/circles" render={() => (
                         <h1>Circles</h1>
                     )}/>
-                    <Route path="/ui/about" render={props => (
+                    <Route path="/paint/about" render={() => (
                         <h1>About</h1>
                     )}/>
-                    <Route exact path="/" component={this.mainApp}/>
-                    <Route exact path="/ui" component={this.mainApp}/>
+                    <Route exact path="/paint/" component={this.mainApp}/>
                     <Route component={this.handleRouteNoMatch}/>
                 </Switch>
             );
         } else {
-            return (<h1>Please log in.</h1>);
+            return (
+                <div>
+                    <h1>Please log in.</h1>
+                    <p>Use the session menu in the top left corner.</p>
+                    <p>So far this is only showing ReactJS/Material-UI and React-Redux.</p>
+                </div>
+            );
         }
     }
 
@@ -293,6 +313,7 @@ class App extends Component {
 }
 
 App.propTypes = {
+    ui: PropTypes.object.isRequired,
     options: PropTypes.object.isRequired,
     session: PropTypes.object.isRequired,
     sessionLogin: PropTypes.func.isRequired,
