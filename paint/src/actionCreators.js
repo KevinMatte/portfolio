@@ -1,4 +1,4 @@
-import { SESSION_LOGIN, SESSION_LOGOUT, ADVANCED_MODE_TOGGLE } from './redux/actions'
+import { SESSION_LOGIN, SESSION_LOGOUT, ADVANCED_MODE_TOGGLE} from './redux/actions'
 
 export function sessionLogin() {
     return {
