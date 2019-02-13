@@ -2,6 +2,7 @@
 .PHONY: all www paint
 
 build: www
+	spd-say "Built"
 
 www: www/front/About.html paint
 

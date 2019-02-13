@@ -5,6 +5,19 @@
     <link rel="stylesheet" href="css/styles.css">
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate"/>
+    <meta http-equiv="Pragma" content="no-cache"/>
+    <meta http-equiv="Expires" content="0"/>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script>
+
+        function reloadPaint() {
+            $('#work').attr('src', '/paint');
+            console.log('Did it');
+        }
+    </script>
+
 
     <style>
         .top {
@@ -38,7 +51,6 @@
 
         .demo {
             font-weight: bold;
-            text-decoration: underline;
         }
 
         .footer {
@@ -63,12 +75,15 @@
                 <li class="demo">Full Stack Demo
                     <ul>
                         <li><a href="front/PaintDemo.html" target="work">READ ME</a></li>
-                        <li><a href="paint" target="paint">Paint</a></li>
+                        <li><a href="paint" target="work">Paint</a>
+                            <br/>May need to right-click &amp; reload frame.</li>
+                        <li><a href="paint" target="paint">Paint (different tab)</a></li>
+                        <!--<li><a onclick="reloadPaint()">Paint</a></li>-->
                     </ul>
                 </li>
             </ul>
         </div>
-        <iframe name="work" src="front/About.html" class="flexHStretched"></iframe>
+        <iframe id="work" name="work" src="front/About.html" class="flexHStretched"></iframe>
     </div>
     <iframe name="footer" src="front/Bottom.html" class="flexFixed footer" height="80px"></iframe>
 </div>

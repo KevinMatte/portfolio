@@ -284,6 +284,8 @@ class App extends Component {
                     <h1>Please log in.</h1>
                     <p>Use the session menu in the top left corner.</p>
                     <p>So far this is only showing ReactJS/Material-UI and React-Redux.</p>
+                    <p>Today's plan: Connect database. Design React spreadsheet.</p>
+                    <li>I've wanted to do this for a long time, just for fun!</li>
                 </div>
             );
         }
