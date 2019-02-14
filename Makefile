@@ -2,7 +2,7 @@
 .PHONY: all www paint
 
 build: www
-	spd-say "Built"
+	spd-say -i "-50" "Built"
 
 www: www/front/About.html paint
 
