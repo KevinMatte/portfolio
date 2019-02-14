@@ -1,2 +1,10 @@
 flask
 PyMySQL
+pyjwt
+mysqlclient
+python-dateutil
+pytz
+pyyaml
+inflect
+kazoo
+requests
