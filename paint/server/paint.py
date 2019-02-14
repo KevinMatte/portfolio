@@ -13,7 +13,7 @@ from io import StringIO
 from drawing.drawing import Drawing, Graph, Vector3
 from utils.settings import get_app_setting
 
-from flask import Flask, request, make_response
+from flask import Flask, request, make_response, abort
 from flask import send_from_directory, redirect, send_file
 from flask.helpers import NotFound
 from flask.wrappers import Response
@@ -28,9 +28,6 @@ if __name__ == '__main__':
 else:
     ROOT_URL = ''
 
-PROJ_DIR = os.path.dirname(sys.argv[0])
-if PROJ_DIR not in sys.path:
-    sys.path.insert(0, PROJ_DIR)
 
 
 # from app import app as application
@@ -155,12 +152,14 @@ def handle_unexpected_error(error):
 @APP.route(ROOT_URL + '/<path:filename>')
 def ui_root(filename):
     """Displays the root UI."""
+    if filename.startswith('api/'):
+        return abort(404)
     try:
         return send_from_directory('../build', filename)
     except NotFound:
         if '.' in filename:
             raise
-        return send_from_directory('../build', 'index.html')
+        return abort(404)
 
 
 tables = {Drawing.table_name: Drawing, Graph.table_name: Graph, Vector3.table_name: Vector3}
@@ -244,4 +243,4 @@ def apply_caching(response):
 
 
 if __name__ == '__main__':
-    APP.run(debug=True, host='0.0.0.0', port=5000, threaded=False)
+    APP.run(debug=True, host='localhost', port=5000, threaded=False)
