@@ -1,6 +1,8 @@
 // import $ from 'jquery';
 // import React from 'react';
 
+export const ID_TOKEN_KEY = 'sessionid_token';
+
 export const button_style = {
     margin: 5
 };
@@ -62,6 +64,65 @@ export function replaceMatchPathWithParameters(match) {
     if (!endingSlash)
         path = path.slice(0, -1);
     return path;
+}
+
+
+export function logout() {
+    sessionStorage.removeItem(ID_TOKEN_KEY);
+}
+
+function getIdToken() {
+    return sessionStorage.getItem(ID_TOKEN_KEY);
+}
+
+export function isLoggedIn() {
+    const idToken = getIdToken();
+    return !!idToken;
+}
+
+
+function getFetchHeaders() {
+    let headers = {
+        contentType: "application/json; charset=utf-8",
+        dataType: "json"
+    };
+    if (isLoggedIn())
+        headers["Authorization"] = `Bearer ${getIdToken()}`;
+    return headers;
+}
+
+export function apiPost(url, postData = {}) {
+    return fetch(url, {
+        method: "POST", // *GET, POST, PUT, DELETE, etc.
+        mode: "cors", // no-cors, cors, *same-origin
+        cache: "no-cache", // *default, no-cache, reload, force-cache, only-if-cached
+        credentials: "same-origin", // include, *same-origin, omit
+        headers: getFetchHeaders(),
+        redirect: "follow", // manual, *follow, error
+        referrer: "no-referrer", // no-referrer, *client
+        body: JSON.stringify(postData), // body data type must match "Content-Type" header
+    }).then((response) => {
+        if (response.ok)
+            return Promise.all([response, response.json()]);
+        else
+            return Promise.all([response, undefined]);
+    }).then(([response2, data]) => {
+        if (response2.ok) {
+            console.log('ok');
+            if (data.status !== "error") {
+                console.log('ok 1');
+                return data;
+            } else {
+                console.log('error 1');
+                return {status: "error", result: data.result};
+            }
+        } else {
+            console.log('error 2');
+            return {status: "error", result: response2.statusText};
+        }
+    }).catch(result => {
+        return Promise.resolve({status: "error", result});
+    });
 }
 
 

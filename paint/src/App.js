@@ -313,7 +313,6 @@ class App extends Component {
 }
 
 App.propTypes = {
-    ui: PropTypes.object.isRequired,
     options: PropTypes.object.isRequired,
     session: PropTypes.object.isRequired,
     sessionLogin: PropTypes.func.isRequired,

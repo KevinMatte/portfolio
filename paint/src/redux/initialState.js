@@ -7,5 +7,7 @@ export var initialState = {
         sessionId: null,
         permissions: [],
         title: "Kevin Matte's Portfolio",
+        messages: [],
+        messageId: 0,
     }
 };
