@@ -15,3 +15,6 @@ paint:
 	rm -fr www/paint
 	mkdir -p www/paint
 	cp -pr paint/server paint/build paint/public www/paint/
+
+dumpdb:
+	mysqldump -u paint -p paint > /opt/portfolio/files/backup_$$(date +'%Y%m%d_%H%M%S').sql

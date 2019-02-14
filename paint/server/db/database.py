@@ -5,7 +5,11 @@ import os
 import re
 import time
 import logging
+import traceback
 from typing import List, Dict
+
+import MySQLdb
+from mysql.connector import ProgrammingError
 from werkzeug.exceptions import BadRequest, NotFound
 import mysql.connector
 
@@ -15,6 +19,10 @@ LOGGER.setLevel(os.environ.get('LOGGER_LEVEL', LOGGER.getEffectiveLevel()))
 # For sql column selectors.
 # Extracts simple field names from table selectors or optional 'as' statement.
 FIELD_MATCH = re.compile(r'(.* as "(?P<n1>.*)")|(.* as (?P<n2>.*))|(.*\.(?P<n3>.*))|(?P<n4>.*)')
+
+
+def escape_string(value):
+    return MySQLdb.escape_string(value).decode('utf-8')
 
 
 class Database:
@@ -36,7 +44,7 @@ class Database:
 
     """
 
-    def __init__(self, database, user, password, host='localhost', port=5432, db_settings=None, retries=-1, retry_sleep_secs=15):
+    def __init__(self, database, user, password, host='localhost', port=3306, db_settings=None, retries=-1, retry_sleep_secs=15):
         self.conn = None
         self.cursor = None
         self.retries = retries
@@ -48,7 +56,6 @@ class Database:
             'host': host,
             'port': port,
         }
-        self.connect_info_str = f"dbname='{database}' user='{user}' host='{host}'".format(**self.connect_parms)
 
     def connect(self):
         """Retrieves the database connection context and creates self.cursor"""
@@ -59,8 +66,8 @@ class Database:
             try:
                 self.conn = mysql.connector.connect(**self.connect_parms)
                 LOGGER.debug("Connected to database with %s", str(self.connect_parms))
-            except mysql.Error:
-                LOGGER.error("Failed to connect to database with %s", self.connect_info_str)
+            except:
+                LOGGER.error("Failed to connect to database with %s", self.connect_parms)
                 self.conn = None
 
                 time.sleep(self.retry_sleep_secs)
@@ -95,32 +102,57 @@ class Database:
 
         self.disconnect()
 
-    def fetch_all(self, statement_template, **kwargs):
+
+    def fetch_objects(self, statement_template, column_names):
+        rows = self.fetch_all(statement_template)
+        objects = self.make_rows_of_objects(column_names, rows)
+
+        return objects
+
+    def add_row(self, statement_template):
+        statement = statement_template
+
+        LOGGER.debug("SQL: %s", statement)
+        self.execute(statement)
+        self.execute('SELECT LAST_INSERT_ID()')
+        new_id = self.cursor.fetchall()[0][0]
+
+        return new_id
+
+
+    def execute(self, statement):
+        LOGGER.debug("SQL: %s", statement)
+        try:
+            self.cursor.execute(statement)
+        except ProgrammingError as error:
+            print(f'{error.__class__.__name__}: {error}')
+            traceback.print_tb(error.__traceback__)
+            raise RuntimeError(f'Failed to execute SQL: {statement}')
+        return
+
+
+    def fetch_all(self, statement_template):
         """Returns all results of an SQL query
 
         :param statement_template: SQL statement  with optional named {}'s (used with *kwargs*).
-        :param kwargs: Keyword arguments to be applied to *statement_template*
         :return: SQL rows are returned (via *cursor.execute*)
         """
 
-        if kwargs:
-            statement = statement_template.format(**kwargs)
-        else:
-            statement = statement_template
+        statement = statement_template
 
         LOGGER.debug("SQL: %s", statement)
-        self.cursor.execute(statement)
+        self.execute(statement)
 
         rows = self.cursor.fetchall()  # type: List
         return rows
 
-    def fetch_all_ids(self, statement_template, **kwargs):
+    def fetch_all_ids(self, statement_template, id_column=0):
         """Returns an array of every row's first column."""
 
-        rows = self.fetch_all(statement_template, **kwargs)
-        ids = [row[0] for row in rows]  # type: List[int]
+        rows = self.fetch_all(statement_template)
+        a_list = [row[id_column] for row in rows]  # type: List[any]
 
-        return ids
+        return a_list
 
     @staticmethod
     def make_rows_of_objects(column_names, rows):
@@ -146,3 +178,20 @@ class Database:
             rows_of_objects.append(value)
 
         return rows_of_objects
+
+
+if __name__ == '__main__':
+    from utils.settings import get_app_setting
+    with Database(
+            get_app_setting('SQL_DATABASE'),
+            get_app_setting('SQL_USERID'),
+            get_app_setting('SQL_PASSWORD'),
+    ) as db:
+        users = db.fetch_all('SELECT * FROM user')
+        for user in users:
+            print(user)
+
+        user_id = 1
+        name = 'dunky'
+        new_id = db.add_row(f"INSERT INTO drawing(userid, name) VALUES('{user_id}', '{name}')")
+        print(new_id)

@@ -7,12 +7,21 @@ import csv
 import json
 import os
 import signal
+import traceback
 from io import StringIO
+
+from drawing.drawing import Drawing, Graph, Vector3
+from utils.settings import get_app_setting
 
 from flask import Flask, request, make_response
 from flask import send_from_directory, redirect, send_file
 from flask.helpers import NotFound
 from flask.wrappers import Response
+
+from db.database import Database
+
+STATUS_ERROR = 'error'
+STATUS_SUCCESS = 'success'
 
 if __name__ == '__main__':
     ROOT_URL = '/paint'
@@ -65,7 +74,7 @@ class RequestParameters:
 
     def __init__(self):
         self.request = request
-        if request.method == 'POST':
+        if request.method in ('POST', 'PUT'):
             self.data = request.json
         else:
             self.data = None
@@ -85,9 +94,17 @@ class RequestParameters:
 
         return default_value
 
+    def get_all_parameters(self):
+        parameters = {name: get_literal(value) for name, value in request.args.items()}
+        if self.data is not None:
+            parameters.update(self.data)
 
-def json_response(obj):
-    contents = json.dumps(obj)
+        return parameters
+
+
+
+def json_response(status, obj):
+    contents = json.dumps({'status': status, 'result': obj})
     return Response(contents, mimetype="application/json")
 
 
@@ -107,9 +124,10 @@ def change_int_key_strings_to_int(old_value):
 
     return new_value
 
+
 APP = Flask(
     __name__.split('.')[0],
-    static_url_path=ROOT_URL+'/static',
+    static_url_path=ROOT_URL + '/static',
     static_folder='../build/static',
     # static_folder=os.environ.get('APP_STATIC_FOLDER', '../build/static'),
     # static_url_path='',
@@ -125,6 +143,14 @@ if __name__ == '__main__':
         return redirect(ROOT_URL)
 
 
+@APP.errorhandler(Exception)
+def handle_unexpected_error(error):
+    """Exception handling """
+    print(f'{error.__class__.__name__}: {error}')
+    traceback.print_tb(error.__traceback__)
+    return json_response(STATUS_ERROR, str(error))
+
+
 @APP.route(ROOT_URL + '/', defaults={'filename': 'index.html'})
 @APP.route(ROOT_URL + '/<path:filename>')
 def ui_root(filename):
@@ -137,16 +163,74 @@ def ui_root(filename):
         return send_from_directory('../build', 'index.html')
 
 
+tables = {Drawing.table_name: Drawing, Graph.table_name: Graph, Vector3.table_name: Vector3}
+
+
+@APP.route(ROOT_URL + '/api/table/<table>', methods=['GET'])
+def table_list(table):
+    table_class = tables.get(table)
+    if table_class:
+        with table_class() as table:
+            return json_response(STATUS_SUCCESS, table.list())
+    else:
+        raise NotFound(f'Unknown table: {table}')
+
+
+@APP.route(ROOT_URL + '/api/table/<table>/<int:row_id>', methods=['GET'])
+def table_get(table, row_id):
+    table_class = tables.get(table)
+    if table_class:
+        with table_class() as table:
+            return json_response(STATUS_SUCCESS, table.get(row_id))
+    else:
+        raise NotFound(f'Unknown table: {table}')
+
+
+@APP.route(ROOT_URL + '/api/table/<table>', methods=['POST'])
+def table_post(table):
+    parameters = RequestParameters().get_all_parameters()
+    table_class = tables.get(table)
+    if table_class:
+        with table_class() as table:
+            values = {name: value for name, value in parameters.items() if name in table.column_names}
+            return json_response(STATUS_SUCCESS, table.create(**values))
+    else:
+        raise NotFound(f'Unknown table: {table}')
+
+
+@APP.route(ROOT_URL + '/api/table/<table>/<int:row_id>', methods=['PUT'])
+def table_update(table, row_id):
+    parameters = RequestParameters().get_all_parameters()
+    table_class = tables.get(table)
+    if table_class:
+        with table_class() as table:
+            values = {name: value for name, value in parameters.items() if name in table.column_names}
+            return json_response(STATUS_SUCCESS, table.update(row_id, **values))
+    else:
+        raise NotFound(f'Unknown table: {table}')
+
+@APP.route(ROOT_URL + '/api/table/<table>/<int:row_id>', methods=['PUT'])
+def table_delete(table, row_id):
+    table_class = tables.get(table)
+    if table_class:
+        with table_class() as table:
+            return json_response(STATUS_SUCCESS, table.delete(row_id))
+    else:
+        raise NotFound(f'Unknown table: {table}')
+
+
 @APP.route(ROOT_URL + '/api/info', methods=['GET', 'POST'])
 def get_info():
     """Stub. Does nothing. Just including this to hide the fact from the UI."""
 
-    return json_response({
-        'status': 'success',
-        'ROOT_URL': request.path,
-        'env': dict(os.environ),
-        '__name__': __name__,
-    })
+    return json_response(
+        STATUS_SUCCESS,
+        {
+            'ROOT_URL': request.path,
+            'env': dict(os.environ),
+            '__name__': __name__,
+        }
+    )
 
 
 @APP.after_request
@@ -157,6 +241,7 @@ def apply_caching(response):
     response.headers["Expires"] = "0"
 
     return response
+
 
 if __name__ == '__main__':
     APP.run(debug=True, host='0.0.0.0', port=5000, threaded=False)

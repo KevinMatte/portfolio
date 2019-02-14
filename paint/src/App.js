@@ -111,8 +111,6 @@ class App extends Component {
             loggedIn: false,
             isProduction: process.env.NODE_ENV === "production",
         };
-        let e = process.env.NODE_ENV;
-        console.log(`The environment is ${e}`);
     }
 
 
