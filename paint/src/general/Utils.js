@@ -67,16 +67,17 @@ export function replaceMatchPathWithParameters(match) {
 }
 
 
-export function logout() {
-    sessionStorage.removeItem(ID_TOKEN_KEY);
-}
-
 function getIdToken() {
     return sessionStorage.getItem(ID_TOKEN_KEY);
 }
 
 export function isLoggedIn() {
     const idToken = getIdToken();
+    console.log(`idToken=${idToken}`);
+    console.log(`idToken=${idToken}`);
+    console.log(`idToken=${idToken}`);
+    console.log(`idToken=${idToken}`);
+
     return !!idToken;
 }
 
@@ -91,12 +92,16 @@ function getFetchHeaders() {
 }
 
 export function apiPost(url, postData = {}) {
+    let headers = getFetchHeaders();
+    console.log(`auth1=${headers.Authorization}`);
+    console.log(`auth2=${headers.Authorization}`);
+    console.log(`auth3=${headers.Authorization}`);
     return fetch(`/paint/api/${url}`, {
         method: "POST", // *GET, POST, PUT, DELETE, etc.
         mode: "cors", // no-cors, cors, *same-origin
         cache: "no-cache", // *default, no-cache, reload, force-cache, only-if-cached
         credentials: "same-origin", // include, *same-origin, omit
-        headers: getFetchHeaders(),
+        headers: headers,
         redirect: "follow", // manual, *follow, error
         referrer: "no-referrer", // no-referrer, *client
         body: JSON.stringify(postData), // body data type must match "Content-Type" header

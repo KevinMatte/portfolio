@@ -32,6 +32,10 @@ export function sessionLogout() {
                     type: SESSION_LOGOUT,
                 });
             } else {
+                sessionStorage.removeItem(ID_TOKEN_KEY);
+                dispatch({
+                    type: SESSION_LOGOUT,
+                });
                 dispatch({
                     type: SESSION_MESSAGE,
                     message: result,

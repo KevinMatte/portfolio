@@ -27,9 +27,9 @@ STATUS_ERROR = 'error'
 STATUS_SUCCESS = 'success'
 
 if __name__ == '__main__':
-    ROOT_URL = '/paint'
+    ROOT_URL = '/paint/'
 else:
-    ROOT_URL = ''
+    ROOT_URL = '/'
 
 
 
@@ -127,7 +127,7 @@ def change_int_key_strings_to_int(old_value):
 
 APP = Flask(
     __name__.split('.')[0],
-    static_url_path=ROOT_URL + '/static',
+    static_url_path=ROOT_URL + 'static',
     static_folder='../build/static',
     # static_folder=os.environ.get('APP_STATIC_FOLDER', '../build/static'),
     # static_url_path='',
@@ -137,10 +137,10 @@ APP = Flask(
 )
 application = APP
 
-if __name__ == '__main__':
-    @APP.route('/')
-    def redirect_to_paint():
-        return redirect(ROOT_URL)
+# if __name__ == '__main__':
+#     @APP.route('/')
+#     def redirect_to_paint():
+#         return redirect(ROOT_URL)
 
 
 @APP.errorhandler(Exception)
@@ -151,10 +151,17 @@ def handle_unexpected_error(error):
     return json_response(STATUS_ERROR, [request.url, str(error)])
 
 
-@APP.route(ROOT_URL + '/', defaults={'filename': 'index.html'})
-@APP.route(ROOT_URL + '/<path:filename>')
+@APP.route(ROOT_URL + '<path:filename>')
 def ui_root(filename):
     """Displays the root UI."""
+    return send_build(filename)
+
+@APP.route(ROOT_URL)
+def ui_root1():
+    """Displays the root UI."""
+    return send_build()
+
+def send_build(filename="index.html"):
     if filename.startswith('api/'):
         return abort(404)
     try:
@@ -165,7 +172,7 @@ def ui_root(filename):
         return abort(404)
 
 
-@APP.route(ROOT_URL + '/api/login', methods=['POST'])
+@APP.route(ROOT_URL + 'api/login', methods=['POST'])
 def login():
     parms = RequestParameters()
     user_id = parms.get_parameter('user')
@@ -178,7 +185,7 @@ def login():
     token = get_user_token(email, user_id, password)
     return json_response('success', token)
 
-@APP.route(ROOT_URL + '/api/logout', methods=['POST'])
+@APP.route(ROOT_URL + 'api/logout', methods=['POST'])
 @requires_auth
 def logout():
     return json_response('success', 'Done')
@@ -187,7 +194,7 @@ def logout():
 tables = {Drawing.table_name: Drawing, Graph.table_name: Graph, Vector3.table_name: Vector3}
 
 
-@APP.route(ROOT_URL + '/api/table/<table>', methods=['GET'])
+@APP.route(ROOT_URL + 'api/table/<table>', methods=['GET'])
 @requires_auth
 def table_list(table):
     table_class = tables.get(table)
@@ -198,7 +205,7 @@ def table_list(table):
         raise NotFound(f'Unknown table: {table}')
 
 
-@APP.route(ROOT_URL + '/api/table/<table>/<int:row_id>', methods=['GET'])
+@APP.route(ROOT_URL + 'api/table/<table>/<int:row_id>', methods=['GET'])
 @requires_auth
 def table_get(table, row_id):
     table_class = tables.get(table)
@@ -209,7 +216,7 @@ def table_get(table, row_id):
         raise NotFound(f'Unknown table: {table}')
 
 
-@APP.route(ROOT_URL + '/api/table/<table>', methods=['POST'])
+@APP.route(ROOT_URL + 'api/table/<table>', methods=['POST'])
 @requires_auth
 def table_post(table):
     parameters = RequestParameters().get_all_parameters()
@@ -222,7 +229,7 @@ def table_post(table):
         raise NotFound(f'Unknown table: {table}')
 
 
-@APP.route(ROOT_URL + '/api/table/<table>/<int:row_id>', methods=['PUT'])
+@APP.route(ROOT_URL + 'api/table/<table>/<int:row_id>', methods=['PUT'])
 @requires_auth
 def table_update(table, row_id):
     parameters = RequestParameters().get_all_parameters()
@@ -234,7 +241,7 @@ def table_update(table, row_id):
     else:
         raise NotFound(f'Unknown table: {table}')
 
-@APP.route(ROOT_URL + '/api/table/<table>/<int:row_id>', methods=['PUT'])
+@APP.route(ROOT_URL + 'api/table/<table>/<int:row_id>', methods=['PUT'])
 @requires_auth
 def table_delete(table, row_id):
     table_class = tables.get(table)
@@ -244,7 +251,7 @@ def table_delete(table, row_id):
     else:
         raise NotFound(f'Unknown table: {table}')
 
-@APP.route(ROOT_URL + '/api/info', methods=['GET', 'POST'])
+@APP.route(ROOT_URL + 'api/info', methods=['GET', 'POST'])
 @requires_auth
 def get_info():
     """Stub. Does nothing. Just including this to hide the fact from the UI."""
@@ -270,4 +277,4 @@ def apply_caching(response):
 
 
 if __name__ == '__main__':
-    APP.run(debug=True, host='localhost', port=5000, threaded=False)
+    APP.run(debug=True, host='0.0.0.0', port=5000, threaded=False)

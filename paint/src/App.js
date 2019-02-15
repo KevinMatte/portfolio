@@ -166,7 +166,7 @@ class App extends Component {
         if (isLoggedIn)
             sessionMenuItem = (
                 <MenuItem onClick={this.handleSessionLogout}>
-                    <Link to="/paint">
+                    <Link to="/paint/">
                         Logout
                     </Link>
                 </MenuItem>);
@@ -286,7 +286,7 @@ class App extends Component {
                     <Route path="/paint/about" render={() => (
                         <h1>About</h1>
                     )}/>
-                    <Route path="/paint/login" render={() => (<Redirect to="/paint"/>)}/>
+                    <Route path="/paint/login" render={() => (<Redirect to="/paint/"/>)}/>
                     <Route exact path="/paint/" component={this.mainApp}/>
                     <Route component={this.handleRouteNoMatch}/>
                 </Switch>
@@ -295,7 +295,7 @@ class App extends Component {
             return (
                 <Switch>
                     <Route path="/paint/login" component={this.login}/>
-                    <Route path="/paint" render={() => (
+                    <Route path="/paint/" render={() => (
                         <div>
                             <h1>Please log in.</h1>
                             <p>Use the session menu in the top left corner.</p>
