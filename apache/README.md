@@ -43,8 +43,9 @@ Note: Yes, I'm doing this fast, running right out of my dev directory.
 I'll create a Makefile to do a proper push to public later.
 
 ```xml
-    WSGIScriptAlias /paint /var/www/public/paint/server/paint.py
-    WSGIPythonPath /home/kevin/.virtualenvs/paint/lib/python3.6/site-packages
+    WSGIScriptAlias /paint /var/www/portfolio/paint/server/paint.py
+    WSGIPythonPath /var/www/portfolio/paint/server
     WSGIPythonHome /home/kevin/.virtualenvs/paint
+    WSGIPassAuthorization On
 
 ```
