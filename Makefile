@@ -15,6 +15,7 @@ paint:
 	rm -fr www/paint
 	mkdir -p www/paint
 	cp -pr paint/server paint/build paint/public www/paint/
+	cp paint/src/styles.css www/css/styles.css
 
 clean:
 	rm -fr paint/build

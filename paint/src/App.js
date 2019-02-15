@@ -31,7 +31,7 @@ import SwitchComponent from "@material-ui/core/Switch";
 // import {button_style, renderText} from './general/Utils';
 import FormControlLabel from "@material-ui/core/FormControlLabel/FormControlLabel";
 import {sessionLogout, toggleAdvancedMode} from "./actionCreators";
-
+import './styles.css'
 
 /*
 const styles = theme => ({
@@ -69,6 +69,15 @@ const muiTheme = createMuiTheme({
         },
     },
     overrides: {
+        MuiButton: {
+            root: {
+                borderRadius: 3,
+                border: 1,
+                height: 36,
+                boxShadow: '0 3px 5px 2px lightgrey',
+                textTransform: 'capitalize',
+            },
+        },
         MuiIconButton: {
             root: {
                 height: "24px",
@@ -263,7 +272,9 @@ class App extends Component {
 
     login = (props) => {
         return (
-            <Login {...props} className="max_size"/>
+            <MuiThemeProvider theme={muiTheme}>
+                <Login {...props} className="max_size"/>
+            </MuiThemeProvider>
         );
     };
 
@@ -272,24 +283,24 @@ class App extends Component {
 
         if (isLoggedIn) {
             return (
-                <Switch>
-                    <Route path="/paint/main" render={() => (
-                        <div>
-                            <h1>Main App</h1>
-                            <p>You can view the redux state with Redux DevTools extension for Chrome.</p>
-                            <p>Only the advanced mode and session state are present.</p>
-                        </div>
-                    )}/>
-                    <Route path="/paint/circles" render={() => (
-                        <h1>Circles</h1>
-                    )}/>
-                    <Route path="/paint/about" render={() => (
-                        <h1>About</h1>
-                    )}/>
-                    <Route path="/paint/login" render={() => (<Redirect to="/paint/"/>)}/>
-                    <Route exact path="/paint/" component={this.mainApp}/>
-                    <Route component={this.handleRouteNoMatch}/>
-                </Switch>
+                    <Switch>
+                        <Route path="/paint/main" render={() => (
+                            <div>
+                                <h1>Main App</h1>
+                                <p>You can view the redux state with Redux DevTools extension for Chrome.</p>
+                                <p>Only the advanced mode and session state are present.</p>
+                            </div>
+                        )}/>
+                        <Route path="/paint/circles" render={() => (
+                            <h1>Circles</h1>
+                        )}/>
+                        <Route path="/paint/about" render={() => (
+                            <h1>About</h1>
+                        )}/>
+                        <Route path="/paint/login" render={() => (<Redirect to="/paint/"/>)}/>
+                        <Route exact path="/paint/" component={this.mainApp}/>
+                        <Route component={this.handleRouteNoMatch}/>
+                    </Switch>
             );
         } else {
             return (
@@ -321,7 +332,7 @@ class App extends Component {
                             <div className="flexFixed">
                                 {this.renderAppBar()}
                             </div>
-                            <div className="flexVStretched flexVDisplay">
+                            <div className="flexVStretched flexVDisplay doIndent">
                                 {this.renderSwitch()}
                             </div>
                         </div>
