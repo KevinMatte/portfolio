@@ -5,6 +5,10 @@ from functools import wraps
 import jwt
 import requests
 from flask import request
+from werkzeug.exceptions import Unauthorized
+
+from db.database import Database
+from drawing.drawing import User
 from utils.config import get_logger
 import secrets
 
@@ -75,28 +79,34 @@ def requires_auth(f):
     return decorated
 
 
-def get_token_from_ticket(ticket, service):
+def get_user_token(email, user_id, password):
     """Creates a token for the UI to use on all its API requests that require authentication.
 
     Also, completes the UC Service Validation process and verifies the user belongs to a
     group that may access the WFS App.
     """
 
-    response = {'status': 'failure'}
+    with User() as user_table:
+        if email:
+            user = user_table.get(email=user_id)
+        else:
+            user = user_table.get(userid=user_id)
+        if password != user['password']:
+            raise Unauthorized()
 
-    if ticket is not None:
-        session = requests.Session()
 
-        payload = {
-            'exp': datetime.datetime.utcnow() + datetime.timedelta(days=0, hours=4),
-            'iat': datetime.datetime.utcnow(),
-            'ticket': ticket,
-        }
-        token = jwt.encode(payload, SUPER_SECRET_KEY, algorithm='HS256')
+    certificate = secrets.token_hex(16)
+    payload = {
+        'exp': datetime.datetime.utcnow() + datetime.timedelta(days=0, hours=4),
+        'iat': datetime.datetime.utcnow(),
+        'certificate': certificate,
+        'user_id': user['id']
+    }
+    token = jwt.encode(payload, SUPER_SECRET_KEY, algorithm='HS256')
 
-        response = {
-            'status': 'success',
-            'auth_token': token.decode('utf-8')
-        }
+    response = {
+        'status': 'success',
+        'auth_token': token.decode('utf-8')
+    }
 
     return response

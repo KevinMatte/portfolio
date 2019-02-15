@@ -1,11 +1,12 @@
 import React, {Component} from 'react';
 import './App.css';
-import {PropTypes} from 'prop-types';
+import PropTypes from 'prop-types';
 import {createStyles, withStyles} from '@material-ui/core/styles';
+import Login from './login';
 
 // import Button from '@material-ui/core/Button';
 import CssBaseline from '@material-ui/core/CssBaseline';
-import {BrowserRouter, Link, Route, Switch} from 'react-router-dom';
+import {BrowserRouter, Link, Route, Switch, Redirect} from 'react-router-dom';
 // import { withStyles } from '@material-ui/core/styles';
 import {connect} from 'react-redux'
 
@@ -29,7 +30,7 @@ import SwitchComponent from "@material-ui/core/Switch";
 
 // import {button_style, renderText} from './general/Utils';
 import FormControlLabel from "@material-ui/core/FormControlLabel/FormControlLabel";
-import {sessionLogout, sessionLogin, toggleAdvancedMode} from "./actionCreators";
+import {sessionLogout, toggleAdvancedMode} from "./actionCreators";
 
 
 /*
@@ -105,6 +106,9 @@ class App extends Component {
     constructor(props, context) {
         super(props, context);
 
+        // noinspection ES6ModulesDependencies
+        // noinspection ES6ModulesDependencies
+        // noinspection JSUnresolvedVariable
         this.state = {
             appMenuAnchor: null,
             sessionMenuAnchor: null,
@@ -135,7 +139,6 @@ class App extends Component {
 
     handleSessionLogin = () => {
         this.setState({sessionMenuAnchor: null});
-        this.props.sessionLogin();
     };
 
     handleSessionLogout = () => {
@@ -168,7 +171,12 @@ class App extends Component {
                     </Link>
                 </MenuItem>);
         else
-            sessionMenuItem = <MenuItem onClick={this.handleSessionLogin}>Login</MenuItem>;
+            sessionMenuItem = <MenuItem onClick={this.handleSessionLogin}>
+                <Link to="/paint/login">
+                    Login
+                </Link>
+            </MenuItem>;
+
         return (
             <MuiThemeProvider theme={muiTheme}>
                 <AppBar position="static">
@@ -253,6 +261,12 @@ class App extends Component {
 
     mainApp = () => <h1>Main app stub</h1>;
 
+    login = (props) => {
+        return (
+            <Login {...props} className="max_size"/>
+        );
+    };
+
     renderSwitch() {
         let isLoggedIn = this.props.session.sessionId !== null;
 
@@ -272,19 +286,25 @@ class App extends Component {
                     <Route path="/paint/about" render={() => (
                         <h1>About</h1>
                     )}/>
+                    <Route path="/paint/login" render={() => (<Redirect to="/paint"/>)}/>
                     <Route exact path="/paint/" component={this.mainApp}/>
                     <Route component={this.handleRouteNoMatch}/>
                 </Switch>
             );
         } else {
             return (
-                <div>
-                    <h1>Please log in.</h1>
-                    <p>Use the session menu in the top left corner.</p>
-                    <p>So far this is only showing ReactJS/Material-UI and React-Redux.</p>
-                    <p>Today's plan: Connect database. Design React spreadsheet.</p>
-                    <li>I've wanted to do this for a long time, just for fun!</li>
-                </div>
+                <Switch>
+                    <Route path="/paint/login" component={this.login}/>
+                    <Route path="/paint" render={() => (
+                        <div>
+                            <h1>Please log in.</h1>
+                            <p>Use the session menu in the top left corner.</p>
+                            <p>So far this is only showing ReactJS/Material-UI and React-Redux.</p>
+                            <p>Today's plan: Connect database. Design React spreadsheet.</p>
+                            <li>I've wanted to do this for a long time, just for fun!</li>
+                        </div>
+                    )}/>
+                </Switch>
             );
         }
     }
@@ -315,17 +335,18 @@ class App extends Component {
 App.propTypes = {
     options: PropTypes.object.isRequired,
     session: PropTypes.object.isRequired,
-    sessionLogin: PropTypes.func.isRequired,
+    sessionId: PropTypes.string,
     sessionLogout: PropTypes.func.isRequired,
     toggleAdvancedMode: PropTypes.func.isRequired
 };
 
-const mapDispatchToProps = {sessionLogin, sessionLogout, toggleAdvancedMode};
+const mapDispatchToProps = {sessionLogout, toggleAdvancedMode};
 const mapStateToProps = (state /*, ownProps*/) => {
     return {
         options: state.options,
         session: state.session,
-    }
+        sessionId: state.session.sessionId,
+    };
 };
 
 export default connect(

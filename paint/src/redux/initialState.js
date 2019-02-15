@@ -1,10 +1,11 @@
+import {ID_TOKEN_KEY} from "../general/Utils";
 
 export var initialState = {
     options: {
         advancedMode: false
     },
     session: {
-        sessionId: null,
+        sessionId: sessionStorage.getItem(ID_TOKEN_KEY),
         permissions: [],
         title: "Kevin Matte's Portfolio",
         messages: [],

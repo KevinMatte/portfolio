@@ -10,7 +10,7 @@ export default function (session = initialState.session, action) {
             };
 
         case SESSION_LOGOUT:
-            return initialState.session;
+            return { ...initialState.session, sessionId: null };
 
         case SESSION_MESSAGE:
             let messageId = session.messageId + 1;

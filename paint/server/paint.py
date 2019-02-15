@@ -10,7 +10,10 @@ import signal
 import traceback
 from io import StringIO
 
+from werkzeug.exceptions import BadRequest
+
 from drawing.drawing import Drawing, Graph, Vector3
+from utils.authentication import get_user_token, requires_auth
 from utils.settings import get_app_setting
 
 from flask import Flask, request, make_response, abort
@@ -145,7 +148,7 @@ def handle_unexpected_error(error):
     """Exception handling """
     print(f'{error.__class__.__name__}: {error}')
     traceback.print_tb(error.__traceback__)
-    return json_response(STATUS_ERROR, str(error))
+    return json_response(STATUS_ERROR, [request.url, str(error)])
 
 
 @APP.route(ROOT_URL + '/', defaults={'filename': 'index.html'})
@@ -162,10 +165,30 @@ def ui_root(filename):
         return abort(404)
 
 
+@APP.route(ROOT_URL + '/api/login', methods=['POST'])
+def login():
+    parms = RequestParameters()
+    user_id = parms.get_parameter('user')
+    email = parms.get_parameter('email')
+    password = parms.get_parameter('password')
+
+    if (not email and not user_id) or not password:
+        raise BadRequest()
+
+    token = get_user_token(email, user_id, password)
+    return json_response('success', token)
+
+@APP.route(ROOT_URL + '/api/logout', methods=['POST'])
+@requires_auth
+def logout():
+    return json_response('success', 'Done')
+
+
 tables = {Drawing.table_name: Drawing, Graph.table_name: Graph, Vector3.table_name: Vector3}
 
 
 @APP.route(ROOT_URL + '/api/table/<table>', methods=['GET'])
+@requires_auth
 def table_list(table):
     table_class = tables.get(table)
     if table_class:
@@ -176,6 +199,7 @@ def table_list(table):
 
 
 @APP.route(ROOT_URL + '/api/table/<table>/<int:row_id>', methods=['GET'])
+@requires_auth
 def table_get(table, row_id):
     table_class = tables.get(table)
     if table_class:
@@ -186,6 +210,7 @@ def table_get(table, row_id):
 
 
 @APP.route(ROOT_URL + '/api/table/<table>', methods=['POST'])
+@requires_auth
 def table_post(table):
     parameters = RequestParameters().get_all_parameters()
     table_class = tables.get(table)
@@ -198,6 +223,7 @@ def table_post(table):
 
 
 @APP.route(ROOT_URL + '/api/table/<table>/<int:row_id>', methods=['PUT'])
+@requires_auth
 def table_update(table, row_id):
     parameters = RequestParameters().get_all_parameters()
     table_class = tables.get(table)
@@ -209,6 +235,7 @@ def table_update(table, row_id):
         raise NotFound(f'Unknown table: {table}')
 
 @APP.route(ROOT_URL + '/api/table/<table>/<int:row_id>', methods=['PUT'])
+@requires_auth
 def table_delete(table, row_id):
     table_class = tables.get(table)
     if table_class:
@@ -217,8 +244,8 @@ def table_delete(table, row_id):
     else:
         raise NotFound(f'Unknown table: {table}')
 
-
 @APP.route(ROOT_URL + '/api/info', methods=['GET', 'POST'])
+@requires_auth
 def get_info():
     """Stub. Does nothing. Just including this to hide the fact from the UI."""
 

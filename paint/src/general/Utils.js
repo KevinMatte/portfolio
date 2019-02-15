@@ -83,8 +83,7 @@ export function isLoggedIn() {
 
 function getFetchHeaders() {
     let headers = {
-        contentType: "application/json; charset=utf-8",
-        dataType: "json"
+        "Content-Type": "application/json",
     };
     if (isLoggedIn())
         headers["Authorization"] = `Bearer ${getIdToken()}`;
@@ -92,7 +91,7 @@ function getFetchHeaders() {
 }
 
 export function apiPost(url, postData = {}) {
-    return fetch(url, {
+    return fetch(`/paint/api/${url}`, {
         method: "POST", // *GET, POST, PUT, DELETE, etc.
         mode: "cors", // no-cors, cors, *same-origin
         cache: "no-cache", // *default, no-cache, reload, force-cache, only-if-cached
@@ -108,17 +107,9 @@ export function apiPost(url, postData = {}) {
             return Promise.all([response, undefined]);
     }).then(([response2, data]) => {
         if (response2.ok) {
-            console.log('ok');
-            if (data.status !== "error") {
-                console.log('ok 1');
-                return data;
-            } else {
-                console.log('error 1');
-                return {status: "error", result: data.result};
-            }
+            return data;
         } else {
-            console.log('error 2');
-            return {status: "error", result: response2.statusText};
+            return {status: data.status, result: response2.statusText};
         }
     }).catch(result => {
         return Promise.resolve({status: "error", result});

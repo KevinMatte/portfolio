@@ -38,11 +38,23 @@ class Table(object):
 
         return rows
 
-    def get(self, row_id):
-        rows = self.db.fetch_objects(
-            f'SELECT {", ".join(self.column_names)} FROM {self.table_name} WHERE id={row_id}',
-            self.column_names,
-        )
+    def get(self, row_id=None, **kwargs):
+        if row_id is not None:
+            rows = self.db.fetch_objects(
+                f'SELECT {", ".join(self.column_names)} FROM {self.table_name} WHERE id={row_id}',
+                self.column_names,
+            )
+        else:
+            names, values = self.get_names_and_values(kwargs)
+            where_values = []
+            for name, value in zip(*self.get_names_and_values(kwargs)):
+                where_values.append(f'{name}={value}')
+            where_values = ' AND '.join(where_values)
+            rows = self.db.fetch_objects(
+                f'SELECT {", ".join(self.column_names)} FROM {self.table_name} WHERE {where_values}',
+                self.column_names,
+            )
+
         if not rows:
             raise NotFound(f'No row with row_id={row_id}')
 
@@ -93,6 +105,19 @@ class Table(object):
 
         return
 
+class User(Table):
+    table_name = 'user'
+
+    def __init__(self):
+        super(User, self).__init__(
+            self.table_name,
+            {
+                'id':int,
+                'userid':str,
+                'name': str,
+                'email': str,
+                'password': str,
+            })
 
 class Drawing(Table):
     table_name = 'drawing'

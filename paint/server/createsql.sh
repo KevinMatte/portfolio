@@ -17,7 +17,7 @@ CREATE TABLE `graph` (
     `id` int(11) NOT NULL AUTO_INCREMENT,
     `type` varchar(128),
     `name` varchar(128) DEFAULT NULL,
-    `drawingid` int,
+    `drawingid` int NOT NULL,
 
     INDEX drawing_id (drawingid),
     FOREIGN KEY(`drawingid`) REFERENCES drawing(id) ON DELETE CASCADE,
@@ -26,7 +26,7 @@ CREATE TABLE `graph` (
 
 CREATE TABLE `vector3` (
     `id` int(11) NOT NULL AUTO_INCREMENT,
-    `graphid` int,
+    `graphid` int NOT NULL,
     `type` varchar(128) DEFAULT NULL,
     `name` varchar(128) DEFAULT NULL,
     `x1` double,
