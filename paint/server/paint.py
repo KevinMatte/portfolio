@@ -12,7 +12,7 @@ from io import StringIO
 
 from werkzeug.exceptions import BadRequest
 
-from drawing.drawing import Drawing, Graph, Vector3, User
+from model.drawing import Drawing, Graph, Vector3, User
 from utils.authentication import requires_auth
 from utils.settings import get_app_setting
 

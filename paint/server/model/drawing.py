@@ -190,7 +190,7 @@ class User(Table):
 
 
 class Drawing(Table):
-    table_name = 'drawing'
+    table_name = 'model'
 
     def __init__(self):
         super(Drawing, self).__init__(self.table_name, {'id':int, 'userid':int, 'name': str})
