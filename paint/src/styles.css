@@ -110,7 +110,6 @@ h3 {
     margin: 3px !important;
     border-width: 2px;
     color: black;
-    /*background-color: #9dffac !important;*/
     border-style: none none solid none !important;
     padding-left: 4px;
     padding-right: 4px;
@@ -204,7 +203,6 @@ h3 {
 
 .filter_menu {
     margin: 3px !important;
-    /*background-color: #9dffac !important;*/
     border-style: ridge !important;
     /*border-width: 4px;*/
     color: black;
@@ -332,7 +330,7 @@ h3 {
 }
 
 .tableBorderedNone, .tableBorderedNone th, .tableBorderedNone td {
-    border: 0px solid black;
+    border: 0 solid black;
 }
 
 .tableRowsNormal {
@@ -392,21 +390,19 @@ h3 {
 
 .chipButton {
     padding: 0 10px 0 10px !important;
-    margin: 0px !important;
+    margin: 0 !important;
     text-transform: none !important;
     min-width: inherit !important;
 }
 
 .chipButton div span {
-    padding: 0px !important;
-    margin: 0px !important;
+    padding: 0 !important;
+    margin: 0 !important;
     text-transform: none !important;
 }
 
 .paramTextarea input {
-    border: solid !important;
-    border-width: 1px !important;
-    border-color: lightgrey !important;
+    border: 1px solid lightgrey !important;
 }
 
 .textareaItalic input {
@@ -419,5 +415,5 @@ h3 {
     border-width: thin;
     border-radius: 13px;
     height: 20px;
-    margin: 0px 3px 0px 3px;
+    margin: 0 3px 0 3px;
 }

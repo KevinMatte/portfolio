@@ -1,15 +1,37 @@
 import {SESSION_LOGIN, SESSION_LOGOUT, SESSION_MESSAGE, ADVANCED_MODE_TOGGLE} from './redux/actions'
 import {apiPost, ID_TOKEN_KEY} from "./general/Utils";
 
+export function sessionRegister(user, password) {
+    return dispatch => {
+        return apiPost('register', {user: user, password}).then(({status, result}) => {
+            if (status === "success") {
+                sessionStorage.setItem(ID_TOKEN_KEY, result['auth_token']);
+                dispatch({
+                    type: SESSION_LOGIN,
+                    session: {
+                        sessionId: result['auth_token'],
+                    }
+                });
+            } else {
+                dispatch({
+                    type: SESSION_MESSAGE,
+                    message: result,
+                    status: 'failed',
+                });
+            }
+        });
+    }
+}
+
 export function sessionLogin(user, password) {
     return dispatch => {
         return apiPost('login', {user: user, password}).then(({status, result}) => {
             if (status === "success") {
-                sessionStorage.setItem(ID_TOKEN_KEY, result.auth_token);
+                sessionStorage.setItem(ID_TOKEN_KEY, result['auth_token']);
                 dispatch({
                     type: SESSION_LOGIN,
                     session: {
-                        sessionId: result.auth_token,
+                        sessionId: result['auth_token'],
                     }
                 });
             } else {

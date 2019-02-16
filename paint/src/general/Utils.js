@@ -3,10 +3,6 @@
 
 export const ID_TOKEN_KEY = 'sessionid_token';
 
-export const button_style = {
-    margin: 5
-};
-
 export class Utils {
 
     static compareObjects(o1, o2) {
@@ -73,11 +69,6 @@ function getIdToken() {
 
 export function isLoggedIn() {
     const idToken = getIdToken();
-    console.log(`idToken=${idToken}`);
-    console.log(`idToken=${idToken}`);
-    console.log(`idToken=${idToken}`);
-    console.log(`idToken=${idToken}`);
-
     return !!idToken;
 }
 
@@ -93,10 +84,8 @@ function getFetchHeaders() {
 
 export function apiPost(url, postData = {}) {
     let headers = getFetchHeaders();
-    console.log(`auth1=${headers.Authorization}`);
-    console.log(`auth2=${headers.Authorization}`);
-    console.log(`auth3=${headers.Authorization}`);
-    return fetch(`/paint/api/${url}`, {
+    let apiUrl = `/paint/api/${url}`;
+    return fetch(apiUrl, {
         method: "POST", // *GET, POST, PUT, DELETE, etc.
         mode: "cors", // no-cors, cors, *same-origin
         cache: "no-cache", // *default, no-cache, reload, force-cache, only-if-cached

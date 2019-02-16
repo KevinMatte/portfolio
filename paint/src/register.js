@@ -1,23 +1,24 @@
 import React, {Component} from 'react';
 // noinspection ES6CheckImport
 import PropTypes from 'prop-types';
-import {sessionLogin} from "./actionCreators";
+import {sessionRegister} from "./actionCreators";
 import {connect} from "react-redux";
 import Button from "@material-ui/core/Button";
 import TextField from "@material-ui/core/TextField";
 
-class Login extends Component {
+class Register extends Component {
     constructor(props) {
         super(props);
 
         this.state = {
             username: "",
-            password: ""
+            password: "",
+            password2: "",
         };
     }
 
     handleSubmit = () => {
-        this.props.sessionLogin(this.state.username, this.state.password);
+        this.props.sessionRegister(this.state.username, this.state.password);
     };
 
     handleTextChange = (event) => {
@@ -51,8 +52,20 @@ class Login extends Component {
                     />
                 </div>
                 <div className="flexFixed">
+                    <TextField
+                        id="match-password-input"
+                        name="password2"
+                        label="Confirm Password"
+                        type="password"
+                        autoComplete="current-password"
+                        margin="normal"
+                        onChange={event => this.handleTextChange(event)}
+                        value={this.state.password2}
+                    />
+                </div>
+                <div className="flexFixed">
                     <Button color="primary" variant="contained" onClick={this.handleSubmit}>
-                        Login
+                        Register
                     </Button>
                 </div>
             </div>
@@ -60,13 +73,13 @@ class Login extends Component {
     }
 }
 
-Login.propTypes = {
-    sessionLogin: PropTypes.func.isRequired,
+Register.propTypes = {
+    sessionRegister: PropTypes.func.isRequired,
 };
 
-const mapDispatchToProps = {sessionLogin};
+const mapDispatchToProps = {sessionRegister};
 
 export default connect(
     null,
     mapDispatchToProps
-)(Login)
+)(Register)

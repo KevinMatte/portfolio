@@ -12,8 +12,8 @@ from io import StringIO
 
 from werkzeug.exceptions import BadRequest
 
-from drawing.drawing import Drawing, Graph, Vector3
-from utils.authentication import get_user_token, requires_auth
+from drawing.drawing import Drawing, Graph, Vector3, User
+from utils.authentication import requires_auth
 from utils.settings import get_app_setting
 
 from flask import Flask, request, make_response, abort
@@ -182,8 +182,22 @@ def login():
     if (not email and not user_id) or not password:
         raise BadRequest()
 
-    token = get_user_token(email, user_id, password)
-    return json_response('success', token)
+    status, result = User.login(email, user_id, password)
+    return json_response(status, result)
+
+@APP.route(ROOT_URL + 'api/register', methods=['POST'])
+def register():
+    parms = RequestParameters()
+    user_id = parms.get_parameter('user')
+    email = parms.get_parameter('email')
+    password = parms.get_parameter('password')
+    name = parms.get_parameter('name')
+
+    if (not email and not user_id) or not password:
+        raise BadRequest()
+
+    status, result = User.register(email=email, user_id=user_id, password=password, name=name)
+    return json_response(status, result)
 
 @APP.route(ROOT_URL + 'api/logout', methods=['POST'])
 @requires_auth

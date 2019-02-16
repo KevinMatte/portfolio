@@ -1,37 +1,28 @@
 import React, {Component} from 'react';
-import './App.css';
-import PropTypes from 'prop-types';
-import {createStyles, withStyles} from '@material-ui/core/styles';
-import Login from './login';
-
-// import Button from '@material-ui/core/Button';
-import CssBaseline from '@material-ui/core/CssBaseline';
 import {BrowserRouter, Link, Route, Switch, Redirect} from 'react-router-dom';
-// import { withStyles } from '@material-ui/core/styles';
 import {connect} from 'react-redux'
-
+// noinspection ES6CheckImport
+import PropTypes from 'prop-types';
 import 'typeface-roboto'
-import {createMuiTheme, MuiThemeProvider, /* withStyles */} from '@material-ui/core/styles';
 import lightBlue from '@material-ui/core/colors/lightBlue';
-// import Button from '@material-ui/core/Button';
-// import CircularProgress from '@material-ui/core/CircularProgress';
-// import Dialog from '@material-ui/core/Dialog';
-// import DialogActions from '@material-ui/core/DialogActions';
-// import DialogTitle from '@material-ui/core/DialogTitle';
+import AccountCircle from '@material-ui/icons/AccountCircle';
 import AppBar from '@material-ui/core/AppBar';
-import Toolbar from '@material-ui/core/Toolbar';
-import Typography from '@material-ui/core/Typography';
+import FormControlLabel from "@material-ui/core/FormControlLabel/FormControlLabel";
 import IconButton from '@material-ui/core/IconButton';
 import MenuIcon from '@material-ui/icons/Menu';
-import AccountCircle from '@material-ui/icons/AccountCircle';
 import MenuItem from '@material-ui/core/MenuItem';
 import Menu from '@material-ui/core/Menu';
 import SwitchComponent from "@material-ui/core/Switch";
+import Toolbar from '@material-ui/core/Toolbar';
+import Typography from '@material-ui/core/Typography';
+import CssBaseline from '@material-ui/core/CssBaseline';
+import {createStyles, withStyles, createMuiTheme, MuiThemeProvider} from '@material-ui/core/styles';
 
-// import {button_style, renderText} from './general/Utils';
-import FormControlLabel from "@material-ui/core/FormControlLabel/FormControlLabel";
 import {sessionLogout, toggleAdvancedMode} from "./actionCreators";
 import './styles.css'
+import './App.css';
+import Register from "./register";
+import Login from './login';
 
 /*
 const styles = theme => ({
@@ -115,14 +106,13 @@ class App extends Component {
     constructor(props, context) {
         super(props, context);
 
-        // noinspection ES6ModulesDependencies
-        // noinspection ES6ModulesDependencies
-        // noinspection JSUnresolvedVariable
+        // noinspection ES6ModulesDependencies, JSUnresolvedVariable
+        let isProduction = process.env.NODE_ENV === "production";
         this.state = {
             appMenuAnchor: null,
             sessionMenuAnchor: null,
             loggedIn: false,
-            isProduction: process.env.NODE_ENV === "production",
+            isProduction: isProduction,
         };
     }
 
@@ -146,10 +136,6 @@ class App extends Component {
         this.setState({sessionMenuAnchor: null});
     };
 
-    handleSessionLogin = () => {
-        this.setState({sessionMenuAnchor: null});
-    };
-
     handleSessionLogout = () => {
         this.setState({sessionMenuAnchor: null});
         this.props.sessionLogout();
@@ -164,27 +150,9 @@ class App extends Component {
     };
 
     renderAppBar() {
-        const {sessionMenuAnchor, appMenuAnchor} = this.state;
+        const {appMenuAnchor, sessionMenuAnchor} = this.state;
         let title = this.props.session.title;
-        const sessionMenuOpen = Boolean(sessionMenuAnchor);
-        const applicationMenuOpen = Boolean(appMenuAnchor);
         const {classes} = this.props;
-        let sessionMenuItem;
-        let isAdvancedMode = this.props.options.advancedMode;
-        let isLoggedIn = this.props.session.sessionId !== null;
-        if (isLoggedIn)
-            sessionMenuItem = (
-                <MenuItem onClick={this.handleSessionLogout}>
-                    <Link to="/paint/">
-                        Logout
-                    </Link>
-                </MenuItem>);
-        else
-            sessionMenuItem = <MenuItem onClick={this.handleSessionLogin}>
-                <Link to="/paint/login">
-                    Login
-                </Link>
-            </MenuItem>;
 
         return (
             <MuiThemeProvider theme={muiTheme}>
@@ -199,73 +167,110 @@ class App extends Component {
                         >
                             <MenuIcon/>
                         </IconButton>
-                        {isLoggedIn && <Menu
-                            id="left-menu"
-                            anchorEl={appMenuAnchor}
-                            open={applicationMenuOpen}
-                            onClose={() => this.handleAppMenuClose(null)}
-                        >
-                            <MenuItem onClick={() => this.handleAppMenuClose("Main App")}>
-                                <Link to="/paint/main">
-                                    Main App
-                                </Link>
-                            </MenuItem>
-                            <MenuItem onClick={() => this.handleAppMenuClose("Circles")}>
-                                <Link to="/paint/circles">
-                                    Circles
-                                </Link>
-                            </MenuItem>
-                            <MenuItem>
-                                <FormControlLabel
-                                    label="Advanced Mode"
-                                    name="advancedMode"
-                                    control={<SwitchComponent
-                                        onChange={this.props.toggleAdvancedMode}
-                                        checked={this.props.options.advancedMode}
-                                    />
-                                    }
-                                />
-                            </MenuItem>
-                            {isAdvancedMode &&
-                            <MenuItem onClick={() => this.handleAppMenuClose()}>
-                                <Link to="/paint/about">
-                                    Advanced About :=)
-                                </Link>
-                            </MenuItem>
-                            }
-                            <MenuItem onClick={() => this.handleAppMenuClose()}>
-                                <Link to="/paint/about">
-                                    About
-                                </Link>
-                            </MenuItem>
-                        </Menu>}
+                        {this.renderAppMenu()}
                         <Typography variant="body1" color="inherit" className={classes.grow}>
                             {title}
                         </Typography>
                         <IconButton
-                            aria-owns={sessionMenuOpen ? 'right-menu' : null}
+                            aria-owns={sessionMenuAnchor ? 'right-menu' : null}
                             aria-haspopup="true"
                             onClick={this.handleSessionMenuOpen}
                             color="inherit"
                         >
                             <AccountCircle/>
                         </IconButton>
-                        <Menu
-                            id="right-menu"
-                            anchorEl={sessionMenuAnchor}
-                            transformOrigin={{
-                                vertical: 'top',
-                                horizontal: 'right',
-                            }}
-                            open={sessionMenuOpen}
-                            onClose={this.handleSessionMenuClose}
-                        >
-                            {sessionMenuItem}
-                        </Menu>
+                        {this.renderSessionMenu()}
                     </Toolbar>
                 </AppBar>
             </MuiThemeProvider>
         );
+    }
+
+    renderSessionMenu() {
+        const {sessionMenuAnchor} = this.state;
+        let isLoggedIn = this.props.session.sessionId !== null;
+        return <Menu
+            id="right-menu"
+            anchorEl={sessionMenuAnchor}
+            transformOrigin={{
+                vertical: 'top',
+                horizontal: 'right',
+            }}
+            open={Boolean(sessionMenuAnchor)}
+            onClose={this.handleSessionMenuClose}
+        >
+            {isLoggedIn &&
+            <MenuItem onClick={this.handleSessionLogout}>
+                <Link to="/paint/">
+                    Logout
+                </Link>
+            </MenuItem>
+            }
+            {!isLoggedIn &&
+            <MenuItem onClick={this.handleSessionMenuClose}>
+                <Link to="/paint/login">
+                    Login
+                </Link>
+            </MenuItem>
+            }
+            {!isLoggedIn &&
+            <MenuItem onClick={this.handleSessionMenuClose}>
+                <Link to="/paint/register">
+                    Register
+                </Link>
+            </MenuItem>
+            }
+        </Menu>;
+    }
+
+    renderAppMenu() {
+        const {appMenuAnchor} = this.state;
+        let isAdvancedMode = this.props.options.advancedMode;
+        let isLoggedIn = this.props.session.sessionId !== null;
+        return <Menu
+            id="left-menu"
+            anchorEl={appMenuAnchor}
+            open={Boolean(appMenuAnchor)}
+            onClose={() => this.handleAppMenuClose(null)}
+        >
+            {isLoggedIn &&
+            <div>
+                <MenuItem onClick={() => this.handleAppMenuClose("Main App")}>
+                    <Link to="/paint/main">
+                        Main App
+                    </Link>
+                </MenuItem>
+                <MenuItem onClick={() => this.handleAppMenuClose("Circles")}>
+                    <Link to="/paint/circles">
+                        Circles
+                    </Link>
+                </MenuItem>
+                <MenuItem>
+                    <FormControlLabel
+                        label="Advanced Mode"
+                        name="advancedMode"
+                        control={<SwitchComponent
+                            onChange={this.props.toggleAdvancedMode}
+                            checked={this.props.options.advancedMode}
+                        />
+                        }
+                    />
+                </MenuItem>
+            </div>
+            }
+            {isAdvancedMode &&
+            <MenuItem onClick={() => this.handleAppMenuClose()}>
+                <Link to="/paint/about">
+                    Advanced About :=)
+                </Link>
+            </MenuItem>
+            }
+            <MenuItem onClick={() => this.handleAppMenuClose()}>
+                <Link to="/paint/about">
+                    About
+                </Link>
+            </MenuItem>
+        </Menu>;
     }
 
     mainApp = () => <h1>Main app stub</h1>;
@@ -278,34 +283,44 @@ class App extends Component {
         );
     };
 
+    register = (props) => {
+        return (
+            <MuiThemeProvider theme={muiTheme}>
+                <Register {...props} className="max_size"/>
+            </MuiThemeProvider>
+        );
+    };
+
     renderSwitch() {
         let isLoggedIn = this.props.session.sessionId !== null;
 
         if (isLoggedIn) {
             return (
-                    <Switch>
-                        <Route path="/paint/main" render={() => (
-                            <div>
-                                <h1>Main App</h1>
-                                <p>You can view the redux state with Redux DevTools extension for Chrome.</p>
-                                <p>Only the advanced mode and session state are present.</p>
-                            </div>
-                        )}/>
-                        <Route path="/paint/circles" render={() => (
-                            <h1>Circles</h1>
-                        )}/>
-                        <Route path="/paint/about" render={() => (
-                            <h1>About</h1>
-                        )}/>
-                        <Route path="/paint/login" render={() => (<Redirect to="/paint/"/>)}/>
-                        <Route exact path="/paint/" component={this.mainApp}/>
-                        <Route component={this.handleRouteNoMatch}/>
-                    </Switch>
+                <Switch>
+                    <Route path="/paint/main" render={() => (
+                        <div>
+                            <h1>Main App</h1>
+                            <p>You can view the redux state with Redux DevTools extension for Chrome.</p>
+                            <p>Only the advanced mode and session state are present.</p>
+                        </div>
+                    )}/>
+                    <Route path="/paint/circles" render={() => (
+                        <h1>Circles</h1>
+                    )}/>
+                    <Route path="/paint/about" render={() => (
+                        <h1>About</h1>
+                    )}/>
+                    <Route path="/paint/login" render={() => (<Redirect to="/paint/"/>)}/>
+                    <Route path="/paint/register" render={() => (<Redirect to="/paint/"/>)}/>
+                    <Route exact path="/paint/" component={this.mainApp}/>
+                    <Route component={this.handleRouteNoMatch}/>
+                </Switch>
             );
         } else {
             return (
                 <Switch>
                     <Route path="/paint/login" component={this.login}/>
+                    <Route path="/paint/register" component={this.register}/>
                     <Route path="/paint/" render={() => (
                         <div>
                             <h1>Please log in.</h1>
@@ -322,7 +337,6 @@ class App extends Component {
 
 
     render() {
-
         return (
             <BrowserRouter>
                 <div className="max_size">

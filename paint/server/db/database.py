@@ -22,7 +22,7 @@ FIELD_MATCH = re.compile(r'(.* as "(?P<n1>.*)")|(.* as (?P<n2>.*))|(.*\.(?P<n3>.
 
 
 def escape_string(value):
-    return MySQLdb.escape_string(value).decode('utf-8')
+    return MySQLdb.escape_string(value).decode('utf-8') if value is not None else None
 
 
 class Database:
