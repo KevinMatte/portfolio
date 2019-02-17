@@ -1,6 +1,14 @@
 import thunk from 'redux-thunk';
 import {createStore, applyMiddleware, compose} from 'redux';
-import rootReducer from '../reducers'
+import {combineReducers} from "redux";
+import Options from '../actions/options';
+import Session from '../actions/session';
+
+var rootReducer = combineReducers({
+    session: Session.reducer,
+    options: Options.reducer,
+});
+
 
 const middleWare = [
     thunk,
