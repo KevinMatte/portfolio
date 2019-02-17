@@ -1,8 +1,8 @@
 import thunk from 'redux-thunk';
 import {createStore, applyMiddleware, compose} from 'redux';
 import {combineReducers} from "redux";
-import Options from '../actions/options';
-import Session from '../actions/session';
+import Options from './actions/options';
+import Session from './actions/session';
 
 var rootReducer = combineReducers({
     session: Session.reducer,
