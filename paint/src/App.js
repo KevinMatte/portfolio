@@ -6,6 +6,7 @@ import PropTypes from 'prop-types';
 import 'typeface-roboto'
 import lightBlue from '@material-ui/core/colors/lightBlue';
 import AccountCircle from '@material-ui/icons/AccountCircle';
+import Delete from '@material-ui/icons/Delete';
 import AppBar from '@material-ui/core/AppBar';
 import FormControlLabel from "@material-ui/core/FormControlLabel/FormControlLabel";
 import IconButton from '@material-ui/core/IconButton';
@@ -336,6 +337,34 @@ class App extends Component {
         }
     }
 
+    renderMessages() {
+        return (
+            <div>
+                {this.props.messages.length > 0 &&
+                <div style={{borderBottomStyle: "double"}}>
+                    {this.props.messages.map((message) => {
+                        return (
+                            <div className="flexHDisplay">
+                                <div className="flexHStretched middleText">
+                                    <span>{message.message}</span>
+                                </div>
+                                <div className="flexFixed">
+                                    <IconButton
+                                        color="inherit"
+                                        onClick={() => this.props.messageRemove(message.messageId)}
+                                    >
+                                        <Delete/>
+                                    </IconButton>
+                                </div>
+                            </div>
+                        );
+                    })}
+                </div>
+                }
+            </div>
+        )
+    }
+
 
     render() {
         return (
@@ -346,6 +375,9 @@ class App extends Component {
                         <div className="max_size  flexVDisplay">
                             <div className="flexFixed">
                                 {this.renderAppBar()}
+                            </div>
+                            <div>
+                                {this.renderMessages()}
                             </div>
                             <div className="flexVStretched flexVDisplay doIndent">
                                 {this.renderSwitch()}
@@ -361,20 +393,24 @@ class App extends Component {
 App.propTypes = {
     options: PropTypes.object.isRequired,
     session: PropTypes.object.isRequired,
+    messages: PropTypes.array,
     sessionId: PropTypes.string,
+    messageRemove: PropTypes.func.isRequired,
+    toggleAdvancedMode: PropTypes.func.isRequired,
     sessionLogout: PropTypes.func.isRequired,
-    toggleAdvancedMode: PropTypes.func.isRequired
 };
 
 const mapDispatchToProps = {
     sessionLogout: Session.logout,
     toggleAdvancedMode: Options.toggleAdvancedMode,
+    messageRemove: Session.messageRemove,
 };
 const mapStateToProps = (state /*, ownProps*/) => {
     return {
         options: state.options,
         session: state.session,
         sessionId: state.session.sessionId,
+        messages: state.session.messages,
     };
 };
 

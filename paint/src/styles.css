@@ -201,6 +201,12 @@ h3 {
     align-self: stretch;
 }
 
+.middleText {
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+}
+
 .filter_menu {
     margin: 3px !important;
     border-style: ridge !important;

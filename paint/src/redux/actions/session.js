@@ -122,14 +122,12 @@ export default class Session {
         }
     }
 
-    /*
     static messageRemove(messageId) {
         return {
             type: Session.SESSION_MESSAGE_REMOVE,
             messageId,
         };
     }
-    */
 
     static messageRemoveReducer(session, action) {
         return {
