@@ -1,3 +1,4 @@
+#!/usr/bin/env mysql
 
 DROP TABLE IF EXISTS `vector3`;
 DROP TABLE IF EXISTS `graph`;

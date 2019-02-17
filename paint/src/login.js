@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 // noinspection ES6CheckImport
 import PropTypes from 'prop-types';
-import {sessionLogin} from "./actionCreators";
+import {Session} from "./redux/actions/actionCreators";
 import {connect} from "react-redux";
 import Button from "@material-ui/core/Button";
 import TextField from "@material-ui/core/TextField";
@@ -64,7 +64,7 @@ Login.propTypes = {
     sessionLogin: PropTypes.func.isRequired,
 };
 
-const mapDispatchToProps = {sessionLogin};
+const mapDispatchToProps = {sessionLogin: Session.login};
 
 export default connect(
     null,
