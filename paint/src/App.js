@@ -18,11 +18,12 @@ import Typography from '@material-ui/core/Typography';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import {createStyles, withStyles, createMuiTheme, MuiThemeProvider} from '@material-ui/core/styles';
 
-import {Session, toggleAdvancedMode} from "./redux/actions/actionCreators";
+import Session from "./redux/actions/session";
 import './styles.css'
 import './App.css';
 import Register from "./register";
 import Login from './login';
+import Options from "./redux/actions/options";
 
 /*
 const styles = theme => ({
@@ -365,7 +366,10 @@ App.propTypes = {
     toggleAdvancedMode: PropTypes.func.isRequired
 };
 
-const mapDispatchToProps = {sessionLogout: Session.logout, toggleAdvancedMode};
+const mapDispatchToProps = {
+    sessionLogout: Session.logout,
+    toggleAdvancedMode: Options.toggleAdvancedMode,
+};
 const mapStateToProps = (state /*, ownProps*/) => {
     return {
         options: state.options,

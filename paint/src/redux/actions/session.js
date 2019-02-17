@@ -1,7 +1,7 @@
-import {SESSION_LOGIN, SESSION_LOGOUT, SESSION_MESSAGE, ADVANCED_MODE_TOGGLE} from '../actions'
+import {SESSION_LOGIN, SESSION_LOGOUT, SESSION_MESSAGE} from '../actions'
 import {apiPost, ID_TOKEN_KEY} from "../../general/Utils";
 
-export class Session {
+export default class Session {
 
     static register(user, password) {
         return dispatch => {
@@ -70,11 +70,5 @@ export class Session {
 
         }
     }
-};
-
-export function toggleAdvancedMode() {
-    return {
-        type: ADVANCED_MODE_TOGGLE,
-    };
 }
 

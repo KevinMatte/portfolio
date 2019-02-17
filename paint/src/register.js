@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 // noinspection ES6CheckImport
 import PropTypes from 'prop-types';
-import {Session} from "./redux/actions/actionCreators";
+import Session from "./redux/actions/session";
 import {connect} from "react-redux";
 import Button from "@material-ui/core/Button";
 import TextField from "@material-ui/core/TextField";
