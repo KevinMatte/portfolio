@@ -19,12 +19,14 @@ import Typography from '@material-ui/core/Typography';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import {createStyles, withStyles, createMuiTheme, MuiThemeProvider} from '@material-ui/core/styles';
 
-import Session from "./redux/actions/session";
 import './styles.css'
 import './App.css';
 import Register from "./register";
 import Login from './login';
+import Session from "./redux/actions/session";
 import Options from "./redux/actions/options";
+import Messages from './redux/actions/messages';
+import {renderText} from "./general/Utils";
 
 /*
 const styles = theme => ({
@@ -342,11 +344,11 @@ class App extends Component {
             <div>
                 {this.props.messages.length > 0 &&
                 <div style={{borderBottomStyle: "double"}}>
-                    {this.props.messages.map((message) => {
+                    {this.props.messages.filter(message => !message.field).map((message) => {
                         return (
-                            <div className="flexHDisplay">
+                            <div key={message.messageId} className="flexHDisplay">
                                 <div className="flexHStretched middleText">
-                                    <span>{message.message}</span>
+                                    <span>{renderText(message.message)}</span>
                                 </div>
                                 <div className="flexFixed">
                                     <IconButton
@@ -403,14 +405,14 @@ App.propTypes = {
 const mapDispatchToProps = {
     sessionLogout: Session.logout,
     toggleAdvancedMode: Options.toggleAdvancedMode,
-    messageRemove: Session.messageRemove,
+    messageRemove: Messages.remove,
 };
 const mapStateToProps = (state /*, ownProps*/) => {
     return {
         options: state.options,
         session: state.session,
         sessionId: state.session.sessionId,
-        messages: state.session.messages,
+        messages: state.messages.list,
     };
 };
 

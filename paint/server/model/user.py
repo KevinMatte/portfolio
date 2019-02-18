@@ -27,9 +27,15 @@ class User(Table):
 
         with User() as user_table:
             if email and user_table.list(email=email):
-                return 'failure', f'User with this email already exists: {email}'
+                return 'failure', {
+                    'field': 'register/email',
+                    'message': f'User with this email already exists: {email}',
+                }
             if user_id and user_table.list(userid=user_id):
-                return 'failure', f'User with this user ID already exists: {user_id}'
+                return 'failure', {
+                    'field': 'register/userid',
+                    'message': f'User with this user ID already exists: {user_id}',
+                }
 
             user = user_table.create(userid=user_id, email=email, name=name, password=password)
 

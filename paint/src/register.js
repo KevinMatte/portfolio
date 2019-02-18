@@ -1,10 +1,11 @@
 import React, {Component} from 'react';
 // noinspection ES6CheckImport
 import PropTypes from 'prop-types';
-import Session from "./redux/actions/session";
 import {connect} from "react-redux";
 import Button from "@material-ui/core/Button";
 import TextField from "@material-ui/core/TextField";
+import Session from "./redux/actions/session";
+import Messages from "./redux/actions/messages";
 
 class Register extends Component {
     constructor(props) {
@@ -12,13 +13,21 @@ class Register extends Component {
 
         this.state = {
             username: "",
+            email: "",
             password: "",
             password2: "",
+            password2Message: null,
         };
     }
 
     handleSubmit = () => {
-        this.props.sessionRegister(this.state.username, this.state.password);
+        if (this.state.password !== this.state.password2)
+            this.setState({password2Message: "Passwords don't match"});
+        else {
+            this.setState({password2Message: null});
+            this.props.removeMessagesByField("register/");
+            this.props.sessionRegister(this.state.email, this.state.username, this.state.password);
+        }
     };
 
     handleTextChange = (event) => {
@@ -26,8 +35,23 @@ class Register extends Component {
     };
 
     render() {
+        let {emailMessage, userIdMessage, passwordMessage} = this.props;
+        let password2Message = this.state.password2Message
         return (
             <div className="flexVDisplay">
+                <div className="flexFixed">
+                    <TextField
+                        required
+                        name="email"
+                        id="standard-email-required"
+                        label="Email"
+                        margin="normal"
+                        onChange={event => this.handleTextChange(event)}
+                        value={this.state.email}
+                        helperText={emailMessage}
+                        error={!!emailMessage}
+                    />
+                </div>
                 <div className="flexFixed">
                     <TextField
                         required
@@ -37,6 +61,8 @@ class Register extends Component {
                         margin="normal"
                         onChange={event => this.handleTextChange(event)}
                         value={this.state.username}
+                        helperText={userIdMessage}
+                        error={!!userIdMessage}
                     />
                 </div>
                 <div className="flexFixed">
@@ -49,6 +75,8 @@ class Register extends Component {
                         margin="normal"
                         onChange={event => this.handleTextChange(event)}
                         value={this.state.password}
+                        helperText={passwordMessage}
+                        error={!!passwordMessage}
                     />
                 </div>
                 <div className="flexFixed">
@@ -61,6 +89,8 @@ class Register extends Component {
                         margin="normal"
                         onChange={event => this.handleTextChange(event)}
                         value={this.state.password2}
+                        helperText={password2Message}
+                        error={!!password2Message}
                     />
                 </div>
                 <div className="flexFixed">
@@ -75,11 +105,25 @@ class Register extends Component {
 
 Register.propTypes = {
     sessionRegister: PropTypes.func.isRequired,
+    userIdMessage: PropTypes.string,
+    emailMessage: PropTypes.string,
+    passwordMessage: PropTypes.string,
 };
 
-const mapDispatchToProps = {sessionRegister: Session.register};
+const mapStateToProps = (state /*, ownProps*/) => {
+    return {
+        emailMessage: Messages.getMessage(state.messages.messageByField['register/email']),
+        userIdMessage: Messages.getMessage(state.messages.messageByField['register/userid']),
+        passwordMessage: Messages.getMessage(state.messages.messageByField['register/password']),
+    }
+};
+
+const mapDispatchToProps = {
+    sessionRegister: Session.register,
+    removeMessagesByField: Messages.removeByField,
+};
 
 export default connect(
-    null,
+    mapStateToProps,
     mapDispatchToProps
 )(Register)

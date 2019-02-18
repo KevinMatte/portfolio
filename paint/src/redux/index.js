@@ -3,10 +3,12 @@ import {createStore, applyMiddleware, compose} from 'redux';
 import {combineReducers} from "redux";
 import Options from './actions/options';
 import Session from './actions/session';
+import Messages from './actions/messages';
 
 var rootReducer = combineReducers({
     session: Session.reducer,
     options: Options.reducer,
+    messages: Messages.reducer,
 });
 
 

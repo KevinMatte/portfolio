@@ -1,5 +1,5 @@
 // import $ from 'jquery';
-// import React from 'react';
+import React from 'react';
 
 export const ID_TOKEN_KEY = 'sessionid_token';
 
@@ -62,6 +62,23 @@ export function replaceMatchPathWithParameters(match) {
     return path;
 }
 
+export function renderText(text) {
+    let lines;
+    if (Array.isArray(text))
+        lines = text.map(line => line.trimEnd());
+    else if (text instanceof Response) {
+        lines = [`${text.status}: ${text.statusText}`]
+    } else
+        lines = (text || "").trimEnd().split("\n");
+    return lines.map((line, idx) => <pre key={"key_" + idx}>{line}</pre>);
+}
+
+export function filterObject(obj, predicate) {
+    return Object.keys(obj)
+          .filter( key => predicate(obj[key]) )
+          .reduce( (res, key) => {res[key] = obj[key]; return res}, {} );
+}
+
 
 function getIdToken() {
     return sessionStorage.getItem(ID_TOKEN_KEY);
@@ -98,7 +115,7 @@ export function apiPost(url, postData = {}) {
         if (response.ok)
             return Promise.all([response, response.json()]);
         else
-            return Promise.all([response, undefined]);
+            return Promise.reject(response);
     }).then(([response2, data]) => {
         if (response2.ok) {
             return data;

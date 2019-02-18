@@ -33,7 +33,6 @@ else:
     ROOT_URL = '/'
 
 
-
 # from app import app as application
 # application.root_path = PROJ_DIR
 
@@ -103,7 +102,6 @@ class RequestParameters:
         return parameters
 
 
-
 def json_response(status, obj):
     contents = json.dumps({'status': status, 'result': obj})
     return Response(contents, mimetype="application/json")
@@ -138,6 +136,7 @@ APP = Flask(
 )
 application = APP
 
+
 # if __name__ == '__main__':
 #     @APP.route('/')
 #     def redirect_to_paint():
@@ -157,10 +156,12 @@ def ui_root(filename):
     """Displays the root UI."""
     return send_build(filename)
 
+
 @APP.route(ROOT_URL)
 def ui_root1():
     """Displays the root UI."""
     return send_build()
+
 
 def send_build(filename="index.html"):
     if filename.startswith('api/'):
@@ -186,6 +187,7 @@ def login():
     status, result = User.login(email, user_id, password)
     return json_response(status, result)
 
+
 @APP.route(ROOT_URL + 'api/register', methods=['POST'])
 def register():
     parms = RequestParameters()
@@ -194,14 +196,39 @@ def register():
     password = parms.get_parameter('password')
     name = parms.get_parameter('name')
 
-    if (not email and not user_id) or not password:
-        raise BadRequest()
+    messages = []
+    if not email:
+        messages.append({
+            'field': 'register/email',
+            'message': f'Email Required',
+        })
+    else:
+        import re
+        if not re.match('\S+@\S+', email):
+            messages.append({
+                'field': 'register/email',
+                'message': f'Invalid Email address: {email}',
+            })
+
+    if not user_id:
+        messages.append({
+            'field': 'register/userid',
+            'message': f'UserID Required',
+        })
+    if not password:
+        messages.append({
+            'field': 'register/password',
+            'message': f'Password Required',
+        })
+
+    if messages:
+        return json_response('failure', messages)
 
     status, result = User.register(email=email, user_id=user_id, password=password, name=name)
     return json_response(status, result)
 
+
 @APP.route(ROOT_URL + 'api/logout', methods=['POST'])
-@requires_auth
 def logout():
     return json_response('success', 'Done')
 
@@ -256,6 +283,7 @@ def table_update(table, row_id):
     else:
         raise NotFound(f'Unknown table: {table}')
 
+
 @APP.route(ROOT_URL + 'api/table/<table>/<int:row_id>', methods=['PUT'])
 @requires_auth
 def table_delete(table, row_id):
@@ -265,6 +293,7 @@ def table_delete(table, row_id):
             return json_response(STATUS_SUCCESS, table.delete(row_id))
     else:
         raise NotFound(f'Unknown table: {table}')
+
 
 @APP.route(ROOT_URL + 'api/info', methods=['GET', 'POST'])
 @requires_auth

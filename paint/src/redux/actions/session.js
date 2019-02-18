@@ -7,28 +7,21 @@
  */
 
 import {apiPost, ID_TOKEN_KEY} from "../../general/Utils";
+import Messages from './messages';
 
 export default class Session {
-
-    static SESSION_REGISTER = "SESSION_REGISTER";
-    static SESSION_LOGIN = "SESSION_LOGIN";
-    static SESSION_LOGOUT = "SESSION_LOGOUT";
-    static SESSION_MESSAGE = "SESSION_MESSAGE";
-    static SESSION_MESSAGE_REMOVE = "SESSION_MESSAGE_REMOVE";
 
     static initialState =  {
         sessionId: sessionStorage.getItem(ID_TOKEN_KEY),
         permissions: [],
         title: "Kevin Matte's Portfolio",
-        messages: [],
-        messageId: 0,
     };
 
 
-
-    static register(user, password) {
+    static SESSION_REGISTER = "SESSION_REGISTER";
+    static register(email, user, password) {
         return dispatch => {
-            return apiPost('register', {user: user, password}).then(({status, result}) => {
+            return apiPost('register', {email, user, password}).then(({status, result}) => {
                 if (status === "success") {
                     sessionStorage.setItem(ID_TOKEN_KEY, result);
                     dispatch({
@@ -38,7 +31,7 @@ export default class Session {
                         }
                     });
                 } else {
-                    dispatch(Session.message('failed', result));
+                    dispatch(Messages.add(status, result));
                 }
             });
         }
@@ -51,6 +44,7 @@ export default class Session {
         };
     }
 
+    static SESSION_LOGIN = "SESSION_LOGIN";
     static login(user, password) {
         return dispatch => {
             return apiPost('login', {user: user, password}).then(({status, result}) => {
@@ -63,7 +57,7 @@ export default class Session {
                         }
                     });
                 } else {
-                    dispatch(Session.message('failed', result));
+                    dispatch(Messages.add(status, result));
                 }
             });
         }
@@ -76,6 +70,7 @@ export default class Session {
         };
     }
 
+    static SESSION_LOGOUT = "SESSION_LOGOUT";
     static logout() {
         return dispatch => {
             return apiPost('logout').then(({status, result}) => {
@@ -89,7 +84,7 @@ export default class Session {
                     dispatch({
                         type: Session.SESSION_LOGOUT,
                     });
-                    dispatch(Session.message('failed', result));
+                    dispatch(Messages.add(status, result));
                 }
             });
 
@@ -98,42 +93,6 @@ export default class Session {
 
     static logoutReducer(/* session, action */) {
         return {...Session.initialState, sessionId: null};
-    }
-
-    static message(status, message) {
-        return {
-            type: Session.SESSION_MESSAGE,
-            message,
-            status,
-        };
-    }
-
-    static messageReducer(session, action) {
-        let messageId = session.messageId + 1;
-        let newMessage = {
-            messageId: messageId,
-            message: action.message,
-            status: action.status
-        };
-        return {
-            ...session,
-            messageId,
-            messages: Array.of(...session.messages, newMessage)
-        }
-    }
-
-    static messageRemove(messageId) {
-        return {
-            type: Session.SESSION_MESSAGE_REMOVE,
-            messageId,
-        };
-    }
-
-    static messageRemoveReducer(session, action) {
-        return {
-            ...session,
-            messages: session.messages.filter(message => message.messageId !== action.messageId)
-        };
     }
 
     static reducer(session = Session.initialState, action) {
@@ -146,12 +105,6 @@ export default class Session {
 
             case Session.SESSION_LOGOUT:
                 return Session.logoutReducer(session, action);
-
-            case Session.SESSION_MESSAGE:
-                return Session.messageReducer(session, action);
-
-            case Session.SESSION_MESSAGE_REMOVE:
-                return Session.messageRemoveReducer(session, action);
 
             default:
                 return session;
