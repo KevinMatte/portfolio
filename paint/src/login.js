@@ -5,6 +5,7 @@ import Session from "./redux/actions/session";
 import {connect} from "react-redux";
 import Button from "@material-ui/core/Button";
 import TextField from "@material-ui/core/TextField";
+import Messages from "./redux/actions/messages";
 
 class Login extends Component {
     constructor(props) {
@@ -25,6 +26,7 @@ class Login extends Component {
     };
 
     render() {
+        let {userIdMessage, passwordMessage} = this.props;
         return (
             <div className="flexVDisplay">
                 <div className="flexFixed">
@@ -36,6 +38,8 @@ class Login extends Component {
                         margin="normal"
                         onChange={event => this.handleTextChange(event)}
                         value={this.state.username}
+                        helperText={userIdMessage}
+                        error={!!userIdMessage}
                     />
                 </div>
                 <div className="flexFixed">
@@ -48,6 +52,8 @@ class Login extends Component {
                         margin="normal"
                         onChange={event => this.handleTextChange(event)}
                         value={this.state.password}
+                        helperText={passwordMessage}
+                        error={!!passwordMessage}
                     />
                 </div>
                 <div className="flexFixed">
@@ -64,9 +70,18 @@ Login.propTypes = {
     sessionLogin: PropTypes.func.isRequired,
 };
 
-const mapDispatchToProps = {sessionLogin: Session.login};
+const mapStateToProps = (state /*, ownProps*/) => {
+    return {
+        userIdMessage: Messages.getMessage(state.messages.messageByField['login/userid']),
+        passwordMessage: Messages.getMessage(state.messages.messageByField['login/password']),
+    }
+};
+
+const mapDispatchToProps = {
+    sessionLogin: Session.login,
+};
 
 export default connect(
-    null,
+    mapStateToProps,
     mapDispatchToProps
 )(Login)

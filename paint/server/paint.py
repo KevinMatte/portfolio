@@ -181,8 +181,21 @@ def login():
     email = parms.get_parameter('email')
     password = parms.get_parameter('password')
 
-    if (not email and not user_id) or not password:
-        raise BadRequest()
+    messages = []
+    if not email and not user_id:
+        messages.append({
+            'field': 'login/email',
+            'message': f'Email or User ID Required',
+        })
+
+    if not password:
+        messages.append({
+            'field': 'login/password',
+            'message': f'Password Required',
+        })
+
+    if messages:
+        return json_response('failure', messages)
 
     status, result = User.login(email, user_id, password)
     return json_response(status, result)

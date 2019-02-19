@@ -15,8 +15,8 @@ class User(Table):
         super(User, self).__init__(
             self.table_name,
             {
-                'id':int,
-                'userid':str,
+                'id': int,
+                'userid': str,
                 'name': str,
                 'email': str,
                 'password': 'password',
@@ -59,14 +59,23 @@ class User(Table):
                 users = None
 
             if not users:
-                return 'failure', 'Authentication failed.'
+                return 'failure', {
+                    'field': 'login/userid',
+                    'message': 'No such user.',
+                }
             user = users[0]
 
             try:
                 if not bcrypt.checkpw(password, user['password']):
-                    return 'failure', 'Authentication failed.'
+                    return 'failure', {
+                        'field': 'login/password',
+                        'message': 'Authentication failed.',
+                    }
             except:
-                return 'failure', 'Authentication failed.'
+                return 'failure', {
+                    'field': 'login/password',
+                    'message': 'Internal error',
+                }
 
         token = cls.create_auth_token(user)
 

@@ -11,7 +11,7 @@ import Messages from './messages';
 
 export default class Session {
 
-    static initialState =  {
+    static initialState = {
         sessionId: sessionStorage.getItem(ID_TOKEN_KEY),
         permissions: [],
         title: "Kevin Matte's Portfolio",
@@ -19,8 +19,10 @@ export default class Session {
 
 
     static SESSION_REGISTER = "SESSION_REGISTER";
+
     static register(email, user, password) {
         return dispatch => {
+            dispatch(Messages.removeByField('register/'));
             return apiPost('register', {email, user, password}).then(({status, result}) => {
                 if (status === "success") {
                     sessionStorage.setItem(ID_TOKEN_KEY, result);
@@ -45,8 +47,10 @@ export default class Session {
     }
 
     static SESSION_LOGIN = "SESSION_LOGIN";
+
     static login(user, password) {
         return dispatch => {
+            dispatch(Messages.removeByField("login/"));
             return apiPost('login', {user: user, password}).then(({status, result}) => {
                 if (status === "success") {
                     sessionStorage.setItem(ID_TOKEN_KEY, result);
@@ -71,6 +75,7 @@ export default class Session {
     }
 
     static SESSION_LOGOUT = "SESSION_LOGOUT";
+
     static logout() {
         return dispatch => {
             return apiPost('logout').then(({status, result}) => {

@@ -25,7 +25,6 @@ class Register extends Component {
             this.setState({password2Message: "Passwords don't match"});
         else {
             this.setState({password2Message: null});
-            this.props.removeMessagesByField("register/");
             this.props.sessionRegister(this.state.email, this.state.username, this.state.password);
         }
     };
@@ -120,7 +119,6 @@ const mapStateToProps = (state /*, ownProps*/) => {
 
 const mapDispatchToProps = {
     sessionRegister: Session.register,
-    removeMessagesByField: Messages.removeByField,
 };
 
 export default connect(
