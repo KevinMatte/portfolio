@@ -4,8 +4,8 @@ import PropTypes from 'prop-types';
 import {connect} from "react-redux";
 import Button from "@material-ui/core/Button";
 import TextField from "@material-ui/core/TextField";
-import Session from "./redux/actions/session";
-import Messages from "./redux/actions/messages";
+import Session from "../redux/actions/session";
+import Messages from "../redux/actions/messages";
 
 class Register extends Component {
     constructor(props) {

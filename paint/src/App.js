@@ -21,8 +21,8 @@ import {createStyles, withStyles, createMuiTheme, MuiThemeProvider} from '@mater
 
 import './styles.css'
 import './App.css';
-import Register from "./register";
-import Login from './login';
+import Register from "./session/register";
+import Login from './session/login';
 import Session from "./redux/actions/session";
 import Options from "./redux/actions/options";
 import Messages from './redux/actions/messages';
