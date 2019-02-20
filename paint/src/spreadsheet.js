@@ -1,3 +1,7 @@
+/* Copyright (C) 2019 Kevin Matte - All Rights Reserved */
+
+/* Copyright (C) 2019 Kevin Matte - All Rights Reserved */
+
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
 import {connect} from "react-redux";
@@ -7,6 +11,28 @@ class Spreadsheet extends Component {
 
     constructor(props) {
         super(props);
+
+        this.spreadsheetStyle = {
+            display: "grid",
+            gridGap: "10px",
+            position: "absolute",
+        };
+
+        this.headerStyle = {
+            border: "2px solid rgb(233,171,88)",
+            borderRadius: "5px",
+            backgroundColor: "rgba(233,171,88,.125)",
+            padding: "1em",
+            color: "#3F3AD9",
+        };
+        this.cellStyle = {
+            border: "2px solid rgb(233,171,88)",
+            borderRadius: "5px",
+            backgroundColor: "rgba(233,171,88,.125)",
+            padding: "1em",
+            color: "#d9480f",
+        };
+
 
         this.state = {
             spreadsheet: this.createSpreadsheet(props),
@@ -39,7 +65,13 @@ class Spreadsheet extends Component {
             }
         });
         spreadsheet.numColumns = Math.max(spreadsheet.numColumns, type.columns.length);
-        spreadsheet.types[typeName] = true;
+        if (!spreadsheet.sheetsByName.hasOwnProperty(typeName)) {
+            spreadsheet.sheetsByName[typeName] = {
+                typeName,
+                type,
+            };
+            spreadsheet.typeNames.push(typeName);
+        }
         spreadsheet.rows.push({
             typeName,
             columns,
@@ -65,55 +97,94 @@ class Spreadsheet extends Component {
 
     createSpreadsheet(props) {
         let spreadsheet = {
-            types: {},
+            sheetsByName: {},
+            typeNames: [],
             rows: [],
             numColumns: 0,
+            columns: [],
         };
         this.createRows(this.props, spreadsheet, this.props.drawings);
+
+        spreadsheet.typeNames.every((typeName => {
+            let sheet = spreadsheet.sheetsByName[typeName];
+            sheet.style = {
+                ...this.spreadsheetStyle,
+                gridTemplateColumns: `repeat(${spreadsheet.numColumns}, 150px)`,
+                gridTemplateRows: `repeat(${spreadsheet.rows.length}, 50px)`,
+            };
+            return sheet;
+        }));
+
         return spreadsheet;
     }
 
     render() {
-        let cellStyle = {
-            border: "2px solid rgb(233,171,88)",
-            borderRadius: "5px",
-            backgroundColor: "rgba(233,171,88,.125)",
-            padding: "1em",
-            color: "#d9480f",
-        };
-        let {spreadsheet} = this.state;
-
-        let spreadsheetStyle = {
-            display: "grid",
-            gridTemplateColumns: `repeat(${spreadsheet.numColumns}, 150px)`,
-            gridGap: "10px",
-            gridTemplateRows: `repeat(${spreadsheet.rows.length}, 50px)`,
-        };
-        let iCell = 0;
-        let iRow = 0;
+        let iSheet = 0;
 
         return (
             <div className="flexVDisplay max_size">
-                <div className="flexVStretched" style={{display: "grid"}}>
-                    <div style={spreadsheetStyle}>
-                        {this.state.spreadsheet.rows.reduce((rows, row) => {
-                            let iCol = 0;
-                            iRow++;
-                            row.columns.every((column) => {
-                                let style = Object.assign({}, cellStyle, {gridRow: iRow, gridColumn: ++iCol});
-                                return rows.push((
-                                    <div key={++iCell} style={style}>
-                                        {column}
-                                    </div>
-                                ));
-                            });
-                            return rows;
-                        }, [])}
-                    </div>
+                <div className="flexVStretched" style={{position: "relative"}}>
+                    {this.state.spreadsheet.typeNames.map(typeName => {
+                        return this.renderSheet(++iSheet, typeName);
+                    })}
                 </div>
                 <div className="flexFixed">Controls</div>
             </div>
         );
+    }
+
+    renderSheet(iSheet, typeName) {
+        let iCell = 0;
+        let spreadsheet = this.state.spreadsheet;
+        let sheet = spreadsheet.sheetsByName[typeName];
+
+        let cells = [];
+
+        let iCol = 0;
+        let style = Object.assign({}, this.headerStyle, {gridRow: iSheet, gridColumn: ++iCol});
+        cells.push((
+            <div key={++iCell} style={style}>
+                {typeName}
+            </div>
+        ));
+
+        sheet.style.gridTemplateColumns = "150px " + sheet.type.columns.map(col => col.width).join(" ");
+        sheet.type.columns.every((column) => {
+            let style = Object.assign({}, this.headerStyle, {gridRow: iSheet, gridColumn: ++iCol});
+            return cells.push((
+                <div key={++iCell} style={style}>
+                    {column.label}
+                </div>
+            ));
+        });
+
+        let iRow = spreadsheet.typeNames.length;
+        spreadsheet.rows.every(row => {
+            let iCol = 0;
+            iRow++;
+            if (row.typeName === typeName) {
+                let style = Object.assign({}, this.headerStyle, {gridRow: iRow, gridColumn: ++iCol});
+                cells.push((
+                    <div key={++iCell} style={style}>
+                        {typeName}
+                    </div>
+                ));
+
+                row.columns.every((column) => {
+                    let style = Object.assign({}, this.cellStyle, {gridRow: iRow, gridColumn: ++iCol});
+                    return cells.push((
+                        <div key={++iCell} style={style}>
+                            {column}
+                        </div>
+                    ));
+                });
+            }
+            return cells;
+        });
+
+        return <div key={typeName} style={sheet.style}>
+            {cells}
+        </div>;
     }
 }
 
