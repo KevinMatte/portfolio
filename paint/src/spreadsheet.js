@@ -72,6 +72,8 @@ class Spreadsheet extends Component {
         if (!type)
             return;
 
+        let sheetName = indent === 0 ? typeName : `${typeName}_${indent}`;
+
         let columns = type.columns.map(column => {
             let {field} = column;
             if (Array.isArray(field)) {
@@ -83,15 +85,17 @@ class Spreadsheet extends Component {
             }
         });
         spreadsheet.numColumns = Math.max(spreadsheet.numColumns, type.columns.length);
-        if (!spreadsheet.sheetsByName.hasOwnProperty(typeName)) {
-            spreadsheet.sheetsByName[typeName] = {
+        if (!spreadsheet.sheetsByName.hasOwnProperty(sheetName)) {
+            spreadsheet.sheetsByName[sheetName] = {
                 typeName,
+                rowTypeName: sheetName,
                 type,
             };
-            spreadsheet.typeNames.push(typeName);
+            spreadsheet.sheetNames.push(sheetName);
         }
         spreadsheet.rows.push({
             typeName,
+            sheetName,
             columns,
             indent,
         });
@@ -117,7 +121,7 @@ class Spreadsheet extends Component {
     createSpreadsheet(props) {
         let spreadsheet = {
             sheetsByName: {},
-            typeNames: [],
+            sheetNames: [],
             rows: [],
             numColumns: 0,
             columns: [],
@@ -126,11 +130,11 @@ class Spreadsheet extends Component {
 
         let allSheetsStyle = {
             gridTemplateColumns: `repeat(${spreadsheet.numColumns}, 150px)`,
-            gridTemplateRows: `repeat(${spreadsheet.rows.length + spreadsheet.typeNames.length}, ${this.rowHeight}px)`,
+            gridTemplateRows: `repeat(${spreadsheet.rows.length + 1}, ${this.rowHeight}px)`,
         };
 
-        spreadsheet.typeNames.every((typeName => {
-            let sheet = spreadsheet.sheetsByName[typeName];
+        spreadsheet.sheetNames.every((sheetName => {
+            let sheet = spreadsheet.sheetsByName[sheetName];
             sheet.style = Object.assign({}, allSheetsStyle, this.sheetStyle);
             return sheet;
         }));
@@ -139,8 +143,6 @@ class Spreadsheet extends Component {
     }
 
     render() {
-        let iSheet = 0;
-
         return (
             <div className="flexVDisplay max_size">
                 <div
@@ -148,8 +150,8 @@ class Spreadsheet extends Component {
                     className="flexVStretched"
                     style={{position: "relative"}}
                 >
-                    {this.state.spreadsheet.typeNames.map(typeName => {
-                        return this.renderSheet(iSheet, typeName);
+                    {this.state.spreadsheet.sheetNames.map(sheetName => {
+                        return this.renderSheet(sheetName);
                     })}
                 </div>
                 <div className="flexFixed">Controls</div>
@@ -157,24 +159,24 @@ class Spreadsheet extends Component {
         );
     }
 
-    handleHover = (typeName) => this.setState({hoverType: typeName});
+    handleHover = (sheetName) => this.setState({hoverType: sheetName});
 
-    renderSheet(iSheet, typeName) {
+    renderSheet(sheetName) {
         let iCell = 0;
         let spreadsheet = this.state.spreadsheet;
-        let sheet = spreadsheet.sheetsByName[typeName];
+        let sheet = spreadsheet.sheetsByName[sheetName];
         let sheetStyle = {...sheet.style};
 
         let cells = [];
 
         let iCol = 0;
         let {hoverType} = this.state;
-        let showHeader = typeName === hoverType || (!hoverType && iSheet === 0);
+        let showHeader = sheetName === hoverType || (!hoverType && spreadsheet.sheetNames[0] === sheetName);
         if (showHeader) {
             let style = Object.assign({}, this.rowHeaderStyle, {gridRow: 1, gridColumn: ++iCol});
             cells.push((
                 <div key={++iCell} style={style}>
-                    {typeName}
+                    {sheet.typeName}
                 </div>
             ));
             ++iCol; // Grid
@@ -203,11 +205,11 @@ class Spreadsheet extends Component {
         spreadsheet.rows.every(row => {
             let iCol = 0;
             iRow++;
-            if (row.typeName === typeName) {
+            if (row.sheetName === sheetName) {
                 let style = {...this.rowHeaderStyle, gridRow: iRow, gridColumn: ++iCol};
                 cells.push((
                     <div key={++iCell} style={style}>
-                        {typeName}
+                        {sheet.typeName}
                     </div>
                 ));
                 ++iCol; // Skip grid
@@ -220,7 +222,7 @@ class Spreadsheet extends Component {
                             key={++iCell}
                             style={style}
                             className="Cell yellowOnHover"
-                            onMouseOver={() => this.handleHover(typeName)}
+                            onMouseOver={() => this.handleHover(sheetName)}
                         >
                             {column}
                         </div>
@@ -230,7 +232,7 @@ class Spreadsheet extends Component {
             return cells;
         });
 
-        return <div id={typeName} key={typeName} style={sheetStyle} className="Spreadsheet">
+        return <div id={sheetName} key={sheetName} style={sheetStyle} className="Spreadsheet">
             {cells}
         </div>;
     }
