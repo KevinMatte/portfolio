@@ -47,9 +47,12 @@ class Spreadsheet extends Component {
         };
         this.indentPixels = 30;
         this.headerColumnWidth = 150;
+        this.rowHeight = 50;
+        this.gridWidth = "5px";
 
 
         this.state = {
+            hoverType: null,
             spreadsheet: this.createSpreadsheet(props),
         }
     }
@@ -123,15 +126,12 @@ class Spreadsheet extends Component {
 
         let allSheetsStyle = {
             gridTemplateColumns: `repeat(${spreadsheet.numColumns}, 150px)`,
-            gridTemplateRows: `repeat(${spreadsheet.rows.length + spreadsheet.typeNames.length}, 50px)`,
+            gridTemplateRows: `repeat(${spreadsheet.rows.length + spreadsheet.typeNames.length}, ${this.rowHeight}px)`,
         };
 
         spreadsheet.typeNames.every((typeName => {
             let sheet = spreadsheet.sheetsByName[typeName];
-            sheet.style = {
-                ...allSheetsStyle,
-                ...this.sheetStyle,
-            };
+            sheet.style = Object.assign({}, allSheetsStyle, this.sheetStyle);
             return sheet;
         }));
 
@@ -149,7 +149,7 @@ class Spreadsheet extends Component {
                     style={{position: "relative"}}
                 >
                     {this.state.spreadsheet.typeNames.map(typeName => {
-                        return this.renderSheet(++iSheet, typeName);
+                        return this.renderSheet(iSheet, typeName);
                     })}
                 </div>
                 <div className="flexFixed">Controls</div>
@@ -157,32 +157,49 @@ class Spreadsheet extends Component {
         );
     }
 
+    handleHover = (typeName) => this.setState({hoverType: typeName});
+
     renderSheet(iSheet, typeName) {
         let iCell = 0;
         let spreadsheet = this.state.spreadsheet;
         let sheet = spreadsheet.sheetsByName[typeName];
+        let sheetStyle = {...sheet.style};
 
         let cells = [];
 
         let iCol = 0;
-        let style = {...this.rowHeaderStyle, gridRow: iSheet, gridColumn: ++iCol};
-        cells.push((
-            <div key={++iCell} style={style}>
-                {typeName}
-            </div>
-        ));
-
-        sheet.style.gridTemplateColumns = `${this.headerColumnWidth}px ` + sheet.type.columns.map(col => col.width).join(" ");
-        sheet.type.columns.every((column) => {
-            let style = {...this.columnHeaderStyle, gridRow: iSheet, gridColumn: ++iCol};
-            return cells.push((
+        let {hoverType} = this.state;
+        let showHeader = typeName === hoverType || (!hoverType && iSheet === 0);
+        if (showHeader) {
+            let style = Object.assign({}, this.rowHeaderStyle, {gridRow: 1, gridColumn: ++iCol});
+            cells.push((
                 <div key={++iCell} style={style}>
-                    {column.label}
+                    {typeName}
                 </div>
             ));
-        });
+            ++iCol; // Grid
+        }
 
-        let iRow = spreadsheet.typeNames.length;
+        let widths = sheet.type.columns.reduce((dest, col) => {
+            dest.push(this.gridWidth, col.width);
+            return dest;
+        }, []);
+        sheetStyle.gridTemplateColumns = `${this.headerColumnWidth}px ` + widths.join(" ");
+
+        // Render header
+        if (showHeader) {
+            sheet.type.columns.every((column) => {
+                let style = {...this.columnHeaderStyle, gridRow: 1, gridColumn: ++iCol};
+                ++iCol; // Grid
+                return cells.push((
+                    <div key={++iCell} style={style}>
+                        {column.label}
+                    </div>
+                ));
+            });
+        }
+
+        let iRow = 1;
         spreadsheet.rows.every(row => {
             let iCol = 0;
             iRow++;
@@ -193,14 +210,17 @@ class Spreadsheet extends Component {
                         {typeName}
                     </div>
                 ));
+                ++iCol; // Skip grid
 
                 row.columns.every((column) => {
                     let style = {...this.valueStyle, gridRow: iRow, gridColumn: ++iCol};
+                    iCol++; // Skip grid
                     return cells.push((
                         <div
                             key={++iCell}
                             style={style}
                             className="Cell yellowOnHover"
+                            onMouseOver={() => this.handleHover(typeName)}
                         >
                             {column}
                         </div>
@@ -210,7 +230,7 @@ class Spreadsheet extends Component {
             return cells;
         });
 
-        return <div id={typeName} key={typeName} style={sheet.style} className="Spreadsheet">
+        return <div id={typeName} key={typeName} style={sheetStyle} className="Spreadsheet">
             {cells}
         </div>;
     }
