@@ -1,3 +1,5 @@
+/* Copyright (C) 2019 Kevin Matte - All Rights Reserved */
+
 export default class Drawing {
     static ADD_GRAPH = "ADD_GRAPH";
 
@@ -5,23 +7,23 @@ export default class Drawing {
         types: {
             drawing: {
                 columns: [
-                    {label: 'Name', width: '50px', field: 'name'},
-                    {label: 'Type', width: '50px', field: 'type'},
+                    {label: 'Name', width: '150px', field: 'name'},
+                    {label: 'Type', width: '150px', field: 'type'},
                 ]
             },
             graph: {
                 columns: [
-                    {label: 'Name', width: '50px', field: 'name'},
-                    {label: 'Type', width: '50px', field: 'type'},
+                    {label: 'Name', width: '160px', field: 'name'},
+                    {label: 'Type', width: '160px', field: 'type'},
                 ]
             },
             vector3: {
                 columns: [
-                    {label: 'Name', width: '50px', field: 'name'},
-                    {label: 'Type', width: '50px', field: 'type'},
-                    {label: 'X', width: '50px', field: ['axis', 0]},
-                    {label: 'Y', width: '50px', field: ['axis', 1]},
-                    {label: 'Z', width: '50px', field: ['axis', 2]},
+                    {label: 'Name', width: '170px', field: 'name'},
+                    {label: 'Type', width: '170px', field: 'type'},
+                    {label: 'X', width: '170px', field: ['axis', 0]},
+                    {label: 'Y', width: '170px', field: ['axis', 1]},
+                    {label: 'Z', width: '170px', field: ['axis', 2]},
                 ]
             },
         },
