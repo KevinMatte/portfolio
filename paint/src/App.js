@@ -29,7 +29,7 @@ import Session from "./redux/actions/session";
 import Options from "./redux/actions/options";
 import Messages from './redux/actions/messages';
 import {renderText} from "./general/Utils";
-import Main from "./spreadsheet";
+import Main from "./treesheet";
 
 /*
 const styles = theme => ({
@@ -247,9 +247,9 @@ class App extends Component {
                         Main App
                     </Link>
                 </MenuItem>
-                <MenuItem onClick={() => this.handleAppMenuClose("Circles")}>
-                    <Link to="/paint/circles">
-                        Circles
+                <MenuItem onClick={() => this.handleAppMenuClose("Treesheet")}>
+                    <Link to="/paint/treesheet">
+                        Treesheet
                     </Link>
                 </MenuItem>
                 <MenuItem>
@@ -317,9 +317,7 @@ class App extends Component {
                             <p>Only the advanced mode and session state are present.</p>
                         </div>
                     )}/>
-                    <Route path="/paint/circles" render={() => (
-                        <h1>Circles</h1>
-                    )}/>
+                    <Route path="/paint/treesheet"  component={this.mainApp}/>
                     <Route path="/paint/about" render={() => (
                         <h1>About</h1>
                     )}/>

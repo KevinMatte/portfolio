@@ -7,7 +7,7 @@ import PropTypes from 'prop-types';
 import {connect} from "react-redux";
 import Drawing from "./redux/actions/drawing";
 
-class Spreadsheet extends Component {
+class Treesheet extends Component {
 
     constructor(props) {
         super(props);
@@ -237,7 +237,7 @@ class Spreadsheet extends Component {
     }
 }
 
-Spreadsheet.propTypes = {
+Treesheet.propTypes = {
     types: PropTypes.object.isRequired,
     drawings: PropTypes.array.isRequired,
     addGraph: PropTypes.func.isRequired,
@@ -257,4 +257,4 @@ const mapDispatchToProps = {
 export default connect(
     mapStateToProps,
     mapDispatchToProps
-)(Spreadsheet)
+)(Treesheet)
