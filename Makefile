@@ -22,4 +22,6 @@ clean:
 
 
 dumpdb:
-	mysqldump -u paint -p paint > /opt/portfolio/files/backup_$$(date +'%Y%m%d_%H%M%S').sql
+	file=/opt/portfolio/files/backup_$$(date +'%Y%m%d_%H%M%S').sql; \
+	mysqldump -u paint -p paint > /opt/portfolio/files/backup_$$(date +'%Y%m%d_%H%M%S').sql; \
+	echo $$file
