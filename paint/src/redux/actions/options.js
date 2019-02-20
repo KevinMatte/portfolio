@@ -1,3 +1,5 @@
+/* Copyright (C) 2019 Kevin Matte - All Rights Reserved */
+
 export default class Options {
     static ADVANCED_MODE_TOGGLE = "ADVANCED_MODE_TOGGLE";
 

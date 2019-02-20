@@ -1,3 +1,5 @@
+/* Copyright (C) 2019 Kevin Matte - All Rights Reserved */
+
 import React, {Component} from 'react';
 // noinspection ES6CheckImport
 import PropTypes from 'prop-types';

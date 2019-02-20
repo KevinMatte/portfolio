@@ -1,3 +1,5 @@
+/* Copyright (C) 2019 Kevin Matte - All Rights Reserved */
+
 import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';

@@ -1,3 +1,5 @@
+# Copyright (C) 2019 Kevin Matte - All Rights Reserved
+
 """A special load of a json file, where dict's are converted to namedtuple's if
 the dict has a 'named_tuple_name' key.
 

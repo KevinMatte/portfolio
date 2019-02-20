@@ -1,3 +1,5 @@
+/* Copyright (C) 2019 Kevin Matte - All Rights Reserved */
+
 /**
  * Normally the contents of this file are placed in three different files, one for the functions for props,
  * one for the action types and one for the reducers.

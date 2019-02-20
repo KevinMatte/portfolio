@@ -1,3 +1,5 @@
+# Copyright (C) 2019 Kevin Matte - All Rights Reserved
+
 from functools import wraps
 
 import jwt

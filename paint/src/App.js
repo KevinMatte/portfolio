@@ -1,3 +1,5 @@
+/* Copyright (C) 2019 Kevin Matte - All Rights Reserved */
+
 import React, {Component} from 'react';
 import {BrowserRouter, Link, Route, Switch, Redirect} from 'react-router-dom';
 import {connect} from 'react-redux'

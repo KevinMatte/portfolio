@@ -1,3 +1,5 @@
+# Copyright (C) 2019 Kevin Matte - All Rights Reserved
+
 """Module for basic logging and application configuration"""
 
 import logging

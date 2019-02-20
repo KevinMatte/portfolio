@@ -1,3 +1,5 @@
+/* Copyright (C) 2019 Kevin Matte - All Rights Reserved */
+
 import thunk from 'redux-thunk';
 import {createStore, applyMiddleware, compose} from 'redux';
 import {combineReducers} from "redux";
