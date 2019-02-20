@@ -323,6 +323,19 @@ h3 {
     background-color: yellow !important;
 }
 
+.selectedCell {
+    background-color: lightgreen !important;
+}
+
+.selectedGrid {
+    background-color: lightgray !important;
+}
+
+.selectedHeader {
+    background-color: yellow !important;
+}
+
+
 .tableTextCell {
     height: 100%;
     user-select: none;
