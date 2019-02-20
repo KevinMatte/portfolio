@@ -3,6 +3,7 @@
 /* Copyright (C) 2019 Kevin Matte - All Rights Reserved */
 
 import React, {Component} from 'react';
+// noinspection ES6CheckImport
 import PropTypes from 'prop-types';
 import {connect} from "react-redux";
 import Drawing from "./redux/actions/drawing";
@@ -13,9 +14,12 @@ class Treesheet extends Component {
         super(props);
 
         this.topDivId = "TopDiv";
-        this.sheetStyle = {
+        this.gridStyle = {
             display: "grid",
             gridGap: "0px",
+        };
+        this.sheetStyle = {
+            ...this.gridStyle,
             position: "absolute",
             pointerEvents: "none",
         };
@@ -59,6 +63,7 @@ class Treesheet extends Component {
         }
     }
 
+    // noinspection JSUnusedLocalSymbols
     componentWillReceiveProps(nextProps, nextContext) {
         this.setState({
             spreadsheet: this.createSpreadsheet(nextProps),
@@ -102,14 +107,14 @@ class Treesheet extends Component {
             columns,
         });
 
-        Object.keys(obj).every(key => {
+        Object.keys(obj).every((key) => {
             let value = obj[key];
             if (Array.isArray(value)) {
                 this.createRows(props, spreadsheet, value, indent + 1);
             } else if (value.hasOwnProperty('table')) {
                 this.createRows(props, spreadsheet, [value], indent + 1);
             }
-            return key;
+            return true;
         });
     }
 
@@ -128,129 +133,204 @@ class Treesheet extends Component {
             numColumns: 0,
             columns: [],
         };
-        this.createRows(this.props, spreadsheet, this.props.drawings);
-
-        let allSheetsStyle = {
-            gridTemplateColumns: `repeat(${spreadsheet.numColumns}, 150px)`,
-            gridTemplateRows: `repeat(${spreadsheet.rows.length + 1}, ${this.rowHeight}px)`,
-        };
-
-        spreadsheet.sheetNames.every((sheetName => {
-            let sheet = spreadsheet.sheetsByName[sheetName];
-            sheet.style = Object.assign({}, allSheetsStyle, this.sheetStyle);
-            return sheet;
-        }));
+        this.createRows(props, spreadsheet, props.drawings);
 
         return spreadsheet;
     }
 
+    verticalSync = () => {
+        let topDiv = document.getElementById(this.topDivId);
+        let pos = topDiv.getElementById("rowHeaders").scrollTop;
+        document.getElementById("table-scroll-employees").scrollTop = pos;
+    };
+
+    horizontalSync = () => {
+        let topDiv = document.getElementById(this.topDivId);
+        let pos = topDiv.getElementById("columnHeaders").scrollLeft;
+        document.getElementById("table-scroll-employees").scrollLeft = pos;
+    };
+
+    renderColRowHeader() {
+        // Render grid header
+        let spreadsheet = this.state.spreadsheet;
+        let sheetName = this.state.selectedSheet || spreadsheet.sheetNames[0];
+        let sheet = spreadsheet.sheetsByName[sheetName];
+        let sheetStyle = {
+            ...this.gridStyle,
+            gridTemplateColumns: `${this.headerColumnWidth}px`,
+            gridTemplateRows: `${this.rowHeight}px`,
+        };
+
+        let style = {
+            ...this.rowHeaderStyle,
+            gridRow: 1,
+            gridColumn: 1,
+        };
+        return (
+            <div id="columnHeaders" key={sheetName} style={sheetStyle} className="Spreadsheet">
+                <div style={style}>{sheet.typeName}</div>
+            </div>);
+    }
+
+    renderColumnHeaders() {
+        // Render grid header
+        let {spreadsheet, selectedSheet, selectedCol} = this.state;
+        let sheet = spreadsheet.sheetsByName[selectedSheet || spreadsheet.sheetNames[0]];
+
+        let cells = [];
+        let iCell = 0;
+        let iCol = 4;
+        sheet.type.columns.every((column, cellCol) => {
+            let style = {...this.columnHeaderStyle, gridRow: 1, gridColumn: iCol++};
+            iCol++; // Grid
+            cells.push((
+                <div key={++iCell} style={style} className={cellCol === selectedCol ? "selectedHeader" : ""}>
+                    {column.label}
+                </div>
+            ));
+            return true;
+        });
+
+        let indentWidth = sheet.indent > 0 ? `${this.gridWidth} ${sheet.indent * this.indentPixels}px` : '0px 0px';
+        let widths = sheet.type.columns.reduce((dest, col) => {
+            dest.push(this.gridWidth, col.width);
+            return dest;
+        }, []);
+        let sheetStyle = {
+            ...this.gridStyle,
+            gridTemplateColumns: `${indentWidth} ` + widths.join(" "),
+            gridTemplateRows: `${this.rowHeight}px`,
+        };
+
+        return (
+            <div id="columnHeaders" style={sheetStyle} className="Spreadsheet">
+                {cells}
+            </div>);
+    }
+
+    renderRowHeaders() {
+        // Render grid div
+
+        let {selectedRow, spreadsheet} = this.state;
+        let sheetStyle = {
+            ...this.gridStyle,
+            gridTemplateColumns: `${this.headerColumnWidth}px`,
+            gridTemplateRows: `repeat(${spreadsheet.rows.length}, ${this.rowHeight}px)`,
+        };
+        let cells = [];
+        let iCell = 0;
+        spreadsheet.rows.every((row, cellRow) => {
+            let sheet = spreadsheet.sheetsByName[row.sheetName];
+            let style = {...this.rowHeaderStyle, gridRow: cellRow + 1, gridColumn: 1};
+            cells.push((
+                <div key={++iCell} style={style} className={cellRow === selectedRow ? "selectedHeader" : ""}>
+                    {sheet.typeName}
+                </div>
+            ));
+            return true;
+        });
+
+        return (
+            <div id="rowHeaders" style={sheetStyle} className="Spreadsheet">
+                {cells}
+            </div>);
+    }
+
     render() {
         return (
-            <div className="flexVDisplay max_size">
-                <div
-                    id={this.topDivId}
-                    className="flexVStretched"
-                    style={{position: "relative"}}
-                >
-                    {this.state.spreadsheet.sheetNames.map(sheetName => {
-                        return this.renderSheet(sheetName);
-                    })}
+            <div
+                id={this.topDivId}
+                className="flexVDisplay max_size">
+                <div className="flexVStretched" style={{
+                    ...this.gridStyle,
+                    gridTemplateColumns: `${this.headerColumnWidth}px 1fr`,
+                    gridTemplateRows: `${this.rowHeight}px 1fr`,
+                }}>
+                    <div style={{gridRow: "1", gridCol: "1"}}>
+                        {this.renderColRowHeader()}
+                    </div>
+                    <div style={{gridRow: "1", gridCol: "2"}}>
+                        {this.renderColumnHeaders()}
+                    </div>
+                    <div style={{gridRow: "2", gridCol: "1"}}>
+                        {this.renderRowHeaders()}
+                    </div>
+                    <div style={{gridRow: "2", gridCol: "2"}}>
+                        {this.renderDataCells()}
+                    </div>
                 </div>
                 <div className="flexFixed">Controls</div>
             </div>
         );
     }
 
-    renderSheet(sheetName) {
-        let {selectedSheet, selectedRow, selectedCol} = this.state;
+    renderDataCells() {
+        let {spreadsheet, selectedSheet, selectedRow, selectedCol} = this.state;
+
+        let cellsBySheet = spreadsheet.sheetNames.reduce((dst, sheetName) => {
+            dst[sheetName] = [];
+            return dst;
+        }, {});
 
         let iCell = 0;
-        let spreadsheet = this.state.spreadsheet;
-        let sheet = spreadsheet.sheetsByName[sheetName];
 
-        let cells = [];
-
-        // Render column header labels
-        let isSelectedSheet = sheetName === selectedSheet || (!selectedSheet && spreadsheet.sheetNames[0] === sheetName);
-        if (isSelectedSheet) {
-            // 1st column
-            let style = Object.assign({}, this.rowHeaderStyle, {gridRow: 1, gridColumn: 1});
-            cells.push((
-                <div key={++iCell} style={style}>
-                    {sheet.typeName}
-                </div>
-            ));
-
-            // column labels
-            let iCol = 5;
-            sheet.type.columns.every((column, cellCol) => {
-                let style = {...this.columnHeaderStyle, gridRow: 1, gridColumn: iCol++};
-                iCol++; // Grid
-                return cells.push((
-                    <div key={++iCell} style={style} className={cellCol === selectedCol ? "selectedHeader" : ""}>
-                        {column.label}
-                    </div>
-                ));
-            });
-        }
-
-        let iRow = 1;
         spreadsheet.rows.every((row, cellRow) => {
-            iRow++;
-            if (row.sheetName === sheetName) {
-                let style = {...this.rowHeaderStyle, gridRow: iRow, gridColumn: 1};
-                cells.push((
-                    <div key={++iCell} style={style} className={cellRow === selectedRow ? "selectedHeader" : ""}>
-                        {sheet.typeName}
-                    </div>
-                ));
-
-                let iCol = 4;
-                row.columns.every((column, cellCol) => {
-                    let hasSelectedCol = selectedCol !== null
-                        && sheetName === selectedSheet
-                        && (selectedCol === cellCol || selectedCol+1 === cellCol);
-                    if (hasSelectedCol) {
-                        cells.push((
+            let sheetName = row.sheetName;
+            let cells = cellsBySheet[row.sheetName];
+            let iCol = 3;
+            row.columns.every((column, cellCol) => {
+                let hasSelectedCol = selectedCol !== null
+                    && sheetName === selectedSheet
+                    && (selectedCol === cellCol || selectedCol + 1 === cellCol);
+                if (hasSelectedCol) {
+                    cells.push((
                         <div
                             key={++iCell}
-                            style={{gridRow: iRow, gridColumn: iCol}}
+                            style={{gridRow: cellRow + 1, gridColumn: iCol}}
                             className="selectedGrid"
                         >
                         </div>));
-                    }
-                    iCol++; // Skip grid
+                }
+                iCol++; // Skip grid
 
-                    let style = {...this.valueStyle, gridRow: iRow, gridColumn: iCol++};
-                    let cellClasses = (cellRow === selectedRow && selectedCol === cellCol) ?
-                        "Cell selectedCell" : "Cell yellowOnHover";
-                    return cells.push((
-                        <div
-                            key={++iCell}
-                            style={style}
-                            className={cellClasses}
-                            onMouseOver={() => this.handleCellHover(sheetName)}
-                            onMouseUp={() => this.handleCellSelect(sheetName, cellRow, cellCol)}
-                        >
-                            {column}
-                        </div>
-                    ));
-                });
-            }
-            return cells;
+                let style = {...this.valueStyle, gridRow: cellRow + 1, gridColumn: iCol++};
+                let cellClasses = (cellRow === selectedRow && selectedCol === cellCol) ?
+                    "Cell selectedCell" : "Cell yellowOnHover";
+                cells.push((
+                    <div
+                        key={++iCell}
+                        style={style}
+                        className={cellClasses}
+                        onMouseOver={() => this.handleCellHover(sheetName)}
+                        onMouseUp={() => this.handleCellSelect(sheetName, cellRow, cellCol)}
+                    >
+                        {column}
+                    </div>
+                ));
+                return true;
+            });
+            return true;
         });
 
-        // Render grid div
-        let widths = sheet.type.columns.reduce((dest, col) => {
-            dest.push(this.gridWidth, col.width);
-            return dest;
-        }, []);
-        let indentWidth = sheet.indent > 0 ? `${this.gridWidth} ${sheet.indent * this.indentPixels}px` : '0px 0px';
-        let sheetStyle = {...sheet.style};
-        sheetStyle.gridTemplateColumns = `${this.headerColumnWidth}px ${indentWidth} ` + widths.join(" ");
-        return <div id={sheetName} key={sheetName} style={sheetStyle} className="Spreadsheet">
-            {cells}
-        </div>;
+        return spreadsheet.sheetNames.filter(sheetName => cellsBySheet[sheetName].length > 0).map(sheetName => {
+            let sheet = spreadsheet.sheetsByName[sheetName];
+            // Render grid div
+            let widths = sheet.type.columns.reduce((dest, col) => {
+                dest.push(this.gridWidth, col.width);
+                return dest;
+            }, []);
+            let indentWidth = sheet.indent > 0 ? `${this.gridWidth} ${sheet.indent * this.indentPixels}px` : '0px 0px';
+            let sheetStyle = {
+                ...this.sheetStyle,
+                gridTemplateRows: `repeat(${spreadsheet.rows.length}, ${this.rowHeight}px)`,
+                gridTemplateColumns: `${indentWidth} ` + widths.join(" "),
+            };
+
+            return (
+                <div id={sheetName} key={sheetName} style={sheetStyle} className="Spreadsheet">
+                    {cellsBySheet[sheetName]}
+                </div>);
+        });
     }
 
     handleCellSelect(sheetName, cellRow, cellCol) {
