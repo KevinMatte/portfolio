@@ -88,7 +88,8 @@ class Spreadsheet extends Component {
         if (!spreadsheet.sheetsByName.hasOwnProperty(sheetName)) {
             spreadsheet.sheetsByName[sheetName] = {
                 typeName,
-                rowTypeName: sheetName,
+                sheetName,
+                indent,
                 type,
             };
             spreadsheet.sheetNames.push(sheetName);
@@ -97,7 +98,6 @@ class Spreadsheet extends Component {
             typeName,
             sheetName,
             columns,
-            indent,
         });
 
         Object.keys(obj).every(key => {
@@ -169,30 +169,30 @@ class Spreadsheet extends Component {
 
         let cells = [];
 
-        let iCol = 0;
         let {hoverType} = this.state;
         let showHeader = sheetName === hoverType || (!hoverType && spreadsheet.sheetNames[0] === sheetName);
         if (showHeader) {
-            let style = Object.assign({}, this.rowHeaderStyle, {gridRow: 1, gridColumn: ++iCol});
+            let style = Object.assign({}, this.rowHeaderStyle, {gridRow: 1, gridColumn: 1});
             cells.push((
                 <div key={++iCell} style={style}>
                     {sheet.typeName}
                 </div>
             ));
-            ++iCol; // Grid
         }
 
         let widths = sheet.type.columns.reduce((dest, col) => {
             dest.push(this.gridWidth, col.width);
             return dest;
         }, []);
-        sheetStyle.gridTemplateColumns = `${this.headerColumnWidth}px ` + widths.join(" ");
+        let indentWidth = sheet.indent > 0 ? `${this.gridWidth} ${sheet.indent * this.indentPixels}px` : '0px 0px';
+        sheetStyle.gridTemplateColumns = `${this.headerColumnWidth}px ${indentWidth} ` + widths.join(" ");
 
         // Render header
         if (showHeader) {
+            let iCol = 5;
             sheet.type.columns.every((column) => {
-                let style = {...this.columnHeaderStyle, gridRow: 1, gridColumn: ++iCol};
-                ++iCol; // Grid
+                let style = {...this.columnHeaderStyle, gridRow: 1, gridColumn: iCol++};
+                iCol++; // Grid
                 return cells.push((
                     <div key={++iCell} style={style}>
                         {column.label}
@@ -203,19 +203,18 @@ class Spreadsheet extends Component {
 
         let iRow = 1;
         spreadsheet.rows.every(row => {
-            let iCol = 0;
             iRow++;
             if (row.sheetName === sheetName) {
-                let style = {...this.rowHeaderStyle, gridRow: iRow, gridColumn: ++iCol};
+                let style = {...this.rowHeaderStyle, gridRow: iRow, gridColumn: 1};
                 cells.push((
                     <div key={++iCell} style={style}>
                         {sheet.typeName}
                     </div>
                 ));
-                ++iCol; // Skip grid
 
+                let iCol = 5;
                 row.columns.every((column) => {
-                    let style = {...this.valueStyle, gridRow: iRow, gridColumn: ++iCol};
+                    let style = {...this.valueStyle, gridRow: iRow, gridColumn: iCol++};
                     iCol++; // Skip grid
                     return cells.push((
                         <div
