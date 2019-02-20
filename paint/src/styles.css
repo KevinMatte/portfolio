@@ -320,7 +320,7 @@ h3 {
 }
 
 .yellowOnHover:hover {
-    background-color: yellow;
+    background-color: yellow !important;
 }
 
 .tableTextCell {

@@ -12,26 +12,41 @@ class Spreadsheet extends Component {
     constructor(props) {
         super(props);
 
-        this.spreadsheetStyle = {
+        this.topDivId = "TopDiv";
+        this.sheetStyle = {
             display: "grid",
-            gridGap: "10px",
+            gridGap: "0px",
             position: "absolute",
+            pointerEvents: "none",
         };
 
+        this.cellStyle = {
+            padding: "1em",
+        };
         this.headerStyle = {
-            border: "2px solid rgb(233,171,88)",
-            borderRadius: "5px",
-            backgroundColor: "rgba(233,171,88,.125)",
+            ...this.cellStyle,
+            border: "1px solid black",
+            backgroundColor: "lightgrey",
             padding: "1em",
             color: "#3F3AD9",
         };
-        this.cellStyle = {
-            border: "2px solid rgb(233,171,88)",
-            borderRadius: "5px",
-            backgroundColor: "rgba(233,171,88,.125)",
-            padding: "1em",
-            color: "#d9480f",
+
+        this.columnHeaderStyle = {
+            ...this.headerStyle,
+            textAlign: "center",
         };
+        this.rowHeaderStyle = {
+            ...this.headerStyle,
+            textAlign: "right",
+        };
+        this.valueStyle = {
+            ...this.cellStyle,
+            border: "1px solid lightgrey",
+            backgroundColor: "white",
+            pointerEvents: "auto",
+        };
+        this.indentPixels = 30;
+        this.headerColumnWidth = 150;
 
 
         this.state = {
@@ -45,7 +60,7 @@ class Spreadsheet extends Component {
         })
     }
 
-    createRow(props, spreadsheet, obj) {
+    createRow(props, spreadsheet, obj, indent = 0) {
 
         let typeName = obj['type'];
         if (!typeName || !props.types.hasOwnProperty(typeName))
@@ -75,22 +90,23 @@ class Spreadsheet extends Component {
         spreadsheet.rows.push({
             typeName,
             columns,
+            indent,
         });
 
         Object.keys(obj).every(key => {
             let value = obj[key];
             if (Array.isArray(value)) {
-                this.createRows(props, spreadsheet, value);
+                this.createRows(props, spreadsheet, value, indent + 1);
             } else if (value.hasOwnProperty('table')) {
-                this.createRows(props, spreadsheet, [value]);
+                this.createRows(props, spreadsheet, [value], indent + 1);
             }
             return key;
         });
     }
 
-    createRows(props, spreadsheet, aList) {
+    createRows(props, spreadsheet, aList, indent = 0) {
         aList.every(obj => {
-            this.createRow(props, spreadsheet, obj);
+            this.createRow(props, spreadsheet, obj, indent);
             return obj;
         });
     }
@@ -105,12 +121,16 @@ class Spreadsheet extends Component {
         };
         this.createRows(this.props, spreadsheet, this.props.drawings);
 
+        let allSheetsStyle = {
+            gridTemplateColumns: `repeat(${spreadsheet.numColumns}, 150px)`,
+            gridTemplateRows: `repeat(${spreadsheet.rows.length + spreadsheet.typeNames.length}, 50px)`,
+        };
+
         spreadsheet.typeNames.every((typeName => {
             let sheet = spreadsheet.sheetsByName[typeName];
             sheet.style = {
-                ...this.spreadsheetStyle,
-                gridTemplateColumns: `repeat(${spreadsheet.numColumns}, 150px)`,
-                gridTemplateRows: `repeat(${spreadsheet.rows.length}, 50px)`,
+                ...allSheetsStyle,
+                ...this.sheetStyle,
             };
             return sheet;
         }));
@@ -123,7 +143,11 @@ class Spreadsheet extends Component {
 
         return (
             <div className="flexVDisplay max_size">
-                <div className="flexVStretched" style={{position: "relative"}}>
+                <div
+                    id={this.topDivId}
+                    className="flexVStretched"
+                    style={{position: "relative"}}
+                >
                     {this.state.spreadsheet.typeNames.map(typeName => {
                         return this.renderSheet(++iSheet, typeName);
                     })}
@@ -141,16 +165,16 @@ class Spreadsheet extends Component {
         let cells = [];
 
         let iCol = 0;
-        let style = Object.assign({}, this.headerStyle, {gridRow: iSheet, gridColumn: ++iCol});
+        let style = {...this.rowHeaderStyle, gridRow: iSheet, gridColumn: ++iCol};
         cells.push((
             <div key={++iCell} style={style}>
                 {typeName}
             </div>
         ));
 
-        sheet.style.gridTemplateColumns = "150px " + sheet.type.columns.map(col => col.width).join(" ");
+        sheet.style.gridTemplateColumns = `${this.headerColumnWidth}px ` + sheet.type.columns.map(col => col.width).join(" ");
         sheet.type.columns.every((column) => {
-            let style = Object.assign({}, this.headerStyle, {gridRow: iSheet, gridColumn: ++iCol});
+            let style = {...this.columnHeaderStyle, gridRow: iSheet, gridColumn: ++iCol};
             return cells.push((
                 <div key={++iCell} style={style}>
                     {column.label}
@@ -163,7 +187,7 @@ class Spreadsheet extends Component {
             let iCol = 0;
             iRow++;
             if (row.typeName === typeName) {
-                let style = Object.assign({}, this.headerStyle, {gridRow: iRow, gridColumn: ++iCol});
+                let style = {...this.rowHeaderStyle, gridRow: iRow, gridColumn: ++iCol};
                 cells.push((
                     <div key={++iCell} style={style}>
                         {typeName}
@@ -171,9 +195,13 @@ class Spreadsheet extends Component {
                 ));
 
                 row.columns.every((column) => {
-                    let style = Object.assign({}, this.cellStyle, {gridRow: iRow, gridColumn: ++iCol});
+                    let style = {...this.valueStyle, gridRow: iRow, gridColumn: ++iCol};
                     return cells.push((
-                        <div key={++iCell} style={style}>
+                        <div
+                            key={++iCell}
+                            style={style}
+                            className="Cell yellowOnHover"
+                        >
                             {column}
                         </div>
                     ));
@@ -182,7 +210,7 @@ class Spreadsheet extends Component {
             return cells;
         });
 
-        return <div key={typeName} style={sheet.style}>
+        return <div id={typeName} key={typeName} style={sheet.style} className="Spreadsheet">
             {cells}
         </div>;
     }

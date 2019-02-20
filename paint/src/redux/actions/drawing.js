@@ -19,11 +19,11 @@ export default class Drawing {
             },
             vector3: {
                 columns: [
-                    {label: 'Name', width: '170px', field: 'name'},
-                    {label: 'Type', width: '170px', field: 'type'},
-                    {label: 'X', width: '170px', field: ['axis', 0]},
-                    {label: 'Y', width: '170px', field: ['axis', 1]},
-                    {label: 'Z', width: '170px', field: ['axis', 2]},
+                    {label: 'Name', width: '150px', field: 'name'},
+                    {label: 'Type', width: '150px', field: 'type'},
+                    {label: 'X', width: '150px', field: ['axis', 0]},
+                    {label: 'Y', width: '150px', field: ['axis', 1]},
+                    {label: 'Z', width: '150px', field: ['axis', 2]},
                 ]
             },
         },
