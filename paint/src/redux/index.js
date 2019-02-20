@@ -4,11 +4,13 @@ import {combineReducers} from "redux";
 import Options from './actions/options';
 import Session from './actions/session';
 import Messages from './actions/messages';
+import Drawing from './actions/drawing';
 
 var rootReducer = combineReducers({
     session: Session.reducer,
     options: Options.reducer,
     messages: Messages.reducer,
+    drawing: Drawing.reducer,
 });
 
 

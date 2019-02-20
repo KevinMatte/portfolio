@@ -27,6 +27,7 @@ import Session from "./redux/actions/session";
 import Options from "./redux/actions/options";
 import Messages from './redux/actions/messages';
 import {renderText} from "./general/Utils";
+import Main from "./spreadsheet";
 
 /*
 const styles = theme => ({
@@ -277,7 +278,13 @@ class App extends Component {
         </Menu>;
     }
 
-    mainApp = () => <h1>Main app stub</h1>;
+    mainApp = (props) => {
+        return (
+            <MuiThemeProvider theme={muiTheme}>
+                <Main {...props} className="max_size"/>
+            </MuiThemeProvider>
+        );
+    };
 
     login = (props) => {
         return (
