@@ -39,7 +39,7 @@ else:
 # application.root_path = PROJ_DIR
 
 # def application(env, startResponse):
-#     startResponse("200 OK", [("Content-type", "text/plain")])
+#     startResponse("200 OK", [("Content-type", "value/plain")])
 #     return [f'Project Dir={sys.argv[0]} Version={sys.version_info}\n'.encode('utf-8')]
 
 def get_literal(value):

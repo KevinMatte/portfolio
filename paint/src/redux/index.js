@@ -4,6 +4,7 @@ import thunk from 'redux-thunk';
 import {createStore, applyMiddleware, compose} from 'redux';
 import {combineReducers} from "redux";
 import Options from './actions/options';
+import TempValues from './actions/tempValues'
 import Session from './actions/session';
 import Messages from './actions/messages';
 import Drawing from './actions/drawing';
@@ -11,6 +12,7 @@ import Drawing from './actions/drawing';
 var rootReducer = combineReducers({
     session: Session.reducer,
     options: Options.reducer,
+    tempValues: TempValues.reducer,
     messages: Messages.reducer,
     drawing: Drawing.reducer,
 });

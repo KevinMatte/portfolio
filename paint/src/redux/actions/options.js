@@ -23,7 +23,7 @@ export default class Options {
     static reducer(options = Options.initialState, action) {
         switch (action.type) {
             case Options.ADVANCED_MODE_TOGGLE:
-                return Options.toggleAdvancedModeReducer();
+                return Options.toggleAdvancedModeReducer(options, action);
 
             default:
                 return options;

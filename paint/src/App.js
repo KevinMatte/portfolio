@@ -29,7 +29,7 @@ import Session from "./redux/actions/session";
 import Options from "./redux/actions/options";
 import Messages from './redux/actions/messages';
 import {renderText} from "./general/Utils";
-import Main from "./treesheet";
+import Tree from "./treesheet";
 
 /*
 const styles = theme => ({
@@ -283,7 +283,7 @@ class App extends Component {
     mainApp = (props) => {
         return (
             <MuiThemeProvider theme={muiTheme}>
-                <Main {...props} className="max_size"/>
+                <Tree {...props} className="max_size" name="spreadsheet"/>
             </MuiThemeProvider>
         );
     };
@@ -332,18 +332,23 @@ class App extends Component {
                 <Switch>
                     <Route path="/paint/login" component={this.login}/>
                     <Route path="/paint/register" component={this.register}/>
-                    <Route path="/paint/" render={() => (
-                        <div>
-                            <h1>Please log in.</h1>
-                            <p>Use the session menu in the top left corner.</p>
-                            <p>So far this is only showing ReactJS/Material-UI and React-Redux.</p>
-                            <p>Today's plan: Connect database. Design React spreadsheet.</p>
-                            <li>I've wanted to do this for a long time, just for fun!</li>
-                        </div>
-                    )}/>
+                    <Route exact path="/paint/" render={this.renderPleaseLogin}/>
+                    <Route path="/" render={() => (<Redirect to="/paint/"/>)}/>
                 </Switch>
             );
         }
+    }
+
+    renderPleaseLogin() {
+        return (
+            <div className="doIndent">
+                <h1>Please log in.</h1>
+                <p>Use the session menu in the top left corner.</p>
+                <p>So far this is only showing ReactJS/Material-UI and React-Redux.</p>
+                <p>Today's plan: Connect database. Design React spreadsheet.</p>
+                <li>I've wanted to do this for a long time, just for fun!</li>
+            </div>
+        );
     }
 
     renderMessages() {

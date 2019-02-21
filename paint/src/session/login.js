@@ -30,7 +30,7 @@ class Login extends Component {
     render() {
         let {userIdMessage, passwordMessage} = this.props;
         return (
-            <div className="flexVDisplay">
+            <div className="flexVDisplay doIndent">
                 <div className="flexFixed">
                     <TextField
                         required

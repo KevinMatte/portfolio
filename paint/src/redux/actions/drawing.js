@@ -1,29 +1,29 @@
 /* Copyright (C) 2019 Kevin Matte - All Rights Reserved */
 
-export default class Drawing {
-    static ADD_GRAPH = "ADD_GRAPH";
+import {getStateWithValueByPath} from "../../general/Utils";
 
+export default class Drawing {
     static initialState = {
         types: {
             drawing: {
                 columns: [
-                    {label: 'Name', width: '150px', field: 'name'},
-                    {label: 'Type', width: '150px', field: 'type'},
+                    {label: 'Name', width: '150px', path: 'name'},
+                    {label: 'Type', width: '150px', path: 'type'},
                 ]
             },
             graph: {
                 columns: [
-                    {label: 'Name', width: '160px', field: 'name'},
-                    {label: 'Type', width: '160px', field: 'type'},
+                    {label: 'Name', width: '160px', path: 'name'},
+                    {label: 'Type', width: '160px', path: 'type'},
                 ]
             },
             vector3: {
                 columns: [
-                    {label: 'Name', width: '150px', field: 'name'},
-                    {label: 'Type', width: '150px', field: 'type'},
-                    {label: 'X', width: '150px', field: ['axis', 0]},
-                    {label: 'Y', width: '150px', field: ['axis', 1]},
-                    {label: 'Z', width: '150px', field: ['axis', 2]},
+                    {label: 'Name', width: '150px', path: 'name'},
+                    {label: 'Type', width: '150px', path: 'type'},
+                    {label: 'X', width: '150px', path: ['axis', 0]},
+                    {label: 'Y', width: '150px', path: ['axis', 1]},
+                    {label: 'Z', width: '150px', path: ['axis', 2]},
                 ]
             },
         },
@@ -57,7 +57,7 @@ export default class Drawing {
                     {
                         name: 'cube 1',
                         type: 'cube',
-                        table: 'graphg',
+                        table: 'graph',
                         points: [
                             {
                                 type: 'point',
@@ -137,7 +137,7 @@ export default class Drawing {
                     {
                         name: 'cube 1',
                         type: 'cube',
-                        table: 'graphg',
+                        table: 'graph',
                         points: [
                             {
                                 type: 'point',
@@ -217,7 +217,7 @@ export default class Drawing {
                     {
                         name: 'cube 1',
                         type: 'cube',
-                        table: 'graphg',
+                        table: 'graph',
                         points: [
                             {
                                 type: 'point',
@@ -271,23 +271,29 @@ export default class Drawing {
         ],
     };
 
-    static addGraph() {
+    static UPDATE_VALUE_BY_PATH = "UPDATE_VALUE_BY_PATH";
+
+    static setValueByPath(path, value) {
         return {
-            type: Drawing.ADD_GRAPH,
+            type: Drawing.UPDATE_VALUE_BY_PATH,
+            path:  Array.isArray(path) ? path : [path],
+            value
         };
     }
 
-    static addGraphReducer(drawing, action) {
+    static setValueByPathReducer(state, action) {
+        let {path, value} = action;
+
         return {
-            ...drawing,
-            graphs: [...drawing.graphs, action.graph],
+          ...state,
+          drawings: getStateWithValueByPath(state.drawings, path, value)
         };
     }
 
     static reducer(drawing = Drawing.initialState, action) {
         switch (action.type) {
-            case Drawing.ADD_GRAPH:
-                return Drawing.addGraphReducer();
+            case Drawing.UPDATE_VALUE_BY_PATH:
+                return Drawing.setValueByPathReducer(drawing, action);
 
             default:
                 return drawing;

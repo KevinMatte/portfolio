@@ -28,6 +28,55 @@ export class Utils {
 
 }
 
+export function getValueByPath(obj, path) {
+    path = Array.isArray(path) ? path : path.split("/");
+
+    return path.reduce((dst, name) => {
+        return dst[name]
+    }, obj);
+}
+
+export function getStateWithValueByPath(state, path, value) {
+    path = Array.isArray(path) ? path : path.split("/");
+    let valueField = path.pop();
+
+    let newState = Array.isArray(state) ? [...state] : {...state};
+
+    let parent = newState;
+    path.every(pathNode => {
+        let child = parent[pathNode];
+        child = Array.isArray(child) ? [...child] : {...child};
+        parent[pathNode] = child;
+        parent = child;
+        return true;
+    });
+    parent[valueField] = value;
+
+    return newState;
+}
+
+export function compareObjects(obj1, obj2)
+{
+    return Object.keys(obj1).length === Object.keys(obj2).length &&
+    Object.keys(obj1).every(key =>
+        obj2.hasOwnProperty(key) && obj1[key] === obj2[key]
+    );
+}
+
+export function setValueByPath(obj, path, value) {
+    let field, parentPath, parentObj;
+    if (Array.isArray(path)) {
+        parentPath = [...path];
+        field = parentPath.pop();
+        parentObj = getValueByPath(obj, parentPath);
+        parentObj[field] = value;
+    } else {
+        obj[path] = value;
+    }
+    return obj;
+}
+
+
 export function getRootMatchPath(match) {
     let path = match.path;
     let iColon = path.indexOf('/:');
@@ -77,8 +126,11 @@ export function renderText(text) {
 
 export function filterObject(obj, predicate) {
     return Object.keys(obj)
-          .filter( key => predicate(obj[key]) )
-          .reduce( (res, key) => {res[key] = obj[key]; return res}, {} );
+        .filter(key => predicate(obj[key]))
+        .reduce((res, key) => {
+            res[key] = obj[key];
+            return res
+        }, {});
 }
 
 

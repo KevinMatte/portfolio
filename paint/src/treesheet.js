@@ -7,6 +7,10 @@ import React, {Component} from 'react';
 import PropTypes from 'prop-types';
 import {connect} from "react-redux";
 import Drawing from "./redux/actions/drawing";
+import {getValueByPath} from "./general/Utils";
+import Cell from "./Cell";
+import TempValues from "./redux/actions/tempValues";
+
 
 class Treesheet extends Component {
 
@@ -68,7 +72,7 @@ class Treesheet extends Component {
         })
     }
 
-    createRow(props, spreadsheet, obj, indent = 0) {
+    createRow(props, spreadsheet, obj, path) {
 
         let typeName = obj['type'];
         if (!typeName || !props.types.hasOwnProperty(typeName))
@@ -77,24 +81,17 @@ class Treesheet extends Component {
         if (!type)
             return;
 
-        let sheetName = indent === 0 ? typeName : `${typeName}_${indent}`;
+        let sheetName = `${typeName}_${path.length}`;
 
-        let columns = type.columns.map(column => {
-            let {field} = column;
-            if (Array.isArray(field)) {
-                return field.reduce((dst, name) => {
-                    return dst[name]
-                }, obj);
-            } else {
-                return obj[field];
-            }
+        let values = type.columns.map(column => {
+            return getValueByPath(obj, column.path);
         });
         spreadsheet.numColumns = Math.max(spreadsheet.numColumns, type.columns.length);
         if (!spreadsheet.sheetsByName.hasOwnProperty(sheetName)) {
             spreadsheet.sheetsByName[sheetName] = {
                 typeName,
                 sheetName,
-                indent,
+                path,
                 type,
             };
             spreadsheet.sheetNames.push(sheetName);
@@ -102,23 +99,25 @@ class Treesheet extends Component {
         spreadsheet.rows.push({
             typeName,
             sheetName,
-            columns,
+            values,
+            path,
         });
 
-        Object.keys(obj).every((key) => {
+        Object.keys(obj).every(key => {
             let value = obj[key];
+            let valuePath = [...path, key];
             if (Array.isArray(value)) {
-                this.createRows(props, spreadsheet, value, indent + 1);
+                this.createRows(props, spreadsheet, value, valuePath);
             } else if (value.hasOwnProperty('table')) {
-                this.createRows(props, spreadsheet, [value], indent + 1);
+                this.createRows(props, spreadsheet, [value], valuePath);
             }
             return true;
         });
     }
 
-    createRows(props, spreadsheet, aList, indent = 0) {
-        aList.every(obj => {
-            this.createRow(props, spreadsheet, obj, indent);
+    createRows(props, spreadsheet, aList, path = []) {
+        aList.every((obj, iObj) => {
+            this.createRow(props, spreadsheet, obj, [...path, iObj]);
             return obj;
         });
     }
@@ -131,7 +130,7 @@ class Treesheet extends Component {
             numColumns: 0,
             columns: [],
         };
-        this.createRows(props, spreadsheet, props.drawings);
+        this.createRows(props, spreadsheet, props.dataTree);
 
         return spreadsheet;
     }
@@ -139,7 +138,7 @@ class Treesheet extends Component {
     handleScroll = (event) => {
         let bodyDiv = event.target;
 
-        let topDiv=bodyDiv;
+        let topDiv = bodyDiv;
         for (; topDiv && topDiv !== document; topDiv = topDiv.parentNode) {
             if (topDiv.id === this.topDivId)
                 break;
@@ -185,18 +184,18 @@ class Treesheet extends Component {
         let cells = [];
         let iCell = 0;
         let iCol = 4;
-        sheet.type.columns.every((column, cellCol) => {
+        sheet.type.columns.every((column, iColumn) => {
             let style = {...this.columnHeaderStyle, gridRow: "1 / 1", gridColumn: iCol++};
             iCol++; // Grid
             cells.push((
-                <div key={++iCell} style={style} className={cellCol === selectedCol ? "selectedHeader" : ""}>
+                <div key={++iCell} style={style} className={iColumn === selectedCol ? "selectedHeader" : ""}>
                     {column.label}
                 </div>
             ));
             return true;
         });
 
-        let indentWidth = sheet.indent > 0 ? `${this.gridWidth} ${sheet.indent * this.indentPixels}px` : '0px 0px';
+        let indentWidth = `${this.gridWidth} ${sheet.path.length * this.indentPixels}px`;
         let widths = sheet.type.columns.reduce((dest, col) => {
             dest.push(this.gridWidth, col.width);
             return dest;
@@ -288,10 +287,13 @@ class Treesheet extends Component {
     renderDataCells() {
         let {spreadsheet, selectedSheet, selectedRow, selectedCol} = this.state;
 
-        let cellsBySheet = spreadsheet.sheetNames.reduce((dst, sheetName) => {
-            dst[sheetName] = [];
-            return dst;
-        }, {});
+        let cellsBySheet = spreadsheet.sheetNames.reduce(
+            (dst, sheetName) => {
+                dst[sheetName] = [];
+                return dst;
+            },
+            {}
+        );
 
         let iCell = 0;
 
@@ -299,7 +301,9 @@ class Treesheet extends Component {
             let sheetName = row.sheetName;
             let cells = cellsBySheet[row.sheetName];
             let iCol = 3;
-            row.columns.every((column, cellCol) => {
+            row.values.every((value, cellCol) => {
+
+                // Display borders on selected column.
                 let hasSelectedCol = selectedCol !== null
                     && sheetName === selectedSheet
                     && (selectedCol === cellCol || selectedCol + 1 === cellCol);
@@ -315,8 +319,18 @@ class Treesheet extends Component {
                 iCol++; // Skip grid
 
                 let style = {...this.valueStyle, gridRow: `${cellRow + 1} / ${cellRow + 1}`, gridColumn: iCol++};
-                let cellClasses = (cellRow === selectedRow && selectedCol === cellCol) ?
-                    "Cell selectedCell" : "Cell yellowOnHover";
+                let isSelected = (cellRow === selectedRow && selectedCol === cellCol);
+                let cellClasses = isSelected ? "Cell selectedCell" : "Cell yellowOnHover";
+                let cell;
+                if (isSelected) {
+                    cell = <Cell
+                        doEdit={isSelected}
+                        value={this.props.editValue}
+                        setValue={value => this.setEditValue(value)}
+                    />;
+                } else {
+                    cell = <Cell value={value}/>;
+                }
                 cells.push((
                     <div
                         key={++iCell}
@@ -325,7 +339,7 @@ class Treesheet extends Component {
                         onMouseOver={() => this.handleCellHover(sheetName)}
                         onMouseUp={() => this.handleCellSelect(sheetName, cellRow, cellCol)}
                     >
-                        {column}
+                        {cell}
                     </div>
                 ));
                 return true;
@@ -340,7 +354,7 @@ class Treesheet extends Component {
                 dest.push(this.gridWidth, col.width);
                 return dest;
             }, []);
-            let indentWidth = sheet.indent > 0 ? `${this.gridWidth} ${sheet.indent * this.indentPixels}px` : '0px 0px';
+            let indentWidth = `${this.gridWidth} ${sheet.path.length * this.indentPixels}px`;
 
             return (
                 <div id={sheetName} key={sheetName} className="Spreadsheet"
@@ -364,12 +378,29 @@ class Treesheet extends Component {
         });
     }
 
+    setEditValue = value => this.props.setTempValueByPath(this.props.name, value);
+
     handleCellSelect(sheetName, cellRow, cellCol) {
         let {selectedRow, selectedCol} = this.state;
-        if (cellRow != null && cellRow === selectedRow && selectedCol === cellCol)
-            this.setState({selectedSheet: null, selectedRow: null, selectedCol: null});
-        else
-            this.setState({selectedSheet: sheetName, selectedRow: cellRow, selectedCol: cellCol});
+        if (cellRow !== selectedRow || selectedCol !== cellCol) {
+            if (selectedRow != null) {
+                this.saveEditValue(selectedRow, selectedCol);
+            }
+            if (cellRow) {
+                let value = this.state.spreadsheet.rows[cellRow].values[cellCol];
+                this.setEditValue(value);
+                this.setState({selectedSheet: sheetName, selectedRow: cellRow, selectedCol: cellCol});
+            }
+        }
+    }
+
+    saveEditValue(cellRow, cellCol) {
+        let row = this.state.spreadsheet.rows[cellRow];
+        let sheet = this.state.spreadsheet.sheetsByName[row.sheetName];
+        let columnPath = sheet.type.columns[cellCol].path;
+        columnPath = Array.isArray(columnPath) ? columnPath : [columnPath];
+        let path = [...row.path, ...columnPath];
+        this.props.setValueByPath(path, this.props.editValue);
     }
 
     handleCellHover(sheetName) {
@@ -382,20 +413,25 @@ class Treesheet extends Component {
 }
 
 Treesheet.propTypes = {
+    editValue: PropTypes.any,
     types: PropTypes.object.isRequired,
-    drawings: PropTypes.array.isRequired,
-    addGraph: PropTypes.func.isRequired,
+    dataTree: PropTypes.array.isRequired,
+    setValueByPath: PropTypes.func.isRequired,
+    setTempValueByPath: PropTypes.func.isRequired,
+    name: PropTypes.string.isRequired,
 };
 
-const mapStateToProps = (state /*, ownProps*/) => {
+const mapStateToProps = (state, ownProps) => {
     return {
         types: state.drawing.types,
-        drawings: state.drawing.drawings,
+        dataTree: state.drawing.drawings,
+        editValue: getValueByPath(state.tempValues.values, ownProps.name),
     }
 };
 
 const mapDispatchToProps = {
-    addGraph: Drawing.addGraph,
+    setValueByPath: Drawing.setValueByPath,
+    setTempValueByPath: TempValues.setValueByPath,
 };
 
 export default connect(
