@@ -18,9 +18,7 @@ class Treesheet extends Component {
             display: "grid",
             gridGap: "0px",
         };
-        this.sheetStyle = {
-            ...this.gridStyle,
-            position: "absolute",
+        this.pointerEvents = {
             pointerEvents: "none",
         };
 
@@ -138,17 +136,25 @@ class Treesheet extends Component {
         return spreadsheet;
     }
 
-    verticalSync = () => {
-        let topDiv = document.getElementById(this.topDivId);
-        let pos = topDiv.getElementById("rowHeaders").scrollTop;
-        document.getElementById("table-scroll-employees").scrollTop = pos;
+    handleScroll = (event) => {
+        let bodyDiv = event.target;
+
+        let topDiv=bodyDiv;
+        for (; topDiv && topDiv !== document; topDiv = topDiv.parentNode) {
+            if (topDiv.id === this.topDivId)
+                break;
+        }
+        if (topDiv !== document) {
+            let {scrollTop, scrollLeft} = bodyDiv;
+            let rowHeadersDivs = topDiv.getElementsByClassName("rowHeaders");
+            if (rowHeadersDivs)
+                rowHeadersDivs[0].scrollTop = scrollTop;
+            let columnHeadersDivs = topDiv.getElementsByClassName("columnHeaders");
+            if (columnHeadersDivs)
+                columnHeadersDivs[0].scrollLeft = scrollLeft;
+        }
     };
 
-    horizontalSync = () => {
-        let topDiv = document.getElementById(this.topDivId);
-        let pos = topDiv.getElementById("columnHeaders").scrollLeft;
-        document.getElementById("table-scroll-employees").scrollLeft = pos;
-    };
 
     renderColRowHeader() {
         // Render grid header
@@ -163,11 +169,10 @@ class Treesheet extends Component {
 
         let style = {
             ...this.rowHeaderStyle,
-            gridRow: 1,
-            gridColumn: 1,
+            gridArea: "1 / 1 / 1 / 1",
         };
         return (
-            <div id="columnHeaders" key={sheetName} style={sheetStyle} className="Spreadsheet">
+            <div style={sheetStyle} className="Spreadsheet">
                 <div style={style}>{sheet.typeName}</div>
             </div>);
     }
@@ -181,7 +186,7 @@ class Treesheet extends Component {
         let iCell = 0;
         let iCol = 4;
         sheet.type.columns.every((column, cellCol) => {
-            let style = {...this.columnHeaderStyle, gridRow: 1, gridColumn: iCol++};
+            let style = {...this.columnHeaderStyle, gridRow: "1 / 1", gridColumn: iCol++};
             iCol++; // Grid
             cells.push((
                 <div key={++iCell} style={style} className={cellCol === selectedCol ? "selectedHeader" : ""}>
@@ -203,7 +208,7 @@ class Treesheet extends Component {
         };
 
         return (
-            <div id="columnHeaders" style={sheetStyle} className="Spreadsheet">
+            <div style={sheetStyle} className="Spreadsheet">
                 {cells}
             </div>);
     }
@@ -221,7 +226,7 @@ class Treesheet extends Component {
         let iCell = 0;
         spreadsheet.rows.every((row, cellRow) => {
             let sheet = spreadsheet.sheetsByName[row.sheetName];
-            let style = {...this.rowHeaderStyle, gridRow: cellRow + 1, gridColumn: 1};
+            let style = {...this.rowHeaderStyle, gridRow: `${cellRow + 1} / ${cellRow + 1}`, gridColumn: 1};
             cells.push((
                 <div key={++iCell} style={style} className={cellRow === selectedRow ? "selectedHeader" : ""}>
                     {sheet.typeName}
@@ -231,7 +236,7 @@ class Treesheet extends Component {
         });
 
         return (
-            <div id="rowHeaders" style={sheetStyle} className="Spreadsheet">
+            <div style={sheetStyle} className="Spreadsheet">
                 {cells}
             </div>);
     }
@@ -240,26 +245,42 @@ class Treesheet extends Component {
         return (
             <div
                 id={this.topDivId}
-                className="flexVDisplay max_size">
-                <div className="flexVStretched" style={{
-                    ...this.gridStyle,
-                    gridTemplateColumns: `${this.headerColumnWidth}px 1fr`,
-                    gridTemplateRows: `${this.rowHeight}px 1fr`,
-                }}>
-                    <div style={{gridRow: "1", gridCol: "1"}}>
-                        {this.renderColRowHeader()}
+                className="flexVDisplay flexHStretched max_size"
+
+            >
+
+                <div className="flexVStretched flexVDisplay" style={{overflow: "hidden"}}>
+                    <div className="flexFixed flexHDisplay">
+                        <div className="flexFixed">
+                            {this.renderColRowHeader()}
+                        </div>
+                        <div className="flexHStretched columnHeaders" style={{overflow: "hidden"}}>
+                            {this.renderColumnHeaders()}
+                        </div>
                     </div>
-                    <div style={{gridRow: "1", gridCol: "2"}}>
-                        {this.renderColumnHeaders()}
-                    </div>
-                    <div style={{gridRow: "2", gridCol: "1"}}>
-                        {this.renderRowHeaders()}
-                    </div>
-                    <div style={{gridRow: "2", gridCol: "2"}}>
-                        {this.renderDataCells()}
+                    <div className="flexVStretched flexHDisplay">
+                        <div className="flexFixed rowHeaders" style={{overflow: "hidden"}}>
+                            {this.renderRowHeaders()}
+                        </div>
+                        <div className="flexHStretched" style={{overflow: "auto"}}>
+                            <div
+                                className="max_size"
+                                style={{
+                                    ...this.gridStyle,
+                                    gridTemplateRows: "1fr",
+                                    gridTemplateColumns: "1fr",
+                                    overflow: "auto",
+                                }}
+                                onScroll={(event) => this.handleScroll(event)}
+                            >
+                                {this.renderDataCells()}
+                            </div>
+                        </div>
                     </div>
                 </div>
-                <div className="flexFixed">Controls</div>
+                <div
+                    className="flexFixed">ControlsControlsControlsControlsControlsControlsControlsControlsControlsControls
+                </div>
             </div>
         );
     }
@@ -286,14 +307,14 @@ class Treesheet extends Component {
                     cells.push((
                         <div
                             key={++iCell}
-                            style={{gridRow: cellRow + 1, gridColumn: iCol}}
+                            style={{gridRow: `${cellRow + 1} / ${cellRow + 1}`, gridColumn: iCol}}
                             className="selectedGrid"
                         >
                         </div>));
                 }
                 iCol++; // Skip grid
 
-                let style = {...this.valueStyle, gridRow: cellRow + 1, gridColumn: iCol++};
+                let style = {...this.valueStyle, gridRow: `${cellRow + 1} / ${cellRow + 1}`, gridColumn: iCol++};
                 let cellClasses = (cellRow === selectedRow && selectedCol === cellCol) ?
                     "Cell selectedCell" : "Cell yellowOnHover";
                 cells.push((
@@ -320,15 +341,25 @@ class Treesheet extends Component {
                 return dest;
             }, []);
             let indentWidth = sheet.indent > 0 ? `${this.gridWidth} ${sheet.indent * this.indentPixels}px` : '0px 0px';
-            let sheetStyle = {
-                ...this.sheetStyle,
-                gridTemplateRows: `repeat(${spreadsheet.rows.length}, ${this.rowHeight}px)`,
-                gridTemplateColumns: `${indentWidth} ` + widths.join(" "),
-            };
 
             return (
-                <div id={sheetName} key={sheetName} style={sheetStyle} className="Spreadsheet">
-                    {cellsBySheet[sheetName]}
+                <div id={sheetName} key={sheetName} className="Spreadsheet"
+                     style={{
+                         ...this.pointerEvents,
+                         gridArea: "1 / 1 / 1 / 1",
+
+                     }}
+                >
+                    <div
+                        className="max_size"
+                        style={{
+                            ...this.gridStyle,
+                            gridTemplateRows: `repeat(${spreadsheet.rows.length}, ${this.rowHeight}px)`,
+                            gridTemplateColumns: `${indentWidth} ` + widths.join(" "),
+                        }}
+                    >
+                        {cellsBySheet[sheetName]}
+                    </div>
                 </div>);
         });
     }

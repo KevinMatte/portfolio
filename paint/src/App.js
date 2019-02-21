@@ -388,7 +388,7 @@ class App extends Component {
                             <div>
                                 {this.renderMessages()}
                             </div>
-                            <div className="flexVStretched flexVDisplay doIndent">
+                            <div className="flexVStretched">
                                 {this.renderSwitch()}
                             </div>
                         </div>
