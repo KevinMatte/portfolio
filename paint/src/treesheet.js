@@ -69,7 +69,7 @@ class Treesheet extends Component {
 
     static getDerivedStateFromProps(nextProps, prevState) {
         let spreadsheet = !!prevState.spreadsheet ? prevState.spreadsheet : Treesheet.createSpreadsheet(nextProps);
-        return {spreadsheet }
+        return {spreadsheet}
     }
 
     static createRow(props, spreadsheet, obj, path) {
@@ -148,7 +148,7 @@ class Treesheet extends Component {
         let openIndent = -1;
         spreadsheet.openRows = spreadsheet.rows.filter((row) => {
             let indent = row.path.length;
-            if (openIndent != -1 && indent > openIndent)
+            if (openIndent !== -1 && indent > openIndent)
                 return false;
             if (indent === openIndent)
                 openIndent = -1;
@@ -242,7 +242,7 @@ class Treesheet extends Component {
         let sheetStyle = {
             ...this.gridStyle,
             gridTemplateColumns: `${this.headerColumnWidth}px`,
-            gridTemplateRows: `repeat(${spreadsheet.rows.length}, ${this.rowHeight}px)`,
+            gridTemplateRows: `repeat(${spreadsheet.openRows.length}, ${this.rowHeight}px)`,
         };
         let cells = [];
         let iCell = 0;
@@ -312,7 +312,13 @@ class Treesheet extends Component {
     toggleOpen = (row) => {
         row.isOpen = !row.isOpen;
         Treesheet.updateSpreadsheetOpenRows(this.state.spreadsheet);
-        this.setState({updated: this.state.updated + 1});
+        this.handleCellSelect(null, null, null);
+        this.setState({
+            updated: this.state.updated + 1,
+            selectedSheetName: null,
+            selectedRow: null,
+            selectedCol: null,
+        });
     };
 
     renderDataCells() {
@@ -426,7 +432,7 @@ class Treesheet extends Component {
                         className="max_size"
                         style={{
                             ...this.gridStyle,
-                            gridTemplateRows: `repeat(${spreadsheet.rows.length}, ${this.rowHeight}px)`,
+                            gridTemplateRows: `repeat(${spreadsheet.openRows.length}, ${this.rowHeight}px)`,
                             gridTemplateColumns: `${indentWidth} ${widths} ${this.gridWidth}`,
                         }}
                     >
@@ -439,13 +445,13 @@ class Treesheet extends Component {
     setEditValue = value => this.props.setTempValueByPath(this.props.name, value);
 
     handleCellSelect(sheetName, cellRow, cellCol) {
-        let {selectedRow, selectedCol} = this.state;
+        let {selectedRow, selectedCol, spreadsheet} = this.state;
         if (cellRow !== selectedRow || selectedCol !== cellCol) {
-            if (selectedRow != null) {
+            if (selectedRow !== null) {
                 this.saveEditValue(selectedRow, selectedCol);
             }
             if (cellRow != null) {
-                let value = this.state.spreadsheet.rows[cellRow].values[cellCol];
+                let value = this.state.spreadsheet.openRows[cellRow].values[cellCol];
                 this.setEditValue(value);
                 this.setState({selectedSheetName: sheetName, selectedRow: cellRow, selectedCol: cellCol});
             }
@@ -453,12 +459,13 @@ class Treesheet extends Component {
     }
 
     saveEditValue(cellRow, cellCol) {
-        let row = this.state.spreadsheet.rows[cellRow];
+        let row = this.state.spreadsheet.openRows[cellRow];
         let sheet = this.state.spreadsheet.sheetsByName[row.sheetName];
         let columnPath = sheet.type.columns[cellCol].path;
         columnPath = Array.isArray(columnPath) ? columnPath : [columnPath];
         let path = [...row.path, ...columnPath];
         this.props.setValueByPath(path, this.props.editValue);
+        row.values[cellCol] = this.props.editValue;
     }
 
     handleCellHover(sheetName) {
