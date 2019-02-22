@@ -7,13 +7,11 @@
 .SpreadsheetOverlay {
     display: grid;
     grid-gap: 0;
+    grid-template-rows: 1fr;
+    grid-template-columns: 1fr;
 }
 
 .SpreadsheetScrollArea {
-    display: grid;
-    grid-gap: 0;
-    grid-template-rows: 1fr;
-    grid-template-columns: 1fr;
     overflow: auto;
 }
 

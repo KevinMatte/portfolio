@@ -29,7 +29,7 @@ import Session from "./redux/actions/session";
 import Options from "./redux/actions/options";
 import Messages from './redux/actions/messages';
 import {renderText} from "./general/Utils";
-import Tree from "./treesheet";
+import Tree from "./components/treesheet";
 
 /*
 const styles = theme => ({

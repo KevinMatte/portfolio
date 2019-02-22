@@ -28,11 +28,25 @@ export class Utils {
 
 }
 
-export function getValueByPath(obj, path) {
-    path = Array.isArray(path) ? path : path.split("/");
+export function getValueByPath(obj, path, defaultValue) {
+    if (!Array.isArray(path)) {
+        path = path.split("/").map(field => {
+            let index = Number(field);
+            if (Number.isInteger(index))
+                field = index;
+            return field;
+        });
+    }
 
-    return path.reduce((dst, name) => {
-        return dst[name]
+    return path.reduce((dst, name, index) => {
+        if (!dst.hasOwnProperty(name)) {
+            if (index < path.length - 1) {
+                dst[name] = Number.isInteger(name) ? [] : {};
+            } else {
+                dst[name] = defaultValue;
+            }
+        }
+        return dst[name];
     }, obj);
 }
 
@@ -55,12 +69,11 @@ export function getStateWithValueByPath(state, path, value) {
     return newState;
 }
 
-export function compareObjects(obj1, obj2)
-{
+export function compareObjects(obj1, obj2) {
     return Object.keys(obj1).length === Object.keys(obj2).length &&
-    Object.keys(obj1).every(key =>
-        obj2.hasOwnProperty(key) && obj1[key] === obj2[key]
-    );
+        Object.keys(obj1).every(key =>
+            obj2.hasOwnProperty(key) && obj1[key] === obj2[key]
+        );
 }
 
 export function getGridCellStyle(startRow, startCol, endRow, endCol) {
