@@ -11,6 +11,7 @@ import Drawing from "../redux/actions/drawing";
 import TempValues from "../redux/actions/tempValues";
 import {connect} from "react-redux"; // km
 
+
 class Datasheet extends Component {
 
     setTempValueByPath = (field, value) => this.props.setTempValueByPath(`${this.props.name}/${field}`, value);
@@ -188,11 +189,11 @@ const mapStateToProps = (state, ownProps) => {
     return {
         types: state.drawing.types,
         dataTree: state.drawing.drawings,
-        updated: getValueByPath(state.tempValues.values, `${ownProps.name}/updated`),
-        editValue: getValueByPath(state.tempValues.values, `${ownProps.name}/editValue`),
-        selectedSheetName: getValueByPath(state.tempValues.values, `${ownProps.name}/selectedSheetName`),
-        selectedRow: getValueByPath(state.tempValues.values, `${ownProps.name}/selectedRow`),
-        selectedCol: getValueByPath(state.tempValues.values, `${ownProps.name}/selectedCol`),
+        updated: getValueByPath(state.tempValues.values, `${ownProps.name}/updated`, 0),
+        editValue: getValueByPath(state.tempValues.values, `${ownProps.name}/editValue`, null),
+        selectedSheetName: getValueByPath(state.tempValues.values, `${ownProps.name}/selectedSheetName`, null),
+        selectedRow: getValueByPath(state.tempValues.values, `${ownProps.name}/selectedRow`, null),
+        selectedCol: getValueByPath(state.tempValues.values, `${ownProps.name}/selectedCol`, null),
     }
 };
 

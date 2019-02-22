@@ -7,11 +7,13 @@ import React, {Component} from 'react';
 import PropTypes from 'prop-types';
 import {connect} from "react-redux";
 
-import {getGridCellStyle, getValueByPath} from "../general/Utils";
+
+import {getValueByPath} from "../general/Utils";
 import TreesheetModel from "../model/treesheet";
 import DataSheet from './datasheet';
 import RowHeaders from './rowheaders';
 import ColumnHeaders from './columnheaders';
+import TopLeftCorner from './topleftcorner';
 
 import './treesheet.css'
 
@@ -64,22 +66,6 @@ class Treesheet extends Component {
     };
 
 
-    renderColRowHeader() {
-        // Render grid header
-        let spreadsheet = this.state.spreadsheet;
-        let sheetName = this.props.selectedSheetName || spreadsheet.sheetNames[0];
-        let sheet = spreadsheet.sheetsByName[sheetName];
-        let sheetStyle = {
-            gridTemplateColumns: `${this.headerColumnWidth}px`,
-            gridTemplateRows: `${this.rowHeight}px`,
-        };
-
-        return (
-            <div style={sheetStyle} className="Spreadsheet">
-                <div className="SpreadsheetRowHeader" style={getGridCellStyle(1, 1)}>{sheet.typeName}</div>
-            </div>);
-    }
-
     render() {
         return (
             <div
@@ -91,7 +77,12 @@ class Treesheet extends Component {
                 <div className="flexVStretched flexVDisplay">
                     <div className="flexFixed flexHDisplay">
                         <div className="flexFixed">
-                            {this.renderColRowHeader()}
+                            <TopLeftCorner
+                                name={this.props.name}
+                                spreadsheet={this.state.spreadsheet}
+                                headerColumnWidth={this.headerColumnWidth}
+                                rowHeight={50}
+                            />
                         </div>
                         <div className="flexHStretched columnHeaders">
                             <ColumnHeaders
@@ -151,9 +142,6 @@ Treesheet.propTypes = {
     dataTree: PropTypes.array.isRequired,
     name: PropTypes.string.isRequired,
     updated: PropTypes.number,
-    selectedSheetName: PropTypes.string,
-    selectedRow: PropTypes.number,
-    selectedCol: PropTypes.number,
 };
 
 const mapStateToProps = (state, ownProps) => {
@@ -161,9 +149,6 @@ const mapStateToProps = (state, ownProps) => {
         types: state.drawing.types,
         dataTree: state.drawing.drawings,
         updated: getValueByPath(state.tempValues.values, `${ownProps.name}/updated`, 0),
-        selectedSheetName: getValueByPath(state.tempValues.values, `${ownProps.name}/selectedSheetName`, null),
-        selectedRow: getValueByPath(state.tempValues.values, `${ownProps.name}/selectedRow`, null),
-        selectedCol: getValueByPath(state.tempValues.values, `${ownProps.name}/selectedCol`, null),
     }
 };
 

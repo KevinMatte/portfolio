@@ -38,16 +38,18 @@ export function getValueByPath(obj, path, defaultValue) {
         });
     }
 
-    return path.reduce((dst, name, index) => {
-        if (!dst.hasOwnProperty(name)) {
+    let value = path.reduce((dst, name, index) => {
+        if (dst === undefined || !dst.hasOwnProperty(name)) {
             if (index < path.length - 1) {
-                dst[name] = Number.isInteger(name) ? [] : {};
+                return undefined;
             } else {
-                dst[name] = defaultValue;
+                return defaultValue;
             }
         }
         return dst[name];
     }, obj);
+    
+    return value;
 }
 
 export function getStateWithValueByPath(state, path, value) {

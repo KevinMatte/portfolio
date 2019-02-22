@@ -44,9 +44,9 @@ class ColumnHeaders extends Component {
 
 const mapStateToProps = (state, ownProps) => {
     return {
-        selectedSheetName: getValueByPath(state.tempValues.values, `${ownProps.name}/selectedSheetName`),
-        selectedRow: getValueByPath(state.tempValues.values, `${ownProps.name}/selectedRow`),
-        selectedCol: getValueByPath(state.tempValues.values, `${ownProps.name}/selectedCol`),
+        selectedSheetName: getValueByPath(state.tempValues.values, `${ownProps.name}/selectedSheetName`, null),
+        selectedRow: getValueByPath(state.tempValues.values, `${ownProps.name}/selectedRow`, null),
+        selectedCol: getValueByPath(state.tempValues.values, `${ownProps.name}/selectedCol`, null),
     }
 };
 
