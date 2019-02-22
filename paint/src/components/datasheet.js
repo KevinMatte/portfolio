@@ -150,10 +150,12 @@ class Datasheet extends Component {
 
     render() {
         return (
-            <div
-                className="SpreadsheetOverlay"
-            >
-                {this.renderSheets()}
+            <div className="max_size overflowAuto">
+                <div
+                    className="SpreadsheetOverlay"
+                >
+                    {this.renderSheets()}
+                </div>
             </div>
         );
     }

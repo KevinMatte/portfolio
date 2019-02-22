@@ -27,8 +27,10 @@ class RowHeaders extends Component {
         });
 
         return (
-            <div style={sheetStyle} className="Spreadsheet max_size">
-                {cells}
+            <div className="max_size overflowHidden">
+                <div style={sheetStyle} className="Spreadsheet max_size">
+                    {cells}
+                </div>
             </div>);
     }
 
@@ -41,8 +43,7 @@ const mapStateToProps = (state, ownProps) => {
     }
 };
 
-const mapDispatchToProps = {
-};
+const mapDispatchToProps = {};
 
 export default connect(
     mapStateToProps,

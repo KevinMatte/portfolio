@@ -126,6 +126,10 @@ class Treesheet extends Component {
                     className="flexFixed">
                     <button onClick={() => console.log("kevin")}>+</button>
                     Controls TBD.
+                    Controls TBD.
+                    Controls TBD.
+                    Controls TBD.
+                    Controls TBD.
                 </div>
             </div>
         );
