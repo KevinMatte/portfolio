@@ -164,7 +164,7 @@ class Datasheet extends Component {
 
     toggleOpen = (row) => {
         row.isOpen = !row.isOpen;
-        TreesheetModel.updateSpreadsheetOpenRows(this.props.spreadsheet);
+        this.props.spreadsheet.updateSpreadsheetOpenRows();
         this.handleCellSelect(null, null, null);
         this.setTempValueByPath('updated', this.props.updated + 1);
         this.setTempValueByPath('selectedSheetName', null);

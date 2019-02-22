@@ -27,7 +27,7 @@ class RowHeaders extends Component {
         });
 
         return (
-            <div className="max_size overflowHidden">
+            <div className="max_size overflowHidden rowHeaders">
                 <div style={sheetStyle} className="Spreadsheet max_size">
                     {cells}
                 </div>

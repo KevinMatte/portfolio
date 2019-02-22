@@ -35,7 +35,7 @@ class ColumnHeaders extends Component {
         };
 
         return (
-            <div className="max_size overflowHidden">
+            <div className="max_size overflowHidden columnHeaders">
                 <div style={sheetStyle} className="Spreadsheet">
                     {cells}
                 </div>

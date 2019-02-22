@@ -84,7 +84,7 @@ class Treesheet extends Component {
                                 rowHeight={50}
                             />
                         </div>
-                        <div className="flexHStretched columnHeaders">
+                        <div className="flexHStretched">
                             <ColumnHeaders
                                 name={this.props.name}
                                 spreadsheet={this.state.spreadsheet}
@@ -95,7 +95,7 @@ class Treesheet extends Component {
                         </div>
                     </div>
                     <div className="flexVStretched flexHDisplay">
-                        <div className="flexFixed rowHeaders">
+                        <div className="flexFixed">
                             <RowHeaders
                                 name={this.props.name}
                                 spreadsheet={this.state.spreadsheet}
