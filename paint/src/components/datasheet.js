@@ -96,7 +96,7 @@ class Datasheet extends Component {
             row.values.every((value, cellCol) => {
 
                 let isSelected = (cellRow === selectedRow && selectedCol === cellCol);
-                let cellClasses = "ValueCell Cell";
+                let cellClasses = "ValueCell Cell middleText";
                 let cell;
                 if (isSelected) {
                     cell = <Cell

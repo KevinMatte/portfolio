@@ -48,7 +48,7 @@ export function getValueByPath(obj, path, defaultValue) {
         }
         return dst[name];
     }, obj);
-    
+
     return value;
 }
 
