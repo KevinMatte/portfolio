@@ -3,7 +3,7 @@
 import React, {Component} from 'react';
 
 import {getGridCellStyle, getValueByPath} from "../general/Utils";
-import Cell from "../Cell";
+import Cell from "./Cell";
 import TreesheetModel from "../model/treesheet";
 
 import './treesheet.css'
