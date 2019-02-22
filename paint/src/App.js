@@ -315,9 +315,11 @@ class App extends Component {
                             <h1>Main App</h1>
                             <p>You can view the redux state with Redux DevTools extension for Chrome.</p>
                             <p>Only the advanced mode and session state are present.</p>
+                            <p>React Redux is being used for data, selection, session, etc. Very little ReactJS state.
+                                Open up the Redux extension in developer tools to observe it.</p>
                         </div>
                     )}/>
-                    <Route path="/paint/treesheet"  component={this.mainApp}/>
+                    <Route path="/paint/treesheet" component={this.mainApp}/>
                     <Route path="/paint/about" render={() => (
                         <h1>About</h1>
                     )}/>
@@ -341,12 +343,28 @@ class App extends Component {
 
     renderPleaseLogin() {
         return (
-            <div className="doIndent">
+            <div className="doIndent overflowAuto max_size">
                 <h1>Please log in.</h1>
-                <p>Use the session menu in the top left corner.</p>
-                <p>So far this is only showing ReactJS/Material-UI and React-Redux.</p>
-                <p>Today's plan: Connect database. Design React spreadsheet.</p>
-                <li>I've wanted to do this for a long time, just for fun!</li>
+                <p>The login is easy, the username and password are already entered. Just click login.</p>
+
+                <p>Use the session menu in the top right corner.</p>
+                <p>This is a demo to show some of my abilities. The code is okay, but no tests and few comments.
+                I'm keeping the code readable.</p>
+                <p>The UI consists of:</p>
+                <ul>
+                    <li>React JS</li>
+                    <li>React Redux: You can use the Chrome redux tool to view state.</li>
+                    <li>Tree of data: Demnonstration of a complex one-page app layout with:
+                        <ul>
+                            <li>Row & Column headers that scroll and align with scrolling of main data area.</li>
+                            <li>Multiple overlapping grids for the different tree node contents.</li>
+                            <li>Editting capability.</li>
+                        </ul>
+                    </li>
+                    <li>Apache server / WSGI / Flask / Python backend</li>
+                    <li>Web Services with authentication.</li>
+                    <li>MySQL database</li>
+                </ul>
             </div>
         );
     }
