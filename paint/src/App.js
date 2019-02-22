@@ -29,7 +29,7 @@ import Session from "./redux/actions/session";
 import Options from "./redux/actions/options";
 import Messages from './redux/actions/messages';
 import {renderText} from "./general/Utils";
-import Tree from "./components/treesheet";
+import Treesheet from "./components/treesheet";
 
 /*
 const styles = theme => ({
@@ -283,7 +283,7 @@ class App extends Component {
     mainApp = (props) => {
         return (
             <MuiThemeProvider theme={muiTheme}>
-                <Tree {...props} className="max_size" name="spreadsheet"/>
+                <Treesheet {...props} className="max_size" name="treesheet"/>
             </MuiThemeProvider>
         );
     };
@@ -321,7 +321,10 @@ class App extends Component {
                     )}/>
                     <Route path="/paint/treesheet" component={this.mainApp}/>
                     <Route path="/paint/about" render={() => (
-                        <h1>About</h1>
+                        <div>
+                            <h1>About</h1>
+                            {this.aboutDescription()}
+                        </div>
                     )}/>
                     <Route path="/paint/login" render={() => (<Redirect to="/paint/"/>)}/>
                     <Route path="/paint/register" render={() => (<Redirect to="/paint/"/>)}/>
@@ -347,26 +350,32 @@ class App extends Component {
                 <h1>Please log in.</h1>
                 <p>The login is easy, the username and password are already entered. Just click login.</p>
 
-                <p>Use the session menu in the top right corner.</p>
-                <p>This is a demo to show some of my abilities. The code is okay, but no tests and few comments.
-                I'm keeping the code readable.</p>
-                <p>The UI consists of:</p>
-                <ul>
-                    <li>React JS</li>
-                    <li>React Redux: You can use the Chrome redux tool to view state.</li>
-                    <li>Tree of data: Demnonstration of a complex one-page app layout with:
-                        <ul>
-                            <li>Row & Column headers that scroll and align with scrolling of main data area.</li>
-                            <li>Multiple overlapping grids for the different tree node contents.</li>
-                            <li>Editting capability.</li>
-                        </ul>
-                    </li>
-                    <li>Apache server / WSGI / Flask / Python backend</li>
-                    <li>Web Services with authentication.</li>
-                    <li>MySQL database</li>
-                </ul>
+                {this.aboutDescription()}
             </div>
         );
+    }
+
+    aboutDescription() {
+        return <div>
+            <p>Use the session menu in the top right corner.</p>
+            <p>This is a demo to show some of my abilities. The code is okay, but no tests and few comments.
+                I'm keeping the code readable.</p>
+            <p>The UI consists of:</p>
+            <ul>
+                <li>React JS</li>
+                <li>React Redux: You can use the Chrome redux tool to view state.</li>
+                <li>Tree of data: Demnonstration of a complex one-page app layout with:
+                    <ul>
+                        <li>Row & Column headers that scroll and align with scrolling of main data area.</li>
+                        <li>Multiple overlapping grids for the different tree node contents.</li>
+                        <li>Editting capability.</li>
+                    </ul>
+                </li>
+                <li>Apache server / WSGI / Flask / Python backend</li>
+                <li>Web Services with authentication.</li>
+                <li>MySQL database</li>
+            </ul>
+        </div>;
     }
 
     renderMessages() {
