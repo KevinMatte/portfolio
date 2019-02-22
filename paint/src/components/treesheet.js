@@ -7,9 +7,7 @@ import React, {Component} from 'react';
 import PropTypes from 'prop-types';
 import {connect} from "react-redux";
 
-import Drawing from "../redux/actions/drawing";
 import {getGridCellStyle, getValueByPath} from "../general/Utils";
-import TempValues from "../redux/actions/tempValues";
 import TreesheetModel from "../model/treesheet";
 import DataSheet from './datasheet';
 
@@ -29,14 +27,16 @@ class Treesheet extends Component {
 
 
         this.state = {
-            spreadsheet: TreesheetModel.createSpreadsheet(props),
+            spreadsheet: this.createSpreadsheet(props),
         }
     }
+
+    createSpreadsheet = (props) => new TreesheetModel(props.name, props.types, props.dataTree);
 
     static getDerivedStateFromProps(nextProps, prevState) {
         let spreadsheet;
         if (!prevState.hasOwnProperty("spreadsheet") || prevState.spreadsheet.name !== nextProps.name)
-            spreadsheet = TreesheetModel.createSpreadsheet(nextProps);
+            spreadsheet = this.createSpreadsheet(nextProps);
         else
             spreadsheet = prevState.spreadsheet;
         return {spreadsheet}
@@ -190,20 +190,24 @@ class Treesheet extends Component {
 
 }
 
+Treesheet.defaultProps = {
+    updated: 0,
+};
+
 Treesheet.propTypes = {
-    editValue: PropTypes.any,
     types: PropTypes.object.isRequired,
     dataTree: PropTypes.array.isRequired,
-    setValueByPath: PropTypes.func.isRequired,
-    setTempValueByPath: PropTypes.func.isRequired,
     name: PropTypes.string.isRequired,
+    updated: PropTypes.number,
+    selectedSheetName: PropTypes.string,
+    selectedRow: PropTypes.number,
+    selectedCol: PropTypes.number,
 };
 
 const mapStateToProps = (state, ownProps) => {
     return {
         types: state.drawing.types,
         dataTree: state.drawing.drawings,
-        editValue: getValueByPath(state.tempValues.values, `${ownProps.name}/editValue`, null),
         updated: getValueByPath(state.tempValues.values, `${ownProps.name}/updated`, 0),
         selectedSheetName: getValueByPath(state.tempValues.values, `${ownProps.name}/selectedSheetName`, null),
         selectedRow: getValueByPath(state.tempValues.values, `${ownProps.name}/selectedRow`, null),
@@ -212,8 +216,6 @@ const mapStateToProps = (state, ownProps) => {
 };
 
 const mapDispatchToProps = {
-    setValueByPath: Drawing.setValueByPath,
-    setTempValueByPath: TempValues.setValueByPath,
 };
 
 export default connect(

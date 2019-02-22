@@ -1,12 +1,27 @@
 import {getValueByPath} from "../general/Utils";
 
 export default class Treesheet {
-        static createRow(props, spreadsheet, obj, path) {
+
+    constructor(name, types, dataTree) {
+        this.name = name;
+        this.types = types;
+        this.dataTree = dataTree;
+        this.sheetsByName = {};
+        this.sheetNames = [];
+        this.rows = [];
+        this.numColumns = 0;
+        this.columns = [];
+
+        this.createRows(this.dataTree);
+        this.updateSpreadsheetOpenRows();
+    }
+
+    createRow(obj, path) {
 
         let typeName = obj['type'];
-        if (!typeName || !props.types.hasOwnProperty(typeName))
+        if (!typeName || !this.types.hasOwnProperty(typeName))
             typeName = obj['table'];
-        let type = props.types[typeName];
+        let type = this.types[typeName];
         if (!type)
             return;
 
@@ -15,15 +30,15 @@ export default class Treesheet {
         let values = type.columns.map(column => {
             return getValueByPath(obj, column.path);
         });
-        spreadsheet.numColumns = Math.max(spreadsheet.numColumns, type.columns.length);
-        if (!spreadsheet.sheetsByName.hasOwnProperty(sheetName)) {
-            spreadsheet.sheetsByName[sheetName] = {
+        this.numColumns = Math.max(this.numColumns, type.columns.length);
+        if (!this.sheetsByName.hasOwnProperty(sheetName)) {
+            this.sheetsByName[sheetName] = {
                 typeName,
                 sheetName,
                 path,
                 type,
             };
-            spreadsheet.sheetNames.push(sheetName);
+            this.sheetNames.push(sheetName);
         }
         let row = {
             typeName,
@@ -31,11 +46,11 @@ export default class Treesheet {
             values,
             path,
         };
-        spreadsheet.rows.push(row);
+        this.rows.push(row);
 
         if (type.hasOwnProperty('fields')) {
             type.fields.every((key) => {
-                Treesheet.createRows(props, spreadsheet, [obj[key]], [...path, key]);
+                this.createRows([obj[key]], [...path, key]);
                 row.isOpen = true;
                 return true;
             })
@@ -43,40 +58,24 @@ export default class Treesheet {
 
         if (type.hasOwnProperty('arrays')) {
             type.arrays.every((key) => {
-                Treesheet.createRows(props, spreadsheet, obj[key], [...path, key]);
+                this.createRows(obj[key], [...path, key]);
                 row.isOpen = true;
                 return true;
             })
         }
     }
 
-    static createRows(props, spreadsheet, aList, path = []) {
+    createRows(aList, path = []) {
         aList.every((obj, iObj) => {
-            Treesheet.createRow(props, spreadsheet, obj, [...path, iObj]);
+            this.createRow(obj, [...path, iObj]);
             return obj;
         });
     }
 
-    static createSpreadsheet(props) {
 
-        let spreadsheet = {
-            name: props.name,
-            sheetsByName: {},
-            sheetNames: [],
-            rows: [],
-            numColumns: 0,
-            columns: [],
-        };
-
-        Treesheet.createRows(props, spreadsheet, props.dataTree);
-        Treesheet.updateSpreadsheetOpenRows(spreadsheet);
-
-        return spreadsheet;
-    }
-
-    static updateSpreadsheetOpenRows(spreadsheet) {
+    updateSpreadsheetOpenRows() {
         let openIndent = -1;
-        spreadsheet.openRows = spreadsheet.rows.filter((row) => {
+        this.openRows = this.rows.filter((row) => {
             let indent = row.path.length;
             if (openIndent !== -1 && indent > openIndent)
                 return false;
@@ -87,6 +86,4 @@ export default class Treesheet {
             return true;
         });
     }
-
-
 }
