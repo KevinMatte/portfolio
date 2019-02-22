@@ -6,6 +6,7 @@ import React, {Component} from 'react';
 // noinspection ES6CheckImport
 import PropTypes from 'prop-types';
 import {connect} from "react-redux";
+
 import Drawing from "./redux/actions/drawing";
 import {getValueByPath} from "./general/Utils";
 import Cell from "./Cell";
@@ -28,6 +29,7 @@ class Treesheet extends Component {
 
         this.cellStyle = {
             padding: "1em",
+            pointerEvents: "auto",
         };
         this.headerStyle = {
             ...this.cellStyle,
@@ -49,7 +51,6 @@ class Treesheet extends Component {
             ...this.cellStyle,
             border: "1px solid lightgrey",
             backgroundColor: "white",
-            pointerEvents: "auto",
         };
         this.indentPixels = 30;
         this.headerColumnWidth = 150;
@@ -61,18 +62,17 @@ class Treesheet extends Component {
             selectedSheetName: null,
             selectedRow: null,
             selectedCol: null,
-            spreadsheet: this.createSpreadsheet(props),
+            spreadsheet: Treesheet.createSpreadsheet(props),
+            updated: 0,
         }
     }
 
-    // noinspection JSUnusedLocalSymbols
-    componentWillReceiveProps(nextProps, nextContext) {
-        this.setState({
-            spreadsheet: this.createSpreadsheet(nextProps),
-        })
+    static getDerivedStateFromProps(nextProps, prevState) {
+        let spreadsheet = !!prevState.spreadsheet ? prevState.spreadsheet : Treesheet.createSpreadsheet(nextProps);
+        return {spreadsheet }
     }
 
-    createRow(props, spreadsheet, obj, path) {
+    static createRow(props, spreadsheet, obj, path) {
 
         let typeName = obj['type'];
         if (!typeName || !props.types.hasOwnProperty(typeName))
@@ -106,7 +106,7 @@ class Treesheet extends Component {
 
         if (type.hasOwnProperty('fields')) {
             type.fields.every((key) => {
-                this.createRows(props, spreadsheet, [obj[key]], [...path, key]);
+                Treesheet.createRows(props, spreadsheet, [obj[key]], [...path, key]);
                 row.isOpen = true;
                 return true;
             })
@@ -114,21 +114,22 @@ class Treesheet extends Component {
 
         if (type.hasOwnProperty('arrays')) {
             type.arrays.every((key) => {
-                this.createRows(props, spreadsheet, obj[key], [...path, key]);
+                Treesheet.createRows(props, spreadsheet, obj[key], [...path, key]);
                 row.isOpen = true;
                 return true;
             })
         }
     }
 
-    createRows(props, spreadsheet, aList, path = []) {
+    static createRows(props, spreadsheet, aList, path = []) {
         aList.every((obj, iObj) => {
-            this.createRow(props, spreadsheet, obj, [...path, iObj]);
+            Treesheet.createRow(props, spreadsheet, obj, [...path, iObj]);
             return obj;
         });
     }
 
-    createSpreadsheet(props) {
+    static createSpreadsheet(props) {
+
         let spreadsheet = {
             sheetsByName: {},
             sheetNames: [],
@@ -136,9 +137,25 @@ class Treesheet extends Component {
             numColumns: 0,
             columns: [],
         };
-        this.createRows(props, spreadsheet, props.dataTree);
+
+        Treesheet.createRows(props, spreadsheet, props.dataTree);
+        Treesheet.updateSpreadsheetOpenRows(spreadsheet);
 
         return spreadsheet;
+    }
+
+    static updateSpreadsheetOpenRows(spreadsheet) {
+        let openIndent = -1;
+        spreadsheet.openRows = spreadsheet.rows.filter((row) => {
+            let indent = row.path.length;
+            if (openIndent != -1 && indent > openIndent)
+                return false;
+            if (indent === openIndent)
+                openIndent = -1;
+            if (!row.isOpen)
+                openIndent = indent;
+            return true;
+        });
     }
 
     handleScroll = (event) => {
@@ -229,7 +246,7 @@ class Treesheet extends Component {
         };
         let cells = [];
         let iCell = 0;
-        spreadsheet.rows.every((row, cellRow) => {
+        spreadsheet.openRows.every((row, cellRow) => {
             let sheet = spreadsheet.sheetsByName[row.sheetName];
             let style = {...this.rowHeaderStyle, gridRow: `${cellRow + 1} / ${cellRow + 1}`, gridColumn: 1};
             cells.push((
@@ -284,11 +301,19 @@ class Treesheet extends Component {
                     </div>
                 </div>
                 <div
-                    className="flexFixed">ControlsControlsControlsControlsControlsControlsControlsControlsControlsControls
+                    className="flexFixed">
+                    <button onClick={() => console.log("kevin")}>+</button>
+                    ControlsControlsControlsControlsControlsControlsControlsControlsControlsControls
                 </div>
             </div>
         );
     }
+
+    toggleOpen = (row) => {
+        row.isOpen = !row.isOpen;
+        Treesheet.updateSpreadsheetOpenRows(this.state.spreadsheet);
+        this.setState({updated: this.state.updated + 1});
+    };
 
     renderDataCells() {
         let {spreadsheet, selectedSheetName, selectedRow, selectedCol} = this.state;
@@ -303,22 +328,24 @@ class Treesheet extends Component {
 
         let iCell = 0;
 
-        spreadsheet.rows.every((row, cellRow) => {
+        spreadsheet.openRows.every((row, cellRow) => {
             let sheetName = row.sheetName;
             let cells = cellsBySheet[row.sheetName];
 
             // Display open/close
             if (row.hasOwnProperty('isOpen')) {
+                let symbol = row.isOpen ? "-" : "+";
                 cells.push((
                     <div
-                        className="middleText"
+                        className="Cell middleText"
                         key={++iCell}
                         style={{
+                            pointerEvents: "auto",
                             gridArea: `${cellRow + 1} / 2 / ${cellRow + 1} / 2`,
-                            textAlign: 'end',
                         }}
+
                     >
-                        +
+                        <button onClick={() => this.toggleOpen(row)}>{symbol}</button>
                     </div>));
 
             }
@@ -438,7 +465,6 @@ class Treesheet extends Component {
         let {selectedRow} = this.state;
         if (selectedRow === null) {
             this.setState({selectedSheetName: sheetName});
-            console.log('hover');
         }
     }
 }
