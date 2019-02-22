@@ -68,7 +68,11 @@ class Treesheet extends Component {
     }
 
     static getDerivedStateFromProps(nextProps, prevState) {
-        let spreadsheet = !!prevState.spreadsheet ? prevState.spreadsheet : Treesheet.createSpreadsheet(nextProps);
+        let spreadsheet;
+        if (!prevState.hasOwnProperty("spreadsheet") || prevState.spreadsheet.name !== nextProps.name)
+            spreadsheet = Treesheet.createSpreadsheet(nextProps);
+        else
+            spreadsheet = prevState.spreadsheet;
         return {spreadsheet}
     }
 
@@ -131,6 +135,7 @@ class Treesheet extends Component {
     static createSpreadsheet(props) {
 
         let spreadsheet = {
+            name: props.name,
             sheetsByName: {},
             sheetNames: [],
             rows: [],
