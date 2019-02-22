@@ -58,7 +58,7 @@ class Treesheet extends Component {
 
 
         this.state = {
-            selectedSheet: null,
+            selectedSheetName: null,
             selectedRow: null,
             selectedCol: null,
             spreadsheet: this.createSpreadsheet(props),
@@ -96,23 +96,29 @@ class Treesheet extends Component {
             };
             spreadsheet.sheetNames.push(sheetName);
         }
-        spreadsheet.rows.push({
+        let row = {
             typeName,
             sheetName,
             values,
             path,
-        });
+        };
+        spreadsheet.rows.push(row);
 
-        Object.keys(obj).every(key => {
-            let value = obj[key];
-            let valuePath = [...path, key];
-            if (Array.isArray(value)) {
-                this.createRows(props, spreadsheet, value, valuePath);
-            } else if (value.hasOwnProperty('table')) {
-                this.createRows(props, spreadsheet, [value], valuePath);
-            }
-            return true;
-        });
+        if (type.hasOwnProperty('fields')) {
+            type.fields.every((key) => {
+                this.createRows(props, spreadsheet, [obj[key]], [...path, key]);
+                row.isOpen = true;
+                return true;
+            })
+        }
+
+        if (type.hasOwnProperty('arrays')) {
+            type.arrays.every((key) => {
+                this.createRows(props, spreadsheet, obj[key], [...path, key]);
+                row.isOpen = true;
+                return true;
+            })
+        }
     }
 
     createRows(props, spreadsheet, aList, path = []) {
@@ -158,7 +164,7 @@ class Treesheet extends Component {
     renderColRowHeader() {
         // Render grid header
         let spreadsheet = this.state.spreadsheet;
-        let sheetName = this.state.selectedSheet || spreadsheet.sheetNames[0];
+        let sheetName = this.state.selectedSheetName || spreadsheet.sheetNames[0];
         let sheet = spreadsheet.sheetsByName[sheetName];
         let sheetStyle = {
             ...this.gridStyle,
@@ -178,8 +184,8 @@ class Treesheet extends Component {
 
     renderColumnHeaders() {
         // Render grid header
-        let {spreadsheet, selectedSheet, selectedCol} = this.state;
-        let sheet = spreadsheet.sheetsByName[selectedSheet || spreadsheet.sheetNames[0]];
+        let {spreadsheet, selectedSheetName, selectedCol} = this.state;
+        let sheet = spreadsheet.sheetsByName[selectedSheetName || spreadsheet.sheetNames[0]];
 
         let cells = [];
         let iCell = 0;
@@ -285,7 +291,7 @@ class Treesheet extends Component {
     }
 
     renderDataCells() {
-        let {spreadsheet, selectedSheet, selectedRow, selectedCol} = this.state;
+        let {spreadsheet, selectedSheetName, selectedRow, selectedCol} = this.state;
 
         let cellsBySheet = spreadsheet.sheetNames.reduce(
             (dst, sheetName) => {
@@ -300,25 +306,50 @@ class Treesheet extends Component {
         spreadsheet.rows.every((row, cellRow) => {
             let sheetName = row.sheetName;
             let cells = cellsBySheet[row.sheetName];
-            let iCol = 3;
+
+            // Display open/close
+            if (row.hasOwnProperty('isOpen')) {
+                cells.push((
+                    <div
+                        className="middleText"
+                        key={++iCell}
+                        style={{
+                            gridArea: `${cellRow + 1} / 2 / ${cellRow + 1} / 2`,
+                            textAlign: 'end',
+                        }}
+                    >
+                        +
+                    </div>));
+
+            }
+
+
+            // Display borders on selected column.
+            if (selectedCol !== null && sheetName === selectedSheetName) {
+                let i = 2 * selectedCol + 4;
+                let leftStyle = {gridArea: `${cellRow + 1} / ${i - 1} / ${cellRow + 1} / ${i - 1}`};
+                cells.push((
+                    <div
+                        key={++iCell}
+                        style={leftStyle}
+                        className="selectedGrid"
+                    >
+                    </div>));
+                let rightStyle = {gridArea: `${cellRow + 1} / ${i + 1} / ${cellRow + 1} / ${i + 1}`};
+                cells.push((
+                    <div
+                        key={++iCell}
+                        style={rightStyle}
+                        className="selectedGrid"
+                    >
+                    </div>));
+            }
+
+            let iCol = 4; // Skip first grid.
             row.values.every((value, cellCol) => {
 
-                // Display borders on selected column.
-                let hasSelectedCol = selectedCol !== null
-                    && sheetName === selectedSheet
-                    && (selectedCol === cellCol || selectedCol + 1 === cellCol);
-                if (hasSelectedCol) {
-                    cells.push((
-                        <div
-                            key={++iCell}
-                            style={{gridRow: `${cellRow + 1} / ${cellRow + 1}`, gridColumn: iCol}}
-                            className="selectedGrid"
-                        >
-                        </div>));
-                }
-                iCol++; // Skip grid
-
                 let style = {...this.valueStyle, gridRow: `${cellRow + 1} / ${cellRow + 1}`, gridColumn: iCol++};
+                iCol++;
                 let isSelected = (cellRow === selectedRow && selectedCol === cellCol);
                 let cellClasses = isSelected ? "Cell selectedCell" : "Cell yellowOnHover";
                 let cell;
@@ -353,7 +384,7 @@ class Treesheet extends Component {
             let widths = sheet.type.columns.reduce((dest, col) => {
                 dest.push(this.gridWidth, col.width);
                 return dest;
-            }, []);
+            }, []).join(" ");
             let indentWidth = `${this.gridWidth} ${sheet.path.length * this.indentPixels}px`;
 
             return (
@@ -369,7 +400,7 @@ class Treesheet extends Component {
                         style={{
                             ...this.gridStyle,
                             gridTemplateRows: `repeat(${spreadsheet.rows.length}, ${this.rowHeight}px)`,
-                            gridTemplateColumns: `${indentWidth} ` + widths.join(" "),
+                            gridTemplateColumns: `${indentWidth} ${widths} ${this.gridWidth}`,
                         }}
                     >
                         {cellsBySheet[sheetName]}
@@ -386,10 +417,10 @@ class Treesheet extends Component {
             if (selectedRow != null) {
                 this.saveEditValue(selectedRow, selectedCol);
             }
-            if (cellRow) {
+            if (cellRow != null) {
                 let value = this.state.spreadsheet.rows[cellRow].values[cellCol];
                 this.setEditValue(value);
-                this.setState({selectedSheet: sheetName, selectedRow: cellRow, selectedCol: cellCol});
+                this.setState({selectedSheetName: sheetName, selectedRow: cellRow, selectedCol: cellCol});
             }
         }
     }
@@ -406,7 +437,7 @@ class Treesheet extends Component {
     handleCellHover(sheetName) {
         let {selectedRow} = this.state;
         if (selectedRow === null) {
-            this.setState({selectedSheet: sheetName});
+            this.setState({selectedSheetName: sheetName});
             console.log('hover');
         }
     }

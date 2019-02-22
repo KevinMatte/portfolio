@@ -9,13 +9,17 @@ export default class Drawing {
                 columns: [
                     {label: 'Name', width: '150px', path: 'name'},
                     {label: 'Type', width: '150px', path: 'type'},
-                ]
+                ],
+                arrays: ['graphs'],
+                fields: [],
             },
             graph: {
                 columns: [
                     {label: 'Name', width: '160px', path: 'name'},
                     {label: 'Type', width: '160px', path: 'type'},
-                ]
+                ],
+                arrays: ['points'],
+                fields: [],
             },
             vector3: {
                 columns: [
@@ -24,170 +28,12 @@ export default class Drawing {
                     {label: 'X', width: '150px', path: ['axis', 0]},
                     {label: 'Y', width: '150px', path: ['axis', 1]},
                     {label: 'Z', width: '150px', path: ['axis', 2]},
-                ]
+                ],
+                array: [],
+                fields: [],
             },
         },
         drawings: [
-            {
-                name: 'First drawing',
-                type: 'drawing',
-                table: 'drawing',
-                drawingId: 1,
-                graphs: [
-                    {
-                        name: 'line 1',
-                        type: 'line',
-                        table: 'graph',
-                        points: [
-                            {
-                                type: 'point',
-                                name: 'start',
-                                table: 'vector3',
-                                axis: [1, 2, 3],
-                            },
-                            {
-                                type: 'point',
-                                name: 'end',
-                                table: 'vector3',
-                                axis: [3, 2, 1],
-                            },
-
-                        ]
-                    },
-                    {
-                        name: 'cube 1',
-                        type: 'cube',
-                        table: 'graph',
-                        points: [
-                            {
-                                type: 'point',
-                                name: 'vertex',
-                                table: 'vector3',
-                                axis: [11, 21, 31],
-                            },
-                            {
-                                type: 'vector',
-                                name: 'edge',
-                                table: 'vector3',
-                                axis: [0, 0, 5],
-                            },
-
-                        ]
-                    },
-                    {
-                        name: 'box 1',
-                        type: 'box',
-                        table: 'graph',
-                        points: [
-                            {
-                                table: 'vector3',
-                                type: 'point',
-                                name: 'vertex',
-                                axis: [-11, 21, 31],
-                            },
-                            {
-                                table: 'vector3',
-                                type: 'vector',
-                                name: 'x',
-                                axis: [0, 0, 5],
-                            },
-                            {
-                                table: 'vector3',
-                                type: 'vector',
-                                name: 'y',
-                                axis: [0, 5, 0],
-                            },
-                            {
-                                table: 'vector3',
-                                type: 'vector',
-                                name: 'z',
-                                axis: [5, 0, 0],
-                            },
-
-                        ]
-                    },
-                ],
-            },
-            {
-                name: 'First drawing',
-                type: 'drawing',
-                table: 'drawing',
-                drawingId: 1,
-                graphs: [
-                    {
-                        name: 'line 1',
-                        type: 'line',
-                        table: 'graph',
-                        points: [
-                            {
-                                type: 'point',
-                                name: 'start',
-                                table: 'vector3',
-                                axis: [1, 2, 3],
-                            },
-                            {
-                                type: 'point',
-                                name: 'end',
-                                table: 'vector3',
-                                axis: [3, 2, 1],
-                            },
-
-                        ]
-                    },
-                    {
-                        name: 'cube 1',
-                        type: 'cube',
-                        table: 'graph',
-                        points: [
-                            {
-                                type: 'point',
-                                name: 'vertex',
-                                table: 'vector3',
-                                axis: [11, 21, 31],
-                            },
-                            {
-                                type: 'vector',
-                                name: 'edge',
-                                table: 'vector3',
-                                axis: [0, 0, 5],
-                            },
-
-                        ]
-                    },
-                    {
-                        name: 'box 1',
-                        type: 'box',
-                        table: 'graph',
-                        points: [
-                            {
-                                table: 'vector3',
-                                type: 'point',
-                                name: 'vertex',
-                                axis: [-11, 21, 31],
-                            },
-                            {
-                                table: 'vector3',
-                                type: 'vector',
-                                name: 'x',
-                                axis: [0, 0, 5],
-                            },
-                            {
-                                table: 'vector3',
-                                type: 'vector',
-                                name: 'y',
-                                axis: [0, 5, 0],
-                            },
-                            {
-                                table: 'vector3',
-                                type: 'vector',
-                                name: 'z',
-                                axis: [5, 0, 0],
-                            },
-
-                        ]
-                    },
-                ],
-            },
             {
                 name: 'First drawing',
                 type: 'drawing',
@@ -276,7 +122,7 @@ export default class Drawing {
     static setValueByPath(path, value) {
         return {
             type: Drawing.UPDATE_VALUE_BY_PATH,
-            path:  Array.isArray(path) ? path : [path],
+            path: Array.isArray(path) ? path : [path],
             value
         };
     }
@@ -285,8 +131,8 @@ export default class Drawing {
         let {path, value} = action;
 
         return {
-          ...state,
-          drawings: getStateWithValueByPath(state.drawings, path, value)
+            ...state,
+            drawings: getStateWithValueByPath(state.drawings, path, value)
         };
     }
 

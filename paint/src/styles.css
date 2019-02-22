@@ -328,7 +328,7 @@ h3 {
 }
 
 .selectedGrid {
-    background-color: lightgray !important;
+    background-color: rgba(180, 180, 180, 0.5) !important;
 }
 
 .selectedHeader {
