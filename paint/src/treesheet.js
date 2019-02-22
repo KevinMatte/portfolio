@@ -8,10 +8,11 @@ import PropTypes from 'prop-types';
 import {connect} from "react-redux";
 
 import Drawing from "./redux/actions/drawing";
-import {getValueByPath} from "./general/Utils";
+import {getGridCellStyle, getValueByPath} from "./general/Utils";
 import Cell from "./Cell";
 import TempValues from "./redux/actions/tempValues";
 
+import './treesheet.css'
 
 class Treesheet extends Component {
 
@@ -19,39 +20,7 @@ class Treesheet extends Component {
         super(props);
 
         this.topDivId = "TopDiv";
-        this.gridStyle = {
-            display: "grid",
-            gridGap: "0px",
-        };
-        this.pointerEvents = {
-            pointerEvents: "none",
-        };
 
-        this.cellStyle = {
-            padding: "1em",
-            pointerEvents: "auto",
-        };
-        this.headerStyle = {
-            ...this.cellStyle,
-            border: "1px solid black",
-            backgroundColor: "lightgrey",
-            padding: "1em",
-            color: "#3F3AD9",
-        };
-
-        this.columnHeaderStyle = {
-            ...this.headerStyle,
-            textAlign: "center",
-        };
-        this.rowHeaderStyle = {
-            ...this.headerStyle,
-            textAlign: "right",
-        };
-        this.valueStyle = {
-            ...this.cellStyle,
-            border: "1px solid lightgrey",
-            backgroundColor: "white",
-        };
         this.indentPixels = 30;
         this.headerColumnWidth = 150;
         this.rowHeight = 50;
@@ -189,18 +158,13 @@ class Treesheet extends Component {
         let sheetName = this.state.selectedSheetName || spreadsheet.sheetNames[0];
         let sheet = spreadsheet.sheetsByName[sheetName];
         let sheetStyle = {
-            ...this.gridStyle,
             gridTemplateColumns: `${this.headerColumnWidth}px`,
             gridTemplateRows: `${this.rowHeight}px`,
         };
 
-        let style = {
-            ...this.rowHeaderStyle,
-            gridArea: "1 / 1 / 1 / 1",
-        };
         return (
             <div style={sheetStyle} className="Spreadsheet">
-                <div style={style}>{sheet.typeName}</div>
+                <div className="SpreadsheetRowHeader" style={getGridCellStyle(1, 1)}>{sheet.typeName}</div>
             </div>);
     }
 
@@ -213,13 +177,13 @@ class Treesheet extends Component {
         let iCell = 0;
         let iCol = 4;
         sheet.type.columns.every((column, iColumn) => {
-            let style = {...this.columnHeaderStyle, gridRow: "1 / 1", gridColumn: iCol++};
-            iCol++; // Grid
             cells.push((
-                <div key={++iCell} style={style} className={iColumn === selectedCol ? "selectedHeader" : ""}>
+                <div key={++iCell} style={getGridCellStyle(1, iCol++)}
+                     className={"SpreadsheetColumnHeader " + (iColumn === selectedCol ? "selectedHeader" : "")}>
                     {column.label}
                 </div>
             ));
+            iCol++; // Grid
             return true;
         });
 
@@ -229,7 +193,6 @@ class Treesheet extends Component {
             return dest;
         }, []);
         let sheetStyle = {
-            ...this.gridStyle,
             gridTemplateColumns: `${indentWidth} ` + widths.join(" "),
             gridTemplateRows: `${this.rowHeight}px`,
         };
@@ -245,7 +208,6 @@ class Treesheet extends Component {
 
         let {selectedRow, spreadsheet} = this.state;
         let sheetStyle = {
-            ...this.gridStyle,
             gridTemplateColumns: `${this.headerColumnWidth}px`,
             gridTemplateRows: `repeat(${spreadsheet.openRows.length}, ${this.rowHeight}px)`,
         };
@@ -253,9 +215,9 @@ class Treesheet extends Component {
         let iCell = 0;
         spreadsheet.openRows.every((row, cellRow) => {
             let sheet = spreadsheet.sheetsByName[row.sheetName];
-            let style = {...this.rowHeaderStyle, gridRow: `${cellRow + 1} / ${cellRow + 1}`, gridColumn: 1};
             cells.push((
-                <div key={++iCell} style={style} className={cellRow === selectedRow ? "selectedHeader" : ""}>
+                <div key={++iCell} style={getGridCellStyle(cellRow + 1, 1)}
+                     className={"SpreadsheetRowHeader " + (cellRow === selectedRow ? "selectedHeader" : "")}>
                     {sheet.typeName}
                 </div>
             ));
@@ -263,7 +225,7 @@ class Treesheet extends Component {
         });
 
         return (
-            <div style={sheetStyle} className="Spreadsheet">
+            <div style={sheetStyle} className="Spreadsheet max_size">
                 {cells}
             </div>);
     }
@@ -272,35 +234,38 @@ class Treesheet extends Component {
         return (
             <div
                 id={this.topDivId}
-                className="flexVDisplay flexHStretched max_size"
+                className="flexVDisplay flexHStretched max_size overflowHidden"
 
             >
 
-                <div className="flexVStretched flexVDisplay" style={{overflow: "hidden"}}>
+                <div className="flexVStretched flexVDisplay">
                     <div className="flexFixed flexHDisplay">
                         <div className="flexFixed">
                             {this.renderColRowHeader()}
                         </div>
-                        <div className="flexHStretched columnHeaders" style={{overflow: "hidden"}}>
+                        <div className="flexHStretched columnHeaders">
                             {this.renderColumnHeaders()}
                         </div>
                     </div>
                     <div className="flexVStretched flexHDisplay">
-                        <div className="flexFixed rowHeaders" style={{overflow: "hidden"}}>
+                        <div className="flexFixed rowHeaders">
                             {this.renderRowHeaders()}
                         </div>
-                        <div className="flexHStretched" style={{overflow: "auto"}}>
+                        <div className="flexHStretched overflowAuto">
                             <div
-                                className="max_size"
+                                className="SpreadsheetScrollArea max_size"
                                 style={{
-                                    ...this.gridStyle,
                                     gridTemplateRows: "1fr",
                                     gridTemplateColumns: "1fr",
                                     overflow: "auto",
                                 }}
                                 onScroll={(event) => this.handleScroll(event)}
                             >
-                                {this.renderDataCells()}
+                                <div
+                                     className="SpreadsheetOverlay"
+                                >
+                                    {this.renderDataCells()}
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -308,7 +273,7 @@ class Treesheet extends Component {
                 <div
                     className="flexFixed">
                     <button onClick={() => console.log("kevin")}>+</button>
-                    ControlsControlsControlsControlsControlsControlsControlsControlsControlsControls
+                    Controls TBD.
                 </div>
             </div>
         );
@@ -348,12 +313,9 @@ class Treesheet extends Component {
                 let symbol = row.isOpen ? "-" : "+";
                 cells.push((
                     <div
-                        className="Cell middleText"
+                        className="middleText"
                         key={++iCell}
-                        style={{
-                            pointerEvents: "auto",
-                            gridArea: `${cellRow + 1} / 2 / ${cellRow + 1} / 2`,
-                        }}
+                        style={getGridCellStyle(cellRow + 1, 2)}
 
                     >
                         <button onClick={() => this.toggleOpen(row)}>{symbol}</button>
@@ -365,19 +327,17 @@ class Treesheet extends Component {
             // Display borders on selected column.
             if (selectedCol !== null && sheetName === selectedSheetName) {
                 let i = 2 * selectedCol + 4;
-                let leftStyle = {gridArea: `${cellRow + 1} / ${i - 1} / ${cellRow + 1} / ${i - 1}`};
                 cells.push((
                     <div
                         key={++iCell}
-                        style={leftStyle}
+                        style={getGridCellStyle(cellRow + 1, i - 1)}
                         className="selectedGrid"
                     >
                     </div>));
-                let rightStyle = {gridArea: `${cellRow + 1} / ${i + 1} / ${cellRow + 1} / ${i + 1}`};
                 cells.push((
                     <div
                         key={++iCell}
-                        style={rightStyle}
+                        style={getGridCellStyle(cellRow + 1, i + 1)}
                         className="selectedGrid"
                     >
                     </div>));
@@ -386,10 +346,8 @@ class Treesheet extends Component {
             let iCol = 4; // Skip first grid.
             row.values.every((value, cellCol) => {
 
-                let style = {...this.valueStyle, gridRow: `${cellRow + 1} / ${cellRow + 1}`, gridColumn: iCol++};
-                iCol++;
                 let isSelected = (cellRow === selectedRow && selectedCol === cellCol);
-                let cellClasses = isSelected ? "Cell selectedCell" : "Cell yellowOnHover";
+                let cellClasses = "ValueCell Cell";
                 let cell;
                 if (isSelected) {
                     cell = <Cell
@@ -403,7 +361,7 @@ class Treesheet extends Component {
                 cells.push((
                     <div
                         key={++iCell}
-                        style={style}
+                        style={getGridCellStyle(cellRow + 1, iCol++)}
                         className={cellClasses}
                         onMouseOver={() => this.handleCellHover(sheetName)}
                         onMouseUp={() => this.handleCellSelect(sheetName, cellRow, cellCol)}
@@ -411,6 +369,7 @@ class Treesheet extends Component {
                         {cell}
                     </div>
                 ));
+                iCol++;
                 return true;
             });
             return true;
@@ -426,23 +385,16 @@ class Treesheet extends Component {
             let indentWidth = `${this.gridWidth} ${sheet.path.length * this.indentPixels}px`;
 
             return (
-                <div id={sheetName} key={sheetName} className="Spreadsheet"
-                     style={{
-                         ...this.pointerEvents,
-                         gridArea: "1 / 1 / 1 / 1",
-
-                     }}
+                <div
+                    id={sheetName} key={sheetName}
+                    className="Spreadsheet max_size"
+                    style={{
+                        ...getGridCellStyle(1, 1),
+                        gridTemplateRows: `repeat(${spreadsheet.openRows.length}, ${this.rowHeight}px)`,
+                        gridTemplateColumns: `${indentWidth} ${widths} ${this.gridWidth}`,
+                    }}
                 >
-                    <div
-                        className="max_size"
-                        style={{
-                            ...this.gridStyle,
-                            gridTemplateRows: `repeat(${spreadsheet.openRows.length}, ${this.rowHeight}px)`,
-                            gridTemplateColumns: `${indentWidth} ${widths} ${this.gridWidth}`,
-                        }}
-                    >
-                        {cellsBySheet[sheetName]}
-                    </div>
+                    {cellsBySheet[sheetName]}
                 </div>);
         });
     }
@@ -450,7 +402,7 @@ class Treesheet extends Component {
     setEditValue = value => this.props.setTempValueByPath(this.props.name, value);
 
     handleCellSelect(sheetName, cellRow, cellCol) {
-        let {selectedRow, selectedCol, spreadsheet} = this.state;
+        let {selectedRow, selectedCol} = this.state;
         if (cellRow !== selectedRow || selectedCol !== cellCol) {
             if (selectedRow !== null) {
                 this.saveEditValue(selectedRow, selectedCol);

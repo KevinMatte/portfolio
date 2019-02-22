@@ -1,0 +1,65 @@
+.Spreadsheet {
+    pointer-events: none !important;
+    display: grid;
+    grid-gap: 0;
+}
+
+.SpreadsheetOverlay {
+    display: grid;
+    grid-gap: 0;
+}
+
+.SpreadsheetScrollArea {
+    display: grid;
+    grid-gap: 0;
+    grid-template-rows: 1fr;
+    grid-template-columns: 1fr;
+    overflow: auto;
+}
+
+.Spreadsheet * {
+    pointer-events: auto;
+}
+
+/*noinspection CssUnusedSymbol*/
+.SpreadsheetColumnHeader {
+    border: 1px solid black;
+    background-color: lightgrey;
+    padding: 1em;
+    color: #3F3AD9;
+    text-align: center;
+}
+
+.SpreadsheetRowHeader {
+    border: 1px solid black;
+    background-color: lightgrey;
+    padding: 1em;
+    color: #3F3AD9;
+    text-align: right
+}
+
+/*noinspection CssUnusedSymbol*/
+.ValueCell {
+    border: 1px solid lightgrey;
+    background-color: white;
+}
+
+.Cell:hover {
+    background-color: yellow !important;
+}
+
+/*noinspection CssUnusedSymbol*/
+.selectedCell {
+    background-color: lightgreen !important;
+}
+
+.selectedGrid {
+    background-color: rgba(180, 180, 180, 0.5) !important;
+}
+
+/*noinspection CssUnusedSymbol*/
+.selectedHeader {
+    background-color: yellow !important;
+}
+
+

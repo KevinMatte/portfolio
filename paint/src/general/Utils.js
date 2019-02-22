@@ -63,6 +63,13 @@ export function compareObjects(obj1, obj2)
     );
 }
 
+export function getGridCellStyle(startRow, startCol, endRow, endCol) {
+    endRow = (endRow !== undefined) ? endRow : startRow;
+    endCol = (endCol !== undefined) ? endCol : startCol;
+
+    return {gridArea: `${startRow} / ${startCol} / ${endRow} / ${endCol}`};
+}
+
 export function setValueByPath(obj, path, value) {
     let field, parentPath, parentObj;
     if (Array.isArray(path)) {

@@ -15,9 +15,9 @@ html, body, #root, .container {
 }
 
 pre {
-    white-space: pre-wrap;       /* Since CSS 2.1 */
-    white-space: -moz-pre-wrap;  /* Mozilla, since 1999 */
-    word-wrap: break-word;       /* Internet Explorer 5.5+ */
+    white-space: pre-wrap; /* Since CSS 2.1 */
+    white-space: -moz-pre-wrap; /* Mozilla, since 1999 */
+    word-wrap: break-word; /* Internet Explorer 5.5+ */
     margin: unset;
 }
 
@@ -120,9 +120,12 @@ h3 {
     fill: black !important;
 }
 
-.auto_overflow {
-    overflow-x: auto;
-    overflow-y: auto;
+.overflowAuto {
+    overflow: auto;
+}
+
+.overflowHidden {
+    overflow: hidden;
 }
 
 .actionField {
@@ -285,6 +288,7 @@ h3 {
     text-align: right;
     vertical-align: top;
 }
+
 .tableRowColorAlternate .value {
     text-align: left;
 }
@@ -359,6 +363,7 @@ h3 {
 .tableRowsNormal tr {
     height: 32px !important;
 }
+
 .tableRowsNormal th {
     font-weight: bold !important;
     font-size: 16px !important;
