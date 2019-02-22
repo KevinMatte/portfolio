@@ -10,6 +10,8 @@ import {connect} from "react-redux";
 import {getGridCellStyle, getValueByPath} from "../general/Utils";
 import TreesheetModel from "../model/treesheet";
 import DataSheet from './datasheet';
+import RowHeaders from './rowheaders';
+import ColumnHeaders from './columnheaders';
 
 import './treesheet.css'
 
@@ -27,16 +29,16 @@ class Treesheet extends Component {
 
 
         this.state = {
-            spreadsheet: this.createSpreadsheet(props),
+            spreadsheet: Treesheet.createSpreadsheet(props),
         }
     }
 
-    createSpreadsheet = (props) => new TreesheetModel(props.name, props.types, props.dataTree);
+    static createSpreadsheet = (props) => new TreesheetModel(props.name, props.types, props.dataTree);
 
     static getDerivedStateFromProps(nextProps, prevState) {
         let spreadsheet;
         if (!prevState.hasOwnProperty("spreadsheet") || prevState.spreadsheet.name !== nextProps.name)
-            spreadsheet = this.createSpreadsheet(nextProps);
+            spreadsheet = Treesheet.createSpreadsheet(nextProps);
         else
             spreadsheet = prevState.spreadsheet;
         return {spreadsheet}
@@ -65,7 +67,7 @@ class Treesheet extends Component {
     renderColRowHeader() {
         // Render grid header
         let spreadsheet = this.state.spreadsheet;
-        let sheetName = this.state.selectedSheetName || spreadsheet.sheetNames[0];
+        let sheetName = this.props.selectedSheetName || spreadsheet.sheetNames[0];
         let sheet = spreadsheet.sheetsByName[sheetName];
         let sheetStyle = {
             gridTemplateColumns: `${this.headerColumnWidth}px`,
@@ -75,70 +77,6 @@ class Treesheet extends Component {
         return (
             <div style={sheetStyle} className="Spreadsheet">
                 <div className="SpreadsheetRowHeader" style={getGridCellStyle(1, 1)}>{sheet.typeName}</div>
-            </div>);
-    }
-
-    renderColumnHeaders() {
-        // Render grid header
-        let {spreadsheet} = this.state;
-        let {selectedSheetName, selectedCol} = this.props;
-        let sheet = spreadsheet.sheetsByName[selectedSheetName || spreadsheet.sheetNames[0]];
-
-        let cells = [];
-        let iCell = 0;
-        let iCol = 4;
-        sheet.type.columns.every((column, iColumn) => {
-            cells.push((
-                <div key={++iCell} style={getGridCellStyle(1, iCol++)}
-                     className={"SpreadsheetColumnHeader " + (iColumn === selectedCol ? "selectedHeader" : "")}>
-                    {column.label}
-                </div>
-            ));
-            iCol++; // Grid
-            return true;
-        });
-
-        let indentWidth = `${this.gridWidth} ${sheet.path.length * this.indentPixels}px`;
-        let widths = sheet.type.columns.reduce((dest, col) => {
-            dest.push(this.gridWidth, col.width);
-            return dest;
-        }, []);
-        let sheetStyle = {
-            gridTemplateColumns: `${indentWidth} ` + widths.join(" "),
-            gridTemplateRows: `${this.rowHeight}px`,
-        };
-
-        return (
-            <div style={sheetStyle} className="Spreadsheet">
-                {cells}
-            </div>);
-    }
-
-    renderRowHeaders() {
-        // Render grid div
-
-        let {spreadsheet} = this.state;
-        let {selectedRow} = this.props;
-        let sheetStyle = {
-            gridTemplateColumns: `${this.headerColumnWidth}px`,
-            gridTemplateRows: `repeat(${spreadsheet.openRows.length}, ${this.rowHeight}px)`,
-        };
-        let cells = [];
-        let iCell = 0;
-        spreadsheet.openRows.every((row, cellRow) => {
-            let sheet = spreadsheet.sheetsByName[row.sheetName];
-            cells.push((
-                <div key={++iCell} style={getGridCellStyle(cellRow + 1, 1)}
-                     className={"SpreadsheetRowHeader " + (cellRow === selectedRow ? "selectedHeader" : "")}>
-                    {sheet.typeName}
-                </div>
-            ));
-            return true;
-        });
-
-        return (
-            <div style={sheetStyle} className="Spreadsheet max_size">
-                {cells}
             </div>);
     }
 
@@ -156,12 +94,23 @@ class Treesheet extends Component {
                             {this.renderColRowHeader()}
                         </div>
                         <div className="flexHStretched columnHeaders">
-                            {this.renderColumnHeaders()}
+                            <ColumnHeaders
+                                name={this.props.name}
+                                spreadsheet={this.state.spreadsheet}
+                                rowHeight={50}
+                                indentPixels={30}
+                                gridWidth="5px"
+                            />
                         </div>
                     </div>
                     <div className="flexVStretched flexHDisplay">
                         <div className="flexFixed rowHeaders">
-                            {this.renderRowHeaders()}
+                            <RowHeaders
+                                name={this.props.name}
+                                spreadsheet={this.state.spreadsheet}
+                                rowHeight={50}
+                                headerColumnWidth={this.headerColumnWidth}
+                            />
                         </div>
                         <div className="flexHStretched overflowAuto">
                             <div
@@ -174,6 +123,9 @@ class Treesheet extends Component {
                                 <DataSheet
                                     name={this.props.name}
                                     spreadsheet={this.state.spreadsheet}
+                                    rowHeight={50}
+                                    indentPixels={30}
+                                    gridWidth="5px"
                                 />
                             </div>
                         </div>
@@ -215,8 +167,7 @@ const mapStateToProps = (state, ownProps) => {
     }
 };
 
-const mapDispatchToProps = {
-};
+const mapDispatchToProps = {};
 
 export default connect(
     mapStateToProps,

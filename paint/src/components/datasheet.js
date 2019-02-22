@@ -1,7 +1,5 @@
 /* Copyright (C) 2019 Kevin Matte - All Rights Reserved */
 
-/* Copyright (C) 2019 Kevin Matte - All Rights Reserved */
-
 import React, {Component} from 'react';
 
 import {getGridCellStyle, getValueByPath} from "../general/Utils";
@@ -15,16 +13,6 @@ import {connect} from "react-redux"; // km
 
 class Datasheet extends Component {
 
-    constructor(props) {
-        super(props);
-
-        this.indentPixels = 30;
-        this.headerColumnWidth = 150;
-        this.rowHeight = 50;
-        this.gridWidth = "5px";
-
-    }
-
     setTempValueByPath = (field, value) => this.props.setTempValueByPath(`${this.props.name}/${field}`, value);
 
     handleCellHover(sheetName) {
@@ -35,13 +23,13 @@ class Datasheet extends Component {
     }
 
     handleCellSelect(sheetName, cellRow, cellCol) {
-        let {selectedRow, selectedCol} = this.props;
+        let {selectedRow, selectedCol, spreadsheet} = this.props;
         if (cellRow !== selectedRow || selectedCol !== cellCol) {
             if (selectedRow !== null) {
                 this.saveEditValue(selectedRow, selectedCol);
             }
             if (cellRow != null) {
-                let value = this.props.spreadsheet.openRows[cellRow].values[cellCol];
+                let value = spreadsheet.openRows[cellRow].values[cellCol];
                 this.setEditValue(value);
                 this.setTempValueByPath('selectedSheetName', sheetName);
                 this.setTempValueByPath('selectedRow', cellRow);
@@ -52,7 +40,7 @@ class Datasheet extends Component {
     }
 
     renderSheets() {
-        let {spreadsheet, selectedSheetName, selectedRow, selectedCol} = this.props;
+        let {spreadsheet, selectedSheetName, selectedRow, selectedCol, editValue, gridWidth, indentPixels, rowHeight} = this.props;
 
         let cellsBySheet = spreadsheet.sheetNames.reduce(
             (dst, sheetName) => {
@@ -112,7 +100,7 @@ class Datasheet extends Component {
                 if (isSelected) {
                     cell = <Cell
                         doEdit={isSelected}
-                        value={this.props.editValue}
+                        value={editValue}
                         setValue={value => this.setEditValue(value)}
                     />;
                 } else {
@@ -139,10 +127,10 @@ class Datasheet extends Component {
             let sheet = spreadsheet.sheetsByName[sheetName];
             // Render grid div
             let widths = sheet.type.columns.reduce((dest, col) => {
-                dest.push(this.gridWidth, col.width);
+                dest.push(gridWidth, col.width);
                 return dest;
             }, []).join(" ");
-            let indentWidth = `${this.gridWidth} ${sheet.path.length * this.indentPixels}px`;
+            let indentWidth = `${gridWidth} ${sheet.path.length * indentPixels}px`;
 
             return (
                 <div
@@ -150,8 +138,8 @@ class Datasheet extends Component {
                     className="Spreadsheet max_size"
                     style={{
                         ...getGridCellStyle(1, 1),
-                        gridTemplateRows: `repeat(${spreadsheet.openRows.length}, ${this.rowHeight}px)`,
-                        gridTemplateColumns: `${indentWidth} ${widths} ${this.gridWidth}`,
+                        gridTemplateRows: `repeat(${spreadsheet.openRows.length}, ${rowHeight}px)`,
+                        gridTemplateColumns: `${indentWidth} ${widths} ${gridWidth}`,
                     }}
                 >
                     {cellsBySheet[sheetName]}
@@ -182,13 +170,15 @@ class Datasheet extends Component {
     };
 
     saveEditValue(cellRow, cellCol) {
-        let row = this.props.spreadsheet.openRows[cellRow];
-        let sheet = this.props.spreadsheet.sheetsByName[row.sheetName];
+        let {spreadsheet, editValue} = this.props;
+
+        let row = spreadsheet.openRows[cellRow];
+        let sheet = spreadsheet.sheetsByName[row.sheetName];
         let columnPath = sheet.type.columns[cellCol].path;
         columnPath = Array.isArray(columnPath) ? columnPath : [columnPath];
         let path = [...row.path, ...columnPath];
-        this.props.setValueByPath(path, this.props.editValue);
-        row.values[cellCol] = this.props.editValue;
+        this.props.setValueByPath(path, editValue);
+        row.values[cellCol] = editValue;
     }
 
 
