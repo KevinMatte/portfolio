@@ -344,7 +344,7 @@ class App extends Component {
         }
     }
 
-    renderPleaseLogin() {
+    renderPleaseLogin = () => {
         return (
             <div className="doIndent overflowAuto max_size">
                 <h1>Please log in.</h1>

@@ -40,6 +40,7 @@ const mapStateToProps = (state, ownProps) => {
     return {
         selectedRow: getValueByPath(state.tempValues.values, `${ownProps.name}/selectedRow`, null),
         selectedCol: getValueByPath(state.tempValues.values, `${ownProps.name}/selectedCol`, null),
+        updated: getValueByPath(state.tempValues.values, `${ownProps.name}/updated`, 0),
     }
 };
 
