@@ -1,6 +1,6 @@
 /* Copyright (C) 2019 Kevin Matte - All Rights Reserved */
 
-import {getStateWithValueByPath} from "../../general/Utils";
+import {duplicateStateValueByPath, setStateValueByPath} from "../../general/Utils";
 
 export default class Drawing {
     static initialState = {
@@ -117,11 +117,11 @@ export default class Drawing {
         ],
     };
 
-    static UPDATE_VALUE_BY_PATH = "UPDATE_VALUE_BY_PATH";
+    static SET_VALUE_BY_PATH = "SET_VALUE_BY_PATH";
 
     static setValueByPath(path, value) {
         return {
-            type: Drawing.UPDATE_VALUE_BY_PATH,
+            type: Drawing.SET_VALUE_BY_PATH,
             path: Array.isArray(path) ? path : [path],
             value
         };
@@ -132,14 +132,36 @@ export default class Drawing {
 
         return {
             ...state,
-            drawings: getStateWithValueByPath(state.drawings, path, value)
+            drawings: setStateValueByPath(state.drawings, path, value),
+        };
+    }
+
+    static DUPLICATE_PATH = "DUPLICATE_PATH";
+
+    static duplicatePath(path, value, newField=null) {
+        return {
+            type: Drawing.DUPLICATE_PATH,
+            path: Array.isArray(path) ? path : [path],
+            value,
+            newField,
+        };
+    }
+    static duplicatePathReducer(state, action) {
+        let {path, value, newField} = action;
+
+        return {
+            ...state,
+            drawings: duplicateStateValueByPath(state.drawings, path, value, newField),
         };
     }
 
     static reducer(drawing = Drawing.initialState, action) {
         switch (action.type) {
-            case Drawing.UPDATE_VALUE_BY_PATH:
+            case Drawing.SET_VALUE_BY_PATH:
                 return Drawing.setValueByPathReducer(drawing, action);
+
+            case Drawing.DUPLICATE_PATH:
+                return Drawing.duplicatePathReducer(drawing, action);
 
             default:
                 return drawing;

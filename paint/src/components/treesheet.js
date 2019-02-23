@@ -9,11 +9,12 @@ import {connect} from "react-redux";
 
 
 import {getValueByPath} from "../general/Utils";
-import TreesheetModel from "../model/treesheet";
+import TreesheetModel from "../model/treeModel";
 import DataSheet from './datasheet';
 import RowHeaders from './rowheaders';
 import ColumnHeaders from './columnheaders';
 import TopLeftCorner from './topleftcorner';
+import TreeControls from './TreeControls';
 
 import './treesheet.css'
 
@@ -124,12 +125,10 @@ class Treesheet extends Component {
                 </div>
                 <div
                     className="flexFixed">
-                    <button onClick={() => console.log("kevin")}>+</button>
-                    Controls TBD.
-                    Controls TBD.
-                    Controls TBD.
-                    Controls TBD.
-                    Controls TBD.
+                    <TreeControls
+                        name={this.props.name}
+                        spreadsheet={this.state.spreadsheet}
+                    />
                 </div>
             </div>
         );

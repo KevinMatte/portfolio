@@ -1,6 +1,6 @@
 /* Copyright (C) 2019 Kevin Matte - All Rights Reserved */
 
-import {getStateWithValueByPath} from "../../general/Utils";
+import {setStateValueByPath} from "../../general/Utils";
 
 export default class TempValues {
     static SET_VALUE_BY_PATH = "SET_VALUE_BY_PATH";
@@ -21,7 +21,7 @@ export default class TempValues {
         let {path, value} = action;
         return {
             ...editValue,
-            values: getStateWithValueByPath(editValue.values, path, value),
+            values: setStateValueByPath(editValue.values, path, value),
         };
     }
 

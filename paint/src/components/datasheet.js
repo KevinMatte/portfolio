@@ -4,7 +4,6 @@ import React, {Component} from 'react';
 
 import {getGridCellStyle, getValueByPath} from "../general/Utils";
 import Cell from "./Cell";
-import TreesheetModel from "../model/treesheet";
 
 import './treesheet.css'
 import Drawing from "../redux/actions/drawing";
@@ -30,12 +29,18 @@ class Datasheet extends Component {
                 this.saveEditValue(selectedRow, selectedCol);
             }
             if (cellRow != null) {
-                let value = spreadsheet.openRows[cellRow].values[cellCol];
+                let row = spreadsheet.openRows[cellRow];
+                let value = row.values[cellCol];
                 this.setEditValue(value);
                 this.setTempValueByPath('selectedSheetName', sheetName);
                 this.setTempValueByPath('selectedRow', cellRow);
                 this.setTempValueByPath('selectedCol', cellCol);
 
+                let sheet = spreadsheet.sheetsByName[row.sheetName];
+                let columnPath = sheet.type.columns[cellCol].path;
+                columnPath = Array.isArray(columnPath) ? columnPath : [columnPath];
+                let path = [...row.path, ...columnPath];
+                this.setTempValueByPath('selectedPath', path);
             }
         }
     }
@@ -166,11 +171,16 @@ class Datasheet extends Component {
         row.isOpen = !row.isOpen;
         this.props.spreadsheet.updateSpreadsheetOpenRows();
         this.handleCellSelect(null, null, null);
+        this.dropSelection();
+    };
+
+    dropSelection() {
         this.setTempValueByPath('updated', this.props.updated + 1);
         this.setTempValueByPath('selectedSheetName', null);
         this.setTempValueByPath('selectedRow', null);
         this.setTempValueByPath('selectedCol', null);
-    };
+        this.setTempValueByPath('selectedPath', null);
+    }
 
     saveEditValue(cellRow, cellCol) {
         let {spreadsheet, editValue} = this.props;
@@ -196,6 +206,7 @@ const mapStateToProps = (state, ownProps) => {
         selectedSheetName: getValueByPath(state.tempValues.values, `${ownProps.name}/selectedSheetName`, null),
         selectedRow: getValueByPath(state.tempValues.values, `${ownProps.name}/selectedRow`, null),
         selectedCol: getValueByPath(state.tempValues.values, `${ownProps.name}/selectedCol`, null),
+        selectedPath: getValueByPath(state.tempValues.values, `${ownProps.name}/selectedPath`, null),
     }
 };
 

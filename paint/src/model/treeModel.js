@@ -1,6 +1,6 @@
-import {getValueByPath} from "../general/Utils";
+import {cloneObject, getValueByPath} from "../general/Utils";
 
-export default class Treesheet {
+export default class TreeModel {
 
     constructor(name, types, dataTree) {
         this.name = name;
@@ -72,6 +72,28 @@ export default class Treesheet {
         });
     }
 
+    duplicateRow(iFirstRow) {
+        let iRow = iFirstRow;
+        let iSplicePoint = iFirstRow;
+        let newRows = [];
+        let indent = this.rows[iRow].path.length;
+        while (iRow < this.rows.length && (iRow === iFirstRow || this.rows[iRow].path.length > indent)) {
+            let newRow = cloneObject(this.rows[iRow]);
+            newRow.path[indent - 1]++;
+            newRows.push(newRow);
+            iRow++;
+        }
+        if (newRows.length > 0) {
+            iSplicePoint = iRow;
+            while (iRow < this.rows.length && this.rows[iRow].path.length >= indent) {
+                this.rows[iRow].path[indent - 1]++;
+                iRow++;
+            }
+            this.rows.splice(iSplicePoint, 0, ...newRows);
+        }
+        this.updateSpreadsheetOpenRows();
+        return iSplicePoint;
+    }
 
     updateSpreadsheetOpenRows() {
         let openIndent = -1;
@@ -87,3 +109,4 @@ export default class Treesheet {
         });
     }
 }
+
