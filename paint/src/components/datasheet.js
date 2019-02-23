@@ -25,10 +25,10 @@ class Datasheet extends Component {
     handleCellSelect(sheetName, cellRow, cellCol) {
         let {selectedRow, selectedCol, spreadsheet} = this.props;
         if (cellRow !== selectedRow || selectedCol !== cellCol) {
-            if (selectedRow !== null) {
+            if (selectedRow !== null && selectedCol != null) {
                 this.saveEditValue(selectedRow, selectedCol);
             }
-            if (cellRow != null) {
+            if (cellRow != null && cellCol != null) {
                 let row = spreadsheet.openRows[cellRow];
                 let value = row.values[cellCol];
                 this.setEditValue(value);

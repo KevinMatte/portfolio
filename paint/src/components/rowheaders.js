@@ -2,8 +2,37 @@ import {Component} from "react";
 import {getGridCellStyle, getValueByPath} from "../general/Utils";
 import React from "react";
 import {connect} from "react-redux";
+import TempValues from "../redux/actions/tempValues";
+import Drawing from "../redux/actions/drawing";
 
 class RowHeaders extends Component {
+
+    setTempValueByPath = (field, value) => this.props.setTempValueByPath(`${this.props.name}/${field}`, value);
+
+    handleCellSelect(sheetName, cellRow, cellCol) {
+        let row;
+        console.log(`select ${sheetName} ${cellRow} ${cellCol}`)
+        let {selectedRow, selectedCol, spreadsheet, editValue} = this.props;
+        if (cellRow !== selectedRow || selectedCol !== cellCol) {
+            if (selectedRow !== null && selectedCol != null) {
+                row = spreadsheet.openRows[selectedRow];
+                let sheet = spreadsheet.sheetsByName[row.sheetName];
+                let columnPath = sheet.type.columns[selectedCol].path;
+                columnPath = Array.isArray(columnPath) ? columnPath : [columnPath];
+                let path = [...row.path, ...columnPath];
+                this.props.setValueByPath(path, editValue);
+                row.values[selectedCol] = editValue;
+            }
+            if (cellRow != null) {
+                row = spreadsheet.openRows[cellRow];
+                this.setTempValueByPath('selectedSheetName', sheetName);
+                this.setTempValueByPath('selectedRow', cellRow);
+                this.setTempValueByPath('selectedCol', cellCol);
+                this.setTempValueByPath('selectedPath', row.path);
+            }
+            this.setTempValueByPath('updated', this.props.updated + 1);
+        }
+    }
 
     render() {
         // Render grid div
@@ -18,8 +47,12 @@ class RowHeaders extends Component {
         spreadsheet.openRows.every((row, cellRow) => {
             let sheet = spreadsheet.sheetsByName[row.sheetName];
             cells.push((
-                <div key={++iCell} style={getGridCellStyle(cellRow + 1, 1)}
-                     className={"SpreadsheetRowHeader " + (cellRow === selectedRow ? "selectedHeader" : "")}>
+                <div
+                    key={++iCell}
+                    style={getGridCellStyle(cellRow + 1, 1)
+                    }
+                    onMouseUp={() => this.handleCellSelect(row.sheetName, cellRow, null)}
+                    className={"SpreadsheetRowHeader " + (cellRow === selectedRow ? "selectedHeader" : "")}>
                     {sheet.typeName}
                 </div>
             ));
@@ -40,11 +73,15 @@ const mapStateToProps = (state, ownProps) => {
     return {
         selectedRow: getValueByPath(state.tempValues.values, `${ownProps.name}/selectedRow`, null),
         selectedCol: getValueByPath(state.tempValues.values, `${ownProps.name}/selectedCol`, null),
+        editValue: getValueByPath(state.tempValues.values, `${ownProps.name}/editValue`, 0),
         updated: getValueByPath(state.tempValues.values, `${ownProps.name}/updated`, 0),
     }
 };
 
-const mapDispatchToProps = {};
+const mapDispatchToProps = {
+    setValueByPath: Drawing.setValueByPath,
+    setTempValueByPath: TempValues.setValueByPath,
+};
 
 export default connect(
     mapStateToProps,

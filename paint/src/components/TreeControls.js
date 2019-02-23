@@ -28,8 +28,11 @@ class TreeControls extends Component {
         let {selectedPath} = this.props;
         let rowPath = "";
         if (selectedPath) {
-            rowPath = [...selectedPath];
-            rowPath.pop();
+            if (this.props.selectedCol !== null) {
+                rowPath = [...selectedPath];
+                rowPath.pop();
+            } else
+                rowPath = selectedPath;
             rowPath = `path ${rowPath.join("/")}`
         }
         let hasSelection = !!selectedPath;
@@ -54,6 +57,7 @@ const mapStateToProps = (state, ownProps) => {
         selectedPath: getValueByPath(state.tempValues.values, `${ownProps.name}/selectedPath`, null),
         updated: getValueByPath(state.tempValues.values, `${ownProps.name}/updated`, 0),
         selectedRow: getValueByPath(state.tempValues.values, `${ownProps.name}/selectedRow`, null),
+        selectedCol: getValueByPath(state.tempValues.values, `${ownProps.name}/selectedCol`, null),
     }
 };
 
