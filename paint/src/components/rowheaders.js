@@ -31,6 +31,12 @@ class RowHeaders extends Component {
                 this.setTempValueByPath('selectedPath', row.path);
             }
             this.setTempValueByPath('updated', this.props.updated + 1);
+        } else if (cellRow === selectedRow && selectedCol === cellCol && cellCol === null) {
+            this.setTempValueByPath('updated', this.props.updated + 1);
+            this.setTempValueByPath('selectedSheetName', null);
+            this.setTempValueByPath('selectedRow', null);
+            this.setTempValueByPath('selectedCol', null);
+            this.setTempValueByPath('selectedPath', null);
         }
     }
 

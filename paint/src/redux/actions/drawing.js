@@ -1,6 +1,6 @@
 /* Copyright (C) 2019 Kevin Matte - All Rights Reserved */
 
-import {duplicateStateValueByPath, setStateValueByPath} from "../../general/Utils";
+import {duplicateStateValueByPath, deleteStateValueByPath, setStateValueByPath} from "../../general/Utils";
 
 export default class Drawing {
     static initialState = {
@@ -136,6 +136,25 @@ export default class Drawing {
         };
     }
 
+    static DELETE_PATH = "DELETE_PATH";
+
+    static deletePath(path, value, newField=null) {
+        return {
+            type: Drawing.DELETE_PATH,
+            path: Array.isArray(path) ? path : [path],
+            value,
+            newField,
+        };
+    }
+    static deletePathReducer(state, action) {
+        let {path, value, newField} = action;
+
+        return {
+            ...state,
+            drawings: deleteStateValueByPath(state.drawings, path, value, newField),
+        };
+    }
+
     static DUPLICATE_PATH = "DUPLICATE_PATH";
 
     static duplicatePath(path, value, newField=null) {
@@ -162,6 +181,9 @@ export default class Drawing {
 
             case Drawing.DUPLICATE_PATH:
                 return Drawing.duplicatePathReducer(drawing, action);
+
+            case Drawing.DELETE_PATH:
+                return Drawing.deletePathReducer(drawing, action);
 
             default:
                 return drawing;

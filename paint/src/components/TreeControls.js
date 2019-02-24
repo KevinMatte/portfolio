@@ -4,9 +4,10 @@ import React from "react";
 import {connect} from "react-redux";
 
 import Toolbar from '@material-ui/core/Toolbar'
-import Button from "@material-ui/core/Button";
+// import Button from "@material-ui/core/Button";
 import Typography from '@material-ui/core/Typography';
 
+import Button from "../core/Button";
 import {getValueByPath} from "../general/Utils";
 import Drawing from "../redux/actions/drawing";
 import TempValues from "../redux/actions/tempValues";
@@ -20,32 +21,66 @@ class TreeControls extends Component {
         let selectedRow = this.props.spreadsheet.duplicateRow(this.props.selectedRow);
         this.setTempValueByPath('selectedRow', selectedRow);
         this.setTempValueByPath('updated', this.props.updated + 1);
-    }
+    };
+
+    handleDelete = () => {
+        let rowPath = [...this.props.selectedPath];
+        rowPath.pop();
+        this.props.deletePath(rowPath);
+        let selectedRow = this.props.spreadsheet.deleteRow(this.props.selectedRow);
+        this.setTempValueByPath('selectedRow', selectedRow);
+        this.setTempValueByPath('updated', this.props.updated + 1);
+    };
 
     setTempValueByPath = (field, value) => this.props.setTempValueByPath(`${this.props.name}/${field}`, value);
 
     render() {
         let {selectedPath} = this.props;
-        let rowPath = "";
+        let message = "";
         if (selectedPath) {
             if (this.props.selectedCol !== null) {
-                rowPath = [...selectedPath];
-                rowPath.pop();
+                message = [...selectedPath];
+                message.pop();
             } else
-                rowPath = selectedPath;
-            rowPath = `path ${rowPath.join("/")}`
+                message = selectedPath;
+            message = `path ${message.join("/")}`
+        } else {
+            message = "No selection."
         }
         let hasSelection = !!selectedPath;
         return (
             <Toolbar>
+                <Button
+                    variant="contained"
+                    onClick={console.log("Help")}
+                    corner="TR"
+                    helpText="This is a help button."
+                >
+                    Help
+                </Button>
                 {hasSelection &&
-                <Button color="primary" variant="contained" onClick={this.handleDuplicate}>
+                <Button
+                    variant="contained"
+                    onClick={this.handleDuplicate}
+                    corner="TR"
+                    helpText="Duplicates the selected row, and it's children (indent) if any."
+                >
                     Duplicate
+                </Button>
+                }
+                {hasSelection &&
+                <Button
+                    variant="contained"
+                    onClick={this.handleDelete}
+                    corner="TR"
+                    helpText="Deletes the selected row, and it's children (indent) if any."
+                >
+                    Delete
                 </Button>
                 }
                 &nbsp;
                 <Typography>
-                    {rowPath}
+                    {message}
                 </Typography>
             </Toolbar>
         );
@@ -63,6 +98,7 @@ const mapStateToProps = (state, ownProps) => {
 
 const mapDispatchToProps = {
     duplicatePath: Drawing.duplicatePath,
+    deletePath: Drawing.deletePath,
     setTempValueByPath: TempValues.setValueByPath,
 };
 

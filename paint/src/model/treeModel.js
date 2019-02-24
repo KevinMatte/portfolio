@@ -95,6 +95,25 @@ export default class TreeModel {
         return iSplicePoint;
     }
 
+    deleteRow(iFirstRow) {
+        let iRow = iFirstRow;
+        let iSplicePoint = iFirstRow;
+        let deleteCount = 0;
+        let indent = this.rows[iRow].path.length;
+        while (iRow < this.rows.length && (iRow === iFirstRow || this.rows[iRow].path.length > indent)) {
+            iRow++;
+            deleteCount++;
+        }
+        while (iRow < this.rows.length && this.rows[iRow].path.length >= indent) {
+            this.rows[iRow].path[indent - 1]--;
+            iRow++;
+        }
+        this.rows.splice(iSplicePoint, deleteCount);
+
+        this.updateSpreadsheetOpenRows();
+        return iSplicePoint;
+    }
+
     updateSpreadsheetOpenRows() {
         let openIndent = -1;
         this.openRows = this.rows.filter((row) => {

@@ -56,13 +56,20 @@ class Treesheet extends Component {
                 break;
         }
         if (topDiv !== document) {
+            let r1, r2, headersDivs, headersDiv;
             let {scrollTop, scrollLeft} = bodyDiv;
-            let rowHeadersDivs = topDiv.getElementsByClassName("rowHeaders");
-            if (rowHeadersDivs)
-                rowHeadersDivs[0].scrollTop = scrollTop;
-            let columnHeadersDivs = topDiv.getElementsByClassName("columnHeaders");
-            if (columnHeadersDivs)
-                columnHeadersDivs[0].scrollLeft = scrollLeft;
+
+            headersDivs = topDiv.getElementsByClassName("rowHeaders");
+            if (headersDivs.length > 0) {
+                headersDiv = headersDivs[0];
+                headersDiv.scrollTop = scrollTop;
+            }
+
+            headersDivs = topDiv.getElementsByClassName("columnHeaders");
+            if (headersDivs.length > 0) {
+                headersDiv = headersDivs[0];
+                headersDiv.scrollLeft = scrollLeft;
+            }
         }
     };
 

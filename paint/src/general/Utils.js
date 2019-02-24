@@ -91,6 +91,29 @@ export function cloneObject(obj) {
     return newObject;
 }
 
+export function deleteStateValueByPath(state, path, newField=null) {
+    path = Array.isArray(path) ? path : path.split("/");
+    let valueField = path.pop();
+
+    let newState = Array.isArray(state) ? [...state] : {...state};
+
+    let parent = newState;
+    path.every(pathNode => {
+        let child = parent[pathNode];
+        child = Array.isArray(child) ? [...child] : {...child};
+        parent[pathNode] = child;
+        parent = child;
+        return true;
+    });
+    if (Array.isArray(parent)) {
+        parent.splice(valueField, 1);
+    } else {
+        delete parent[valueField];
+    }
+
+    return newState;
+}
+
 export function duplicateStateValueByPath(state, path, newField=null) {
     path = Array.isArray(path) ? path : path.split("/");
     let valueField = path.pop();
