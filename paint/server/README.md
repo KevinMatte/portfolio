@@ -2,6 +2,16 @@
 
 # MySQL Database
 
+Setup access with a file: /opt/portfolio/settings.json:
+```json
+{
+    "SQL_DATABASE": "paint",
+    "SQL_USERID": "paint",
+    "SQL_PASSWORD": "..."
+}
+
+```
+
 ```
 CREATE USER 'paint'@'localhost' IDENTIFIED BY '...';
 CREATE DATABASE paint;
