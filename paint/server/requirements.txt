@@ -1,4 +1,5 @@
 flask
+py-bcrypt
 PyMySQL
 pyjwt
 mysqlclient
@@ -8,3 +9,5 @@ pyyaml
 inflect
 kazoo
 requests
+mysql-connector-python
+
