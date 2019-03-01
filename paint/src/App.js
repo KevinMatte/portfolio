@@ -29,7 +29,7 @@ import Session from "./redux/actions/session";
 import Options from "./redux/actions/options";
 import Messages from './redux/actions/messages';
 import {renderText} from "./general/Utils";
-import Treesheet from "./components/Treesheet/Treesheet";
+import Treesheet from "./components/Treesheet";
 
 /*
 const styles = theme => ({
@@ -210,23 +210,17 @@ class App extends Component {
         >
             {isLoggedIn &&
             <MenuItem onClick={this.handleSessionLogout}>
-                <Link to="/paint/">
-                    Logout
-                </Link>
+                <Link to="/paint/">Logout</Link>
             </MenuItem>
             }
             {!isLoggedIn &&
             <MenuItem onClick={this.handleSessionMenuClose}>
-                <Link to="/paint/login">
-                    Login
-                </Link>
+                <Link to="/paint/login">Login</Link>
             </MenuItem>
             }
             {!isLoggedIn &&
             <MenuItem onClick={this.handleSessionMenuClose}>
-                <Link to="/paint/register">
-                    Register
-                </Link>
+                <Link to="/paint/register">Register</Link>
             </MenuItem>
             }
         </Menu>;
@@ -276,6 +270,41 @@ class App extends Component {
         </Menu>;
     }
 
+    main = (props) => {
+        return (
+            <div className="doIndent">
+                <h1>Main App</h1>
+                <p>You can view the redux state with Redux DevTools extension for Chrome.</p>
+                <p>Only the advanced mode and session state are present.</p>
+                <p>React Redux is being used for data, selection, session, etc. Very little ReactJS state.
+                    Open up the Redux extension in developer tools to observe it.</p>
+
+                <h1>Sample Programs</h1>
+                <p>Select something from the top-left hamburger/menu icon:</p>
+                <ul>
+                    <li><Link to="/paint/treesheet"><button>Treesheet</button></Link>: Overlays CSS3 grids for a non-grid, but tree-like display. You can:
+                        <ul>
+                            <li>Open & Collapse rows.</li>
+                            <li>See row & column header selection and content change as the mouse
+                                hovers over the body area.</li>
+                            <li>Click a value and change it.</li>
+                            <li>Select a row in the row headers and from the bottom tool bar:
+                                <ul>
+                                    <li>Copy the selected row and all it's indented child rows.</li>
+                                    <li>Delete the selected row and all it's indented child rows.</li>
+                                </ul>
+                            </li>
+                        </ul>
+                        <p>Notes:</p>
+                        <ul>
+                            <li>The data is stored in React-Redux and a refresh will restore the contents.</li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+        );
+    };
+
     treeSheet = (props) => {
         return (
             <MuiThemeProvider theme={muiTheme}>
@@ -306,15 +335,7 @@ class App extends Component {
         if (isLoggedIn) {
             return (
                 <Switch>
-                    <Route path="/paint/main" render={() => (
-                        <div className="doIndent">
-                            <h1>Main App</h1>
-                            <p>You can view the redux state with Redux DevTools extension for Chrome.</p>
-                            <p>Only the advanced mode and session state are present.</p>
-                            <p>React Redux is being used for data, selection, session, etc. Very little ReactJS state.
-                                Open up the Redux extension in developer tools to observe it.</p>
-                        </div>
-                    )}/>
+                    <Route path="/paint/main" component={this.main}/>
                     <Route path="/paint/treesheet" component={this.treeSheet}/>
                     <Route path="/paint/about" render={() => (
                         <div>
@@ -324,7 +345,7 @@ class App extends Component {
                     )}/>
                     <Route path="/paint/login" render={() => (<Redirect to="/paint/"/>)}/>
                     <Route path="/paint/register" render={() => (<Redirect to="/paint/"/>)}/>
-                    <Route exact path="/paint/" component={this.treeSheet}/>
+                    <Route exact path="/paint/" component={this.main}/>
                     <Route component={this.handleRouteNoMatch}/>
                 </Switch>
             );
@@ -347,6 +368,7 @@ class App extends Component {
                 <p>The login is easy, the username and password are already entered. Just click login.</p>
 
                 {this.aboutDescription()}
+                <p><Link to="/paint/login"><button>Login</button></Link></p>
             </div>
         );
     }
