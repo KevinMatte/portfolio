@@ -9,14 +9,14 @@ import {connect} from "react-redux";
 
 
 import {getValueByPath} from "../general/Utils";
-import TreesheetModel from "../model/treeModel";
-import DataSheet from './datasheet';
-import RowHeaders from './rowheaders';
-import ColumnHeaders from './columnheaders';
-import TopLeftCorner from './topleftcorner';
+import TreesheetModel from "../model/TreeModel";
+import DataSheet from './Datasheet';
+import RowHeaders from './RowHeaders';
+import ColumnHeaders from './ColumnHeaders';
+import TopLeftCorner from './TopLeftCorner';
 import TreeControls from './TreeControls';
 
-import './treesheet.css'
+import './Treesheet.css'
 
 class Treesheet extends Component {
 

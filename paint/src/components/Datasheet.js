@@ -6,7 +6,7 @@ import PropTypes from 'prop-types'
 import {getGridCellStyle, getValueByPath} from "../general/Utils";
 import Cell from "./Cell";
 
-import './treesheet.css'
+import './Treesheet.css'
 import Drawing from "../redux/actions/drawing";
 import TempValues from "../redux/actions/tempValues";
 import {connect} from "react-redux";
