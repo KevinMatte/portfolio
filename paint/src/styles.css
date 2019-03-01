@@ -4,6 +4,11 @@ iframe {
     border-style: none
 }
 
+li a {
+    text-decoration: none;
+    color: black;
+}
+
 html, body, #root, .container {
     min-height: 100% !important;
     min-width: 100% !important;
@@ -12,6 +17,12 @@ html, body, #root, .container {
     padding: 0;
     overflow-x: hidden;
     overflow-y: hidden;
+}
+
+.borderBottom {
+    border-bottom-style: solid;
+    border-bottom-width: 1px;
+    padding-bottom: 5px;
 }
 
 pre {

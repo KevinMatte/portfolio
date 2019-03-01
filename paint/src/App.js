@@ -91,8 +91,8 @@ const muiTheme = createMuiTheme({
         },
         MuiMenuItem: {
             root: {
-                paddingTop: "8px",
-                paddingBottom: "8px",
+                paddingTop: "4px",
+                paddingBottom: "4px",
             }
         },
         MuiTab: {
@@ -202,8 +202,9 @@ class App extends Component {
             anchorEl={sessionMenuAnchor}
             transformOrigin={{
                 vertical: 'top',
-                horizontal: 'right',
+                horizontal: 'left',
             }}
+
             open={Boolean(sessionMenuAnchor)}
             onClose={this.handleSessionMenuClose}
         >
@@ -242,46 +243,40 @@ class App extends Component {
             onClose={() => this.handleAppMenuClose(null)}
         >
             {isLoggedIn &&
-            <div>
-                <MenuItem onClick={() => this.handleAppMenuClose("Main App")}>
-                    <Link to="/paint/main">
-                        Main App
-                    </Link>
-                </MenuItem>
-                <MenuItem onClick={() => this.handleAppMenuClose("Treesheet")}>
-                    <Link to="/paint/treesheet">
-                        Treesheet
-                    </Link>
-                </MenuItem>
-                <MenuItem>
-                    <FormControlLabel
-                        label="Advanced Mode"
-                        name="advancedMode"
-                        control={<SwitchComponent
-                            onChange={this.props.toggleAdvancedMode}
-                            checked={this.props.options.advancedMode}
-                        />
-                        }
+            <MenuItem onClick={() => this.handleAppMenuClose("Main App")}>
+                <Link to="/paint/main">Main App</Link>
+            </MenuItem>
+            }
+            {isLoggedIn &&
+            <MenuItem onClick={() => this.handleAppMenuClose("Treesheet")}>
+                <Link to="/paint/treesheet">Treesheet</Link>
+            </MenuItem>
+            }
+            {isLoggedIn &&
+            <MenuItem>
+                <FormControlLabel
+                    label="Advanced Mode"
+                    name="advancedMode"
+                    control={<SwitchComponent
+                        onChange={this.props.toggleAdvancedMode}
+                        checked={this.props.options.advancedMode}
                     />
-                </MenuItem>
-            </div>
+                    }
+                />
+            </MenuItem>
             }
             {isAdvancedMode &&
             <MenuItem onClick={() => this.handleAppMenuClose()}>
-                <Link to="/paint/about">
-                    Advanced About :=)
-                </Link>
+                <Link to="/paint/about">Advanced About :=)</Link>
             </MenuItem>
             }
             <MenuItem onClick={() => this.handleAppMenuClose()}>
-                <Link to="/paint/about">
-                    About
-                </Link>
+                <Link to="/paint/about">About</Link>
             </MenuItem>
         </Menu>;
     }
 
-    mainApp = (props) => {
+    treeSheet = (props) => {
         return (
             <MuiThemeProvider theme={muiTheme}>
                 <Treesheet {...props} className="max_size" name="treesheet"/>
@@ -312,7 +307,7 @@ class App extends Component {
             return (
                 <Switch>
                     <Route path="/paint/main" render={() => (
-                        <div>
+                        <div className="doIndent">
                             <h1>Main App</h1>
                             <p>You can view the redux state with Redux DevTools extension for Chrome.</p>
                             <p>Only the advanced mode and session state are present.</p>
@@ -320,7 +315,7 @@ class App extends Component {
                                 Open up the Redux extension in developer tools to observe it.</p>
                         </div>
                     )}/>
-                    <Route path="/paint/treesheet" component={this.mainApp}/>
+                    <Route path="/paint/treesheet" component={this.treeSheet}/>
                     <Route path="/paint/about" render={() => (
                         <div>
                             <h1>About</h1>
@@ -329,7 +324,7 @@ class App extends Component {
                     )}/>
                     <Route path="/paint/login" render={() => (<Redirect to="/paint/"/>)}/>
                     <Route path="/paint/register" render={() => (<Redirect to="/paint/"/>)}/>
-                    <Route exact path="/paint/" component={this.mainApp}/>
+                    <Route exact path="/paint/" component={this.treeSheet}/>
                     <Route component={this.handleRouteNoMatch}/>
                 </Switch>
             );

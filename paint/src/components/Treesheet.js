@@ -76,42 +76,45 @@ class Treesheet extends Component {
 
         return (
             <div id={this.topDivId} className="flexVDisplay max_size overflowHidden">
-
-                <div className="flexVStretched flexVDisplay">
-
-                    {/*<!-- Headers for Columns --> */}
-                    <div className="flexFixed flexHDisplay">
-                        <TopLeftCorner className="flexFixed" {...rowHeaderProps}/>
-                        <ColumnHeaders className="flexHStretched" {...colHeaderProps}/>
-                    </div>
-
-                    <div className="flexVStretched flexHDisplay">
-                        {/*<!-- Headers for rows --> */}
-                        <RowHeaders className="flexFixed" {...rowHeaderProps}/>
-
-                        {/*<!-- Edit/Body of Treesheet --> */}
-                        <div
-                            className="flexHStretched SpreadsheetScrollArea"
-                            onScroll={(event) => this.handleScroll(event)}
-                        >
-                            <DataSheet {...colHeaderProps}/>
-                        </div>
-                    </div>
-                </div>
-
-                {/*<!-- Controls --> */}
-                <div
-                    className="flexFixed">
-                    <TreeControls
-                        name={this.props.name}
-                        treesheetModel={this.state.treesheetModel}
-                    />
-                </div>
-
+                {this.renderTreesheet(rowHeaderProps, colHeaderProps)}
+                {this.renderTreeControls()}
             </div>
         );
     }
 
+    renderTreesheet(rowHeaderProps, colHeaderProps) {
+        return <div className="flexVStretched flexVDisplay borderBottom">
+
+            {/*<!-- Headers for Columns --> */}
+            <div className="flexFixed flexHDisplay">
+                <TopLeftCorner className="flexFixed" {...rowHeaderProps}/>
+                <ColumnHeaders className="flexHStretched" {...colHeaderProps}/>
+            </div>
+
+            <div className="flexVStretched flexHDisplay">
+                {/*<!-- Headers for rows --> */}
+                <RowHeaders className="flexFixed" {...rowHeaderProps}/>
+
+                {/*<!-- Edit/Body of Treesheet --> */}
+                <div
+                    className="flexHStretched SpreadsheetScrollArea"
+                    onScroll={(event) => this.handleScroll(event)}
+                >
+                    <DataSheet {...colHeaderProps}/>
+                </div>
+            </div>
+        </div>;
+    }
+
+    renderTreeControls() {
+        return <div
+            className="flexFixed">
+            <TreeControls
+                name={this.props.name}
+                treesheetModel={this.state.treesheetModel}
+            />
+        </div>;
+    }
 }
 
 Treesheet.defaultProps = {
