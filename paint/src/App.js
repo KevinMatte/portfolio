@@ -175,9 +175,11 @@ class App extends Component {
                             <MenuIcon/>
                         </IconButton>
                         {this.renderAppMenu()}
-                        <Typography variant="body1" color="inherit" className={classes.grow}>
+                        <div style={{flexGrow: 1}}/>
+                        <Typography variant="body1" color="inherit">
                             {title}
                         </Typography>
+                        <div style={{flexGrow: 1}}/>
                         <IconButton
                             aria-owns={sessionMenuAnchor ? 'right-menu' : null}
                             aria-haspopup="true"
