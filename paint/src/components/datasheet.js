@@ -1,6 +1,7 @@
 /* Copyright (C) 2019 Kevin Matte - All Rights Reserved */
 
 import React, {Component} from 'react';
+import PropTypes from 'prop-types'
 
 import {getGridCellStyle, getValueByPath} from "../general/Utils";
 import Cell from "./Cell";
@@ -8,7 +9,7 @@ import Cell from "./Cell";
 import './treesheet.css'
 import Drawing from "../redux/actions/drawing";
 import TempValues from "../redux/actions/tempValues";
-import {connect} from "react-redux"; // km
+import {connect} from "react-redux";
 
 
 class Datasheet extends Component {
@@ -23,20 +24,20 @@ class Datasheet extends Component {
     }
 
     handleCellSelect(sheetName, cellRow, cellCol) {
-        let {selectedRow, selectedCol, spreadsheet} = this.props;
+        let {selectedRow, selectedCol, treesheetModel} = this.props;
         if (cellRow !== selectedRow || selectedCol !== cellCol) {
             if (selectedRow !== null && selectedCol != null) {
                 this.saveEditValue(selectedRow, selectedCol);
             }
             if (cellRow != null && cellCol != null) {
-                let row = spreadsheet.openRows[cellRow];
+                let row = treesheetModel.openRows[cellRow];
                 let value = row.values[cellCol];
                 this.setEditValue(value);
                 this.setTempValueByPath('selectedSheetName', sheetName);
                 this.setTempValueByPath('selectedRow', cellRow);
                 this.setTempValueByPath('selectedCol', cellCol);
 
-                let sheet = spreadsheet.sheetsByName[row.sheetName];
+                let sheet = treesheetModel.sheetsByName[row.sheetName];
                 let columnPath = sheet.type.columns[cellCol].path;
                 columnPath = Array.isArray(columnPath) ? columnPath : [columnPath];
                 let path = [...row.path, ...columnPath];
@@ -46,9 +47,9 @@ class Datasheet extends Component {
     }
 
     renderSheets() {
-        let {spreadsheet, selectedSheetName, selectedRow, selectedCol, editValue, gridWidth, indentPixels, rowHeight} = this.props;
+        let {treesheetModel, selectedSheetName, selectedRow, selectedCol, editValue, gridSpacingWidth, indentPixels, rowHeight} = this.props;
 
-        let cellsBySheet = spreadsheet.sheetNames.reduce(
+        let cellsBySheet = treesheetModel.sheetNames.reduce(
             (dst, sheetName) => {
                 dst[sheetName] = [];
                 return dst;
@@ -58,7 +59,7 @@ class Datasheet extends Component {
 
         let iCell = 0;
 
-        spreadsheet.openRows.every((row, cellRow) => {
+        treesheetModel.openRows.every((row, cellRow) => {
             let sheetName = row.sheetName;
             let cells = cellsBySheet[row.sheetName];
 
@@ -129,14 +130,14 @@ class Datasheet extends Component {
             return true;
         });
 
-        return spreadsheet.sheetNames.filter(sheetName => cellsBySheet[sheetName].length > 0).map(sheetName => {
-            let sheet = spreadsheet.sheetsByName[sheetName];
+        return treesheetModel.sheetNames.filter(sheetName => cellsBySheet[sheetName].length > 0).map(sheetName => {
+            let sheet = treesheetModel.sheetsByName[sheetName];
             // Render grid div
             let widths = sheet.type.columns.reduce((dest, col) => {
-                dest.push(gridWidth, col.width);
+                dest.push(`${this.props.gridSpacingWidth}px`, col.width);
                 return dest;
             }, []).join(" ");
-            let indentWidth = `${gridWidth} ${sheet.path.length * indentPixels}px`;
+            let indentWidth = `${gridSpacingWidth}px ${sheet.path.length * indentPixels}px`;
 
             return (
                 <div
@@ -144,8 +145,8 @@ class Datasheet extends Component {
                     className="Spreadsheet max_size"
                     style={{
                         ...getGridCellStyle(1, 1),
-                        gridTemplateRows: `repeat(${spreadsheet.openRows.length}, ${rowHeight}px)`,
-                        gridTemplateColumns: `${indentWidth} ${widths} ${gridWidth}`,
+                        gridTemplateRows: `repeat(${treesheetModel.openRows.length}, ${rowHeight}px)`,
+                        gridTemplateColumns: `${indentWidth} ${widths} ${gridSpacingWidth}px`,
                     }}
                 >
                     {cellsBySheet[sheetName]}
@@ -169,7 +170,7 @@ class Datasheet extends Component {
 
     toggleOpen = (row) => {
         row.isOpen = !row.isOpen;
-        this.props.spreadsheet.updateSpreadsheetOpenRows();
+        this.props.treesheetModel.updateSpreadsheetOpenRows();
         this.handleCellSelect(null, null, null);
         this.dropSelection();
     };
@@ -183,10 +184,10 @@ class Datasheet extends Component {
     }
 
     saveEditValue(cellRow, cellCol) {
-        let {spreadsheet, editValue} = this.props;
+        let {treesheetModel, editValue} = this.props;
 
-        let row = spreadsheet.openRows[cellRow];
-        let sheet = spreadsheet.sheetsByName[row.sheetName];
+        let row = treesheetModel.openRows[cellRow];
+        let sheet = treesheetModel.sheetsByName[row.sheetName];
         let columnPath = sheet.type.columns[cellCol].path;
         columnPath = Array.isArray(columnPath) ? columnPath : [columnPath];
         let path = [...row.path, ...columnPath];
@@ -196,6 +197,20 @@ class Datasheet extends Component {
 
 
 }
+
+Datasheet.defaultProps = {
+    rowHeight: 50,
+    indentPixels: 30,
+    gridSpacingWidth: 5,
+};
+
+Datasheet.propTypes = {
+    name: PropTypes.string.isRequired,
+    treesheetModel: PropTypes.object.isRequired,
+    rowHeight: PropTypes.number,
+    indentPixels: PropTypes.number,
+    gridSpacingWidth: PropTypes.number,
+};
 
 const mapStateToProps = (state, ownProps) => {
     return {

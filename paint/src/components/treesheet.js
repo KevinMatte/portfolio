@@ -25,26 +25,20 @@ class Treesheet extends Component {
 
         this.topDivId = "TopDiv";
 
-        this.indentPixels = 30;
-        this.headerColumnWidth = 150;
-        this.rowHeight = 50;
-        this.gridWidth = "5px";
-
-
         this.state = {
-            spreadsheet: Treesheet.createSpreadsheet(props),
+            treesheetModel: Treesheet.createTreesheetModel(props),
         }
     }
 
-    static createSpreadsheet = (props) => new TreesheetModel(props.name, props.types, props.dataTree);
+    static createTreesheetModel = (props) => new TreesheetModel(props.name, props.types, props.dataTree);
 
     static getDerivedStateFromProps(nextProps, prevState) {
-        let spreadsheet;
-        if (!prevState.hasOwnProperty("spreadsheet") || prevState.spreadsheet.name !== nextProps.name)
-            spreadsheet = Treesheet.createSpreadsheet(nextProps);
+        let treesheetModel;
+        if (!prevState.hasOwnProperty("treesheetModel") || prevState.treesheetModel.name !== nextProps.name)
+            treesheetModel = Treesheet.createTreesheetModel(nextProps);
         else
-            spreadsheet = prevState.spreadsheet;
-        return {spreadsheet}
+            treesheetModel = prevState.treesheetModel;
+        return {treesheetModel}
     }
 
     handleScroll = (event) => {
@@ -56,7 +50,7 @@ class Treesheet extends Component {
                 break;
         }
         if (topDiv !== document) {
-            let r1, r2, headersDivs, headersDiv;
+            let headersDivs, headersDiv;
             let {scrollTop, scrollLeft} = bodyDiv;
 
             headersDivs = topDiv.getElementsByClassName("rowHeaders");
@@ -75,68 +69,45 @@ class Treesheet extends Component {
 
 
     render() {
-        return (
-            <div
-                id={this.topDivId}
-                className="flexVDisplay flexHStretched max_size overflowHidden"
+        let {headerColumnWidth, rowHeight, indentPixels, gridSpacingWidth, name} = this.props;
+        let commonProps = {name, rowHeight, gridSpacingWidth, treesheetModel: this.state.treesheetModel};
+        let rowHeaderProps = {...commonProps, headerColumnWidth};
+        let colHeaderProps = {...commonProps, indentPixels};
 
-            >
+        return (
+            <div id={this.topDivId} className="flexVDisplay max_size overflowHidden">
 
                 <div className="flexVStretched flexVDisplay">
+
+                    {/*<!-- Headers for Columns --> */}
                     <div className="flexFixed flexHDisplay">
-                        <div className="flexFixed">
-                            <TopLeftCorner
-                                name={this.props.name}
-                                spreadsheet={this.state.spreadsheet}
-                                headerColumnWidth={this.headerColumnWidth}
-                                rowHeight={50}
-                            />
-                        </div>
-                        <div className="flexHStretched">
-                            <ColumnHeaders
-                                name={this.props.name}
-                                spreadsheet={this.state.spreadsheet}
-                                rowHeight={50}
-                                indentPixels={30}
-                                gridWidth="5px"
-                            />
-                        </div>
+                        <TopLeftCorner className="flexFixed" {...rowHeaderProps}/>
+                        <ColumnHeaders className="flexHStretched" {...colHeaderProps}/>
                     </div>
+
                     <div className="flexVStretched flexHDisplay">
-                        <div className="flexFixed">
-                            <RowHeaders
-                                name={this.props.name}
-                                spreadsheet={this.state.spreadsheet}
-                                rowHeight={50}
-                                headerColumnWidth={this.headerColumnWidth}
-                            />
-                        </div>
-                        <div className="flexHStretched overflowAuto">
-                            <div
-                                className="SpreadsheetScrollArea max_size"
-                                style={{
-                                    overflow: "auto",
-                                }}
-                                onScroll={(event) => this.handleScroll(event)}
-                            >
-                                <DataSheet
-                                    name={this.props.name}
-                                    spreadsheet={this.state.spreadsheet}
-                                    rowHeight={50}
-                                    indentPixels={30}
-                                    gridWidth="5px"
-                                />
-                            </div>
+                        {/*<!-- Headers for rows --> */}
+                        <RowHeaders className="flexFixed" {...rowHeaderProps}/>
+
+                        {/*<!-- Edit/Body of Treesheet --> */}
+                        <div
+                            className="flexHStretched SpreadsheetScrollArea"
+                            onScroll={(event) => this.handleScroll(event)}
+                        >
+                            <DataSheet {...colHeaderProps}/>
                         </div>
                     </div>
                 </div>
+
+                {/*<!-- Controls --> */}
                 <div
                     className="flexFixed">
                     <TreeControls
                         name={this.props.name}
-                        spreadsheet={this.state.spreadsheet}
+                        treesheetModel={this.state.treesheetModel}
                     />
                 </div>
+
             </div>
         );
     }
@@ -145,6 +116,10 @@ class Treesheet extends Component {
 
 Treesheet.defaultProps = {
     updated: 0,
+    headerColumnWidth: 150,
+    rowHeight: 50,
+    indentPixels: 30,
+    gridSpacingWidth: 5,
 };
 
 Treesheet.propTypes = {
@@ -152,6 +127,10 @@ Treesheet.propTypes = {
     dataTree: PropTypes.array.isRequired,
     name: PropTypes.string.isRequired,
     updated: PropTypes.number,
+    headerColumnWidth: PropTypes.number,
+    rowHeight: PropTypes.number,
+    indentPixels: PropTypes.number,
+    gridSpacingWidth: PropTypes.number,
 };
 
 const mapStateToProps = (state, ownProps) => {

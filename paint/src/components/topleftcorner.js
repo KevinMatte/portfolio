@@ -7,9 +7,9 @@ class TopLeftCorner extends Component {
 
     render() {
         // Render grid header
-        let spreadsheet = this.props.spreadsheet;
-        let sheetName = this.props.selectedSheetName || spreadsheet.sheetNames[0];
-        let sheet = spreadsheet.sheetsByName[sheetName];
+        let treesheetModel = this.props.treesheetModel;
+        let sheetName = this.props.selectedSheetName || treesheetModel.sheetNames[0];
+        let sheet = treesheetModel.sheetsByName[sheetName];
         let sheetStyle = {
             gridTemplateColumns: `${this.props.headerColumnWidth}px`,
             gridTemplateRows: `${this.props.rowHeight}px`,

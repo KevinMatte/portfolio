@@ -159,7 +159,6 @@ class App extends Component {
     renderAppBar() {
         const {appMenuAnchor, sessionMenuAnchor} = this.state;
         let title = this.props.session.title;
-        const {classes} = this.props;
 
         return (
             <MuiThemeProvider theme={muiTheme}>

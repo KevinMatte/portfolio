@@ -12,11 +12,11 @@ class RowHeaders extends Component {
     handleCellSelect(sheetName, cellRow, cellCol) {
         let row;
         console.log(`select ${sheetName} ${cellRow} ${cellCol}`)
-        let {selectedRow, selectedCol, spreadsheet, editValue} = this.props;
+        let {selectedRow, selectedCol, treesheetModel, editValue} = this.props;
         if (cellRow !== selectedRow || selectedCol !== cellCol) {
             if (selectedRow !== null && selectedCol != null) {
-                row = spreadsheet.openRows[selectedRow];
-                let sheet = spreadsheet.sheetsByName[row.sheetName];
+                row = treesheetModel.openRows[selectedRow];
+                let sheet = treesheetModel.sheetsByName[row.sheetName];
                 let columnPath = sheet.type.columns[selectedCol].path;
                 columnPath = Array.isArray(columnPath) ? columnPath : [columnPath];
                 let path = [...row.path, ...columnPath];
@@ -24,7 +24,7 @@ class RowHeaders extends Component {
                 row.values[selectedCol] = editValue;
             }
             if (cellRow != null) {
-                row = spreadsheet.openRows[cellRow];
+                row = treesheetModel.openRows[cellRow];
                 this.setTempValueByPath('selectedSheetName', sheetName);
                 this.setTempValueByPath('selectedRow', cellRow);
                 this.setTempValueByPath('selectedCol', cellCol);
@@ -43,15 +43,15 @@ class RowHeaders extends Component {
     render() {
         // Render grid div
 
-        let {selectedRow, spreadsheet} = this.props;
+        let {selectedRow, treesheetModel} = this.props;
         let sheetStyle = {
             gridTemplateColumns: `${this.props.headerColumnWidth}px`,
-            gridTemplateRows: `repeat(${spreadsheet.openRows.length}, ${this.props.rowHeight}px)`,
+            gridTemplateRows: `repeat(${treesheetModel.openRows.length}, ${this.props.rowHeight}px)`,
         };
         let cells = [];
         let iCell = 0;
-        spreadsheet.openRows.every((row, cellRow) => {
-            let sheet = spreadsheet.sheetsByName[row.sheetName];
+        treesheetModel.openRows.every((row, cellRow) => {
+            let sheet = treesheetModel.sheetsByName[row.sheetName];
             cells.push((
                 <div
                     key={++iCell}
@@ -66,7 +66,7 @@ class RowHeaders extends Component {
         });
 
         return (
-            <div className="max_size overflowHidden rowHeaders">
+            <div className="overflowHidden rowHeaders">
                 <div style={sheetStyle} className="Spreadsheet max_size">
                     {cells}
                 </div>

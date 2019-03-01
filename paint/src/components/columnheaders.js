@@ -7,8 +7,8 @@ class ColumnHeaders extends Component {
 
     render() {
         // Render grid header
-        let {selectedSheetName, selectedCol, spreadsheet} = this.props;
-        let sheet = spreadsheet.sheetsByName[selectedSheetName || spreadsheet.sheetNames[0]];
+        let {selectedSheetName, selectedCol, treesheetModel} = this.props;
+        let sheet = treesheetModel.sheetsByName[selectedSheetName || treesheetModel.sheetNames[0]];
 
         let cells = [];
         let iCell = 0;
@@ -24,9 +24,9 @@ class ColumnHeaders extends Component {
             return true;
         });
 
-        let indentWidth = `${this.props.gridWidth} ${sheet.path.length * this.props.indentPixels}px`;
+        let indentWidth = `${this.props.gridSpacingWidth}px ${sheet.path.length * this.props.indentPixels}px`;
         let widths = sheet.type.columns.reduce((dest, col) => {
-            dest.push(this.props.gridWidth, col.width);
+            dest.push(`${this.props.gridSpacingWidth}px`, col.width);
             return dest;
         }, []);
         let sheetStyle = {

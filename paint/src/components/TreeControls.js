@@ -18,7 +18,7 @@ class TreeControls extends Component {
         let rowPath = [...this.props.selectedPath];
         rowPath.pop();
         this.props.duplicatePath(rowPath);
-        let selectedRow = this.props.spreadsheet.duplicateRow(this.props.selectedRow);
+        let selectedRow = this.props.treesheetModel.duplicateRow(this.props.selectedRow);
         this.setTempValueByPath('selectedRow', selectedRow);
         this.setTempValueByPath('updated', this.props.updated + 1);
     };
@@ -27,7 +27,7 @@ class TreeControls extends Component {
         let rowPath = [...this.props.selectedPath];
         rowPath.pop();
         this.props.deletePath(rowPath);
-        let selectedRow = this.props.spreadsheet.deleteRow(this.props.selectedRow);
+        let selectedRow = this.props.treesheetModel.deleteRow(this.props.selectedRow);
         this.setTempValueByPath('selectedRow', selectedRow);
         this.setTempValueByPath('updated', this.props.updated + 1);
     };
