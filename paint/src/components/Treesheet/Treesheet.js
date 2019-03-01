@@ -8,8 +8,8 @@ import PropTypes from 'prop-types';
 import {connect} from "react-redux";
 
 
-import {getValueByPath} from "../general/Utils";
-import TreesheetModel from "../model/TreeModel";
+import {getValueByPath} from "../../general/Utils";
+import TreesheetModel from "../../model/TreeModel";
 import DataSheet from './Datasheet';
 import RowHeaders from './RowHeaders';
 import ColumnHeaders from './ColumnHeaders';

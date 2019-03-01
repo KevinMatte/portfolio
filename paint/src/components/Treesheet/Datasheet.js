@@ -3,12 +3,12 @@
 import React, {Component} from 'react';
 import PropTypes from 'prop-types'
 
-import {getGridCellStyle, getValueByPath} from "../general/Utils";
+import {getGridCellStyle, getValueByPath} from "../../general/Utils";
 import Cell from "./Cell";
 
 import './Treesheet.css'
-import Drawing from "../redux/actions/drawing";
-import TempValues from "../redux/actions/tempValues";
+import Drawing from "../../redux/actions/drawing";
+import TempValues from "../../redux/actions/tempValues";
 import {connect} from "react-redux";
 
 
