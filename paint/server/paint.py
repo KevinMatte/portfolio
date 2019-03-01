@@ -175,6 +175,32 @@ def send_build(filename="index.html"):
             raise
         return abort(404)
 
+@APP.route(ROOT_URL + 'api/yaml/dump', methods=['PUT'])
+def yaml_dump():
+    params = RequestParameters()
+
+    json_object = params.get_parameter('object')
+    if json_object:
+        args = params.get_parameter('args') or {}
+        import yaml
+        yaml_str = yaml.dump(json_object, **args)
+        return json_response('success', yaml_str)
+    else:
+        return json_response('failure', 'Missing body argument.')
+
+@APP.route(ROOT_URL + 'api/yaml/load', methods=['PUT'])
+def yaml_load():
+    params = RequestParameters()
+
+    yaml_str = params.get_parameter('object')
+    if yaml_str:
+        args = params.get_parameter('args') or {}
+        import yaml
+        json_object = yaml.load(yaml_str, **args)
+        return json_response('success', json_object)
+    else:
+        return json_response('failure', 'Missing body argument.')
+
 
 @APP.route(ROOT_URL + 'api/login', methods=['POST'])
 def login():
