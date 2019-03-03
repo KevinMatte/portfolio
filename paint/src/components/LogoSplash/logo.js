@@ -113,7 +113,7 @@ export default class Logo {
 
         if (this.isRunning)
             requestAnimationFrame(this.render);
-    }
+    };
 
 
     initBuffers() {

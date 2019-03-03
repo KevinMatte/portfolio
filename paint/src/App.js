@@ -30,6 +30,7 @@ import Options from "./redux/actions/options";
 import Messages from './redux/actions/messages';
 import {renderText} from "./general/Utils";
 import Treesheet from "./components/Treesheet";
+import LogoSplash from "./components/LogoSplash";
 
 /*
 const styles = theme => ({
@@ -247,6 +248,11 @@ class App extends Component {
             </MenuItem>
             }
             {isLoggedIn &&
+            <MenuItem onClick={() => this.handleAppMenuClose("LogoSplash")}>
+                <Link to="/paint/logosplash">Logo Splash</Link>
+            </MenuItem>
+            }
+            {isLoggedIn &&
             <MenuItem>
                 <FormControlLabel
                     label="Advanced Mode"
@@ -300,8 +306,18 @@ class App extends Component {
                             <li>The data is stored in React-Redux and a refresh will restore the contents.</li>
                         </ul>
                     </li>
+                    <li><Link to="/paint/logosplash"><button>LogoSplash</button></Link>: Plays with WebGL.
+                    </li>
                 </ul>
             </div>
+        );
+    };
+
+    logoSplash = (props) => {
+        return (
+            <MuiThemeProvider theme={muiTheme}>
+                <LogoSplash {...props} className="max_size" name="logosplash"/>
+            </MuiThemeProvider>
         );
     };
 
@@ -337,6 +353,7 @@ class App extends Component {
                 <Switch>
                     <Route path="/paint/main" component={this.main}/>
                     <Route path="/paint/treesheet" component={this.treeSheet}/>
+                    <Route path="/paint/logosplash" component={this.logoSplash}/>
                     <Route path="/paint/about" render={() => (
                         <div>
                             <h1>About</h1>

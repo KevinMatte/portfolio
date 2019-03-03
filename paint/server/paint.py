@@ -149,6 +149,7 @@ application = APP
 def handle_unexpected_error(error):
     """Exception handling """
     print(f'{error.__class__.__name__}: {error}')
+    print(f'URL: {request.url}')
     traceback.print_tb(error.__traceback__)
     return json_response(STATUS_ERROR, [request.url, str(error)])
 
