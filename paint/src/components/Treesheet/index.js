@@ -10,7 +10,7 @@ import {connect} from "react-redux";
 
 import {getValueByPath} from "../../general/Utils";
 import TreesheetModel from "../../model/TreeModel";
-import DataSheet from './Datasheet';
+import LayeredSheetGrids from './LayeredSheetGrids';
 import RowHeaders from './RowHeaders';
 import ColumnHeaders from './ColumnHeaders';
 import TopLeftCorner from './TopLeftCorner';
@@ -100,7 +100,7 @@ class Index extends Component {
                     className="flexHStretched SpreadsheetScrollArea"
                     onScroll={(event) => this.handleScroll(event)}
                 >
-                    <DataSheet {...colHeaderProps}/>
+                    <LayeredSheetGrids {...colHeaderProps}/>
                 </div>
             </div>
         </div>;

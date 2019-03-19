@@ -12,7 +12,7 @@ import TempValues from "../../redux/actions/tempValues";
 import {connect} from "react-redux";
 
 
-function Datasheet(props) {
+function LayeredSheetGrids(props) {
     let {setTempValueByPath, name, selectedRow} = props;
 
     let setSheetPropValue = (field, value) => setTempValueByPath(`${name}/${field}`, value);
@@ -197,13 +197,13 @@ function Datasheet(props) {
     );
 }
 
-Datasheet.defaultProps = {
+LayeredSheetGrids.defaultProps = {
     rowHeight: 50,
     indentPixels: 30,
     gridSpacingWidth: 5,
 };
 
-Datasheet.propTypes = {
+LayeredSheetGrids.propTypes = {
     name: PropTypes.string.isRequired,
     treesheetModel: PropTypes.object.isRequired,
     rowHeight: PropTypes.number,
@@ -232,4 +232,4 @@ const mapDispatchToProps = {
 export default connect(
     mapStateToProps,
     mapDispatchToProps
-)(Datasheet)
+)(LayeredSheetGrids)
