@@ -1,26 +1,22 @@
-import React, {Component} from "react";
+import React from "react";
 import PropTypes from "prop-types";
 
 import TextField from "@material-ui/core/TextField";
 
-class Cell extends Component {
+function Cell(props) {
+    let {value, setValue, doEdit, dataTestID} = props;
 
-    handleChangeEvent = (event) => {
-        this.props.setValue(event.target.value);
+    let handleChangeEvent = (event) => {
+        setValue(event.target.value);
     };
 
-    render() {
-        let {value, doEdit, dataTestID} = this.props;
-
-        if (doEdit) {
-            return (
-                <TextField data-testid={dataTestID} value={value} onChange={event => this.handleChangeEvent(event)}>
-                </TextField>
-            )
-        } else {
-            return <span data-testid={dataTestID}>{value}</span>;
-        }
-
+    if (doEdit) {
+        return (
+            <TextField data-testid={dataTestID} value={value} onChange={handleChangeEvent}>
+            </TextField>
+        )
+    } else {
+        return <span data-testid={dataTestID}>{value}</span>;
     }
 }
 
