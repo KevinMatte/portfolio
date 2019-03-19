@@ -24,7 +24,7 @@
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
-    "test": "react-scripts test",
+    "test": "react-scripts $NODE_DEBUG_OPTION test",
     "eject": "react-scripts eject",
     "upgrade-interactive": "npm-check --update"
   },

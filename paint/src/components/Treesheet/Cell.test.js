@@ -11,9 +11,10 @@ afterEach(cleanup);
 test('Cell: Edit mode: off', () => {
   let tree, value;
 
+  let mockSetValue = jest.fn();
   value = "hello";
   const {container, getByTestId, asFragment} = render(
-    <Cell doEdit={false} value={value} setValue={(value) => console.log(value)}>Facebook</Cell>,
+    <Cell doEdit={false} value={value} setValue={mockSetValue}>Facebook</Cell>,
   );
 
   tree = asFragment();
@@ -21,6 +22,7 @@ test('Cell: Edit mode: off', () => {
 
   let cell = getByTestId("Cell");
   fireEvent.click(cell);
+
   tree = asFragment();
   expect(tree).toMatchSnapshot();
 
@@ -28,17 +30,22 @@ test('Cell: Edit mode: off', () => {
 
 test('Cell: Edit mode: on', () => {
   let tree, value;
-
+  let mockSetValue = jest.fn();
   value = "hello";
   const {container, getByTestId, asFragment} = render(
-    <Cell doEdit={true} value={value} setValue={(value) => console.log(value)}>Facebook</Cell>,
+    <Cell doEdit={true} value={value} setValue={mockSetValue}>Facebook</Cell>,
   );
 
   tree = asFragment();
   expect(tree).toMatchSnapshot();
 
   let cell = getByTestId("Cell");
-  fireEvent.click(cell);
+  let input = cell.querySelector('input');
+  fireEvent.click(input);
+  fireEvent.change(input, { target: { value: 'A' } });
+  expect(mockSetValue.mock.calls.length).toBe(1);
+  expect(mockSetValue.mock.calls[0][0]).toBe('A');
+
   tree = asFragment();
   expect(tree).toMatchSnapshot();
 
