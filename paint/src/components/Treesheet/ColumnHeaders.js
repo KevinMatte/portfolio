@@ -1,47 +1,43 @@
-import {Component} from "react";
 import {getGridCellStyle, getValueByPath} from "../../general/Utils";
 import React from "react";
 import {connect} from "react-redux";
 
-class ColumnHeaders extends Component {
+function ColumnHeaders(props) {
 
-    render() {
-        // Render grid header
-        let {selectedSheetName, selectedCol, treesheetModel} = this.props;
-        let sheet = treesheetModel.sheetsByName[selectedSheetName || treesheetModel.sheetNames[0]];
+    // Render grid header
+    let {selectedSheetName, selectedCol, treesheetModel, indentPixels, gridSpacingWidth, rowHeight} = props;
+    let sheet = treesheetModel.sheetsByName[selectedSheetName || treesheetModel.sheetNames[0]];
 
-        let cells = [];
-        let iCell = 0;
-        let iCol = 4;
-        sheet.type.columns.every((column, iColumn) => {
-            cells.push((
-                <div key={++iCell} style={getGridCellStyle(1, iCol++)}
-                     className={"SpreadsheetColumnHeader " + (iColumn === selectedCol ? "selectedHeader" : "")}>
-                    {column.label}
-                </div>
-            ));
-            iCol++; // Grid
-            return true;
-        });
+    let cells = [];
+    let iCell = 0;
+    let iCol = 4;
+    sheet.type.columns.every((column, iColumn) => {
+        cells.push((
+            <div key={++iCell} style={getGridCellStyle(1, iCol++)}
+                 className={"SpreadsheetColumnHeader " + (iColumn === selectedCol ? "selectedHeader" : "")}>
+                {column.label}
+            </div>
+        ));
+        iCol++; // Grid
+        return true;
+    });
 
-        let indentWidth = `${this.props.gridSpacingWidth}px ${sheet.path.length * this.props.indentPixels}px`;
-        let widths = sheet.type.columns.reduce((dest, col) => {
-            dest.push(`${this.props.gridSpacingWidth}px`, col.width);
-            return dest;
-        }, []);
-        let sheetStyle = {
-            gridTemplateColumns: `${indentWidth} ` + widths.join(" "),
-            gridTemplateRows: `${this.props.rowHeight}px`,
-        };
+    let indentWidth = `${gridSpacingWidth}px ${sheet.path.length * indentPixels}px`;
+    let widths = sheet.type.columns.reduce((dest, col) => {
+        dest.push(`${gridSpacingWidth}px`, col.width);
+        return dest;
+    }, []);
+    let sheetStyle = {
+        gridTemplateColumns: `${indentWidth} ` + widths.join(" "),
+        gridTemplateRows: `${rowHeight}px`,
+    };
 
-        return (
-            <div className="max_size overflowHidden columnHeaders">
-                <div style={sheetStyle} className="Spreadsheet">
-                    {cells}
-                </div>
-            </div>);
-    }
-
+    return (
+        <div className="max_size overflowHidden columnHeaders">
+            <div style={sheetStyle} className="Spreadsheet">
+                {cells}
+            </div>
+        </div>);
 }
 
 const mapStateToProps = (state, ownProps) => {
