@@ -20,12 +20,6 @@ test('Cell: Edit mode: off', () => {
   tree = asFragment();
   expect(tree).toMatchSnapshot();
 
-  let cell = getByTestId("Cell");
-  fireEvent.click(cell);
-
-  tree = asFragment();
-  expect(tree).toMatchSnapshot();
-
 });
 
 test('Cell: Edit mode: on', () => {
@@ -41,12 +35,8 @@ test('Cell: Edit mode: on', () => {
 
   let cell = getByTestId("Cell");
   let input = cell.querySelector('input');
-  fireEvent.click(input);
   fireEvent.change(input, { target: { value: 'A' } });
   expect(mockSetValue.mock.calls.length).toBe(1);
   expect(mockSetValue.mock.calls[0][0]).toBe('A');
-
-  tree = asFragment();
-  expect(tree).toMatchSnapshot();
 
 });
