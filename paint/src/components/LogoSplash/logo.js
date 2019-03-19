@@ -1,15 +1,53 @@
 import {vec3, mat4} from 'gl-matrix';
 
+const cubeVertices = [
+    -1, -1, +1,  // 0
+    +1, -1, +1,  // 1
+    +1, +1, +1,  // 2
+    -1, +1, +1,  // 3
+    -1, -1, -1,  // 4
+    -1, +1, -1,  // 5
+    +1, +1, -1,  // 6
+    +1, -1, -1,  // 7
+    -1, +1, -1,  // 8
+    -1, +1, +1,  // 9
+    +1, +1, +1,  // 10
+    +1, +1, -1,  // 11
+    -1, -1, -1,  // 12
+    +1, -1, -1,  // 13
+    +1, -1, +1,  // 14
+    -1, -1, +1,  // 15
+    +1, -1, -1,  // 16
+    +1, +1, -1,  // 17
+    +1, +1, +1,  // 18
+    +1, -1, +1,  // 19
+    -1, -1, -1,  // 20
+    -1, -1, +1,  // 21
+    -1, +1, +1,  // 22
+    -1, +1, -1,  // 23
+];
+const cubeIndices = [
+    0, 1, 2, 0, 2, 3,
+    4, 5, 6, 4, 6, 7,
+    8, 9, 10, 8, 10, 11,
+    12, 13, 14, 12, 14, 15,
+    16, 17, 18, 16, 18, 19,
+    20, 21, 22, 20, 22, 23,
+];
+
 export default class Logo {
 
     constructor(canvas) {
         this.cubeRotation = 0.0;
         this.isRunning = true;
+        this.shaderProgram = null;
         this.canvas = canvas;
         this.then = 0;
         let realToCSSPixels = window.devicePixelRatio;
         this.canvas.width = Math.floor(this.canvas.clientWidth * realToCSSPixels);
         this.canvas.height = Math.floor(this.canvas.clientHeight * realToCSSPixels);
+
+        this.attributes = [];
 
         this.gl = this.canvas.getContext("webgl");
         this.programInfo = {};
@@ -19,33 +57,36 @@ export default class Logo {
         this.colors = [];
         this.indices = [];
 
-        this.addCube([+0.0, +0.0, +2.0], [+0.0, +0.5, +0.0], [+1.0, +0.0, +0.0]);
-        this.addCube([+2.0, +0.0, +0.0], [+0.0, +0.5, +0.0], [+1.0, +0.0, +0.0]);
-        this.addCube([+0.0, +2.0, +0.0], [+0.0, +1.0, +0.0], [+0.5, +0.0, +0.0]);
-        this.addCube([+3.0, +0.0, +3.0], [+0.0, +1.0, +0.0], [+0.5, +0.0, +0.0]);
+        this.addCube([+0.0, +0.0, +0.0], [+0.0, +1.0, +0.0], [+1.0, +0.0, +0.0]);
+        // this.addCube([+0.0, +0.0, +2.0], [+0.0, +0.5, +0.0], [+1.0, +0.0, +0.0]);
+        // this.addCube([+2.0, +0.0, +0.0], [+0.0, +0.5, +0.0], [+1.0, +0.0, +0.0]);
+        // this.addCube([+0.0, +2.0, +0.0], [+0.0, +1.0, +0.0], [+0.5, +0.0, +0.0]);
+        // this.addCube([+3.0, +0.0, +3.0], [+0.0, +1.0, +0.0], [+0.5, +0.0, +0.0]);
     }
 
-    addCube(ct, up, rt) {
-        let fw = vec3.create();
-        vec3.cross(fw, rt, up);
+    addCube(center, up, right, forward) {
+        if (forward === undefined || forward === null) {
+            forward = vec3.create();
+            vec3.cross(forward, right, up);
+        }
 
-        function addVecs(x, y, z) {
-            let res = [...ct];
+        function addVertex(x, y, z) {
+            let res = [...center];
             for (let i = 0; i < 3; i++)
-                res[i] += x * rt[i] + y * up[i] + z * fw[i];
+                res[i] += x * right[i] + y * up[i] + z * forward[i];
             return res;
         }
 
         let is = this.positions.length / 3;
-        let v1 = addVecs(-1.0, -1.0, +1.0);
-        let v2 = addVecs(+1.0, -1.0, +1.0);
-        let v3 = addVecs(+1.0, +1.0, +1.0);
-        let v4 = addVecs(-1.0, +1.0, +1.0);
-        let v5 = addVecs(-1.0, -1.0, -1.0);
-        let v6 = addVecs(-1.0, +1.0, -1.0);
-        let v7 = addVecs(+1.0, +1.0, -1.0);
-        let v8 = addVecs(+1.0, -1.0, -1.0);
-        this.positions = [ ...this.positions,
+        let v1 = addVertex(-1.0, -1.0, +1.0);
+        let v2 = addVertex(+1.0, -1.0, +1.0);
+        let v3 = addVertex(+1.0, +1.0, +1.0);
+        let v4 = addVertex(-1.0, +1.0, +1.0);
+        let v5 = addVertex(-1.0, -1.0, -1.0);
+        let v6 = addVertex(-1.0, +1.0, -1.0);
+        let v7 = addVertex(+1.0, +1.0, -1.0);
+        let v8 = addVertex(+1.0, -1.0, -1.0);
+        this.positions = [...this.positions,
             ...v1, ...v2, ...v3, ...v4,
             ...v5, ...v6, ...v7, ...v8,
             ...v6, ...v4, ...v3, ...v7,
@@ -67,7 +108,7 @@ export default class Logo {
             this.colors = this.colors.concat(c, c, c, c);
         }
 
-        this.indices = [ ...this.indices,
+        this.indices = [...this.indices,
             is + 0, is + 1, is + 2, is + 0, is + 2, is + 3,    // front
             is + 4, is + 5, is + 6, is + 4, is + 6, is + 7,    // back
             is + 8, is + 9, is + 10, is + 8, is + 10, is + 11,   // top
@@ -75,16 +116,21 @@ export default class Logo {
             is + 16, is + 17, is + 18, is + 16, is + 18, is + 19,   // right
             is + 20, is + 21, is + 22, is + 20, is + 22, is + 23,   // left
         ];
+        console.log(JSON.stringify(this.positions));
+        console.log(JSON.stringify(this.indices));
     }
 
-    cancelLogo() {
+    deleteProgram() {
         this.isRunning = false;
+        if (this.shaderProgram !== null)
+            this.gl.deleteProgram(this.shaderProgram);
+        this.shaderProgram = null;
     }
 
     startLogo() {
         this.isRunning = true;
         this.then = 0;
-        this.initShaderProgram();
+        this.create();
 
         this.programInfo = {
             program: this.shaderProgram,
@@ -210,21 +256,21 @@ export default class Logo {
         this.cubeRotation += deltaTime;
     }
 
-    initShaderProgram() {
-        const vsSource = `
-    attribute vec4 aVertexPosition;
-    attribute vec4 aVertexColor;
-
-    uniform mat4 uModelViewMatrix;
-    uniform mat4 uProjectionMatrix;
-
-    varying lowp vec4 vColor;
-
-    void main(void) {
-      gl_Position = uProjectionMatrix * uModelViewMatrix * aVertexPosition;
-      vColor = aVertexColor;
-    }
-  `;
+    create() {
+        const vsSource = [
+"    attribute vec4 aVertexPosition;",
+"    attribute vec4 aVertexColor;",
+"",
+"    uniform mat4 uModelViewMatrix;",
+"    uniform mat4 uProjectionMatrix;",
+"",
+"    varying lowp vec4 vColor;",
+"",
+"    void main(void) {",
+"      gl_Position = uProjectionMatrix * uModelViewMatrix * aVertexPosition;",
+"      vColor = aVertexColor;",
+"    }",
+  ].join("\n");
 
         const fsSource = `
     varying lowp vec4 vColor;
@@ -264,4 +310,11 @@ export default class Logo {
         return shader;
     }
 
+}
+
+class Attribute {
+    constructor(name, size) {
+        this.name = name;
+        this.size = size;
+    }
 }

@@ -35,7 +35,7 @@ class LogoSplash extends Component {
     };
 
     componentWillUnmount() {
-        this.logo.cancelLogo();
+        this.logo.deleteProgram();
     }
 
 

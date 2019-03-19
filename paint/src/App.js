@@ -278,7 +278,7 @@ class App extends Component {
 
     main = (props) => {
         return (
-            <div className="doIndent">
+            <div className="doIndent max_size" style={{overflow: "auto"}}>
                 <h1>Main App</h1>
                 <p>You can view the redux state with Redux DevTools extension for Chrome.</p>
                 <p>Only the advanced mode and session state are present.</p>

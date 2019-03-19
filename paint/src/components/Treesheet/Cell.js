@@ -10,15 +10,15 @@ class Cell extends Component {
     };
 
     render() {
-        let {value, doEdit} = this.props;
+        let {value, doEdit, dataTestID} = this.props;
 
         if (doEdit) {
             return (
-                <TextField value={value} onChange={event => this.handleChangeEvent(event)}>
+                <TextField data-testid={dataTestID} value={value} onChange={event => this.handleChangeEvent(event)}>
                 </TextField>
             )
         } else {
-            return <span>{value}</span>;
+            return <span data-testid={dataTestID}>{value}</span>;
         }
 
     }
@@ -26,6 +26,7 @@ class Cell extends Component {
 
 Cell.defaultProps = {
     doEdit: false,
+    dataTestID: "Cell",
 };
 
 Cell.propTypes = {
