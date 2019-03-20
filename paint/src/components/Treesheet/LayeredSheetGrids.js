@@ -103,7 +103,7 @@ function LayeredSheetGrids(props) {
                         style={getGridCellStyle(cellRow + 1, 2)}
 
                     >
-                        <button onClick={() => toggleOpen(row)}>{symbol}</button>
+                        <button dataTestId={row.path} onClick={() => toggleOpen(row)}>{symbol}</button>
                     </div>));
             }
 
@@ -134,14 +134,16 @@ function LayeredSheetGrids(props) {
                 let isSelected = (cellRow === selectedRow && selectedCol === cellCol);
                 let cellClasses = "ValueCell Cell middleText";
                 let cell;
+                let dataTestId = `${row.path}:${cellCol}`;
                 if (isSelected) {
                     cell = <Cell
+                        dataTestId={dataTestId}
                         doEdit={isSelected}
                         value={editValue}
                         setValue={value => setEditValue(value)}
                     />;
                 } else {
-                    cell = <Cell value={value}/>;
+                    cell = <Cell dataTestId={dataTestId} value={value}/>;
                 }
                 cells.push((
                     <div
