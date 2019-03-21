@@ -4,7 +4,7 @@ import PropTypes from "prop-types";
 import TextField from "@material-ui/core/TextField";
 
 function Cell(props) {
-    let {value, setValue, doEdit, dataTestID} = props;
+    let {value, setValue, doEdit, dataTestId} = props;
 
     let handleChangeEvent = (event) => {
         setValue(event.target.value);
@@ -12,17 +12,17 @@ function Cell(props) {
 
     if (doEdit) {
         return (
-            <TextField data-testid={dataTestID} value={value} onChange={handleChangeEvent}>
+            <TextField data-testid={dataTestId} value={value} onChange={handleChangeEvent}>
             </TextField>
         )
     } else {
-        return <span data-testid={dataTestID}>{value}</span>;
+        return <span data-testid={dataTestId}>{value}</span>;
     }
 }
 
 Cell.defaultProps = {
     doEdit: false,
-    dataTestID: "Cell",
+    dataTestId: "Cell",
 };
 
 Cell.propTypes = {
