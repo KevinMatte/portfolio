@@ -1,25 +1,29 @@
-import {Component} from "react";
+import {useState} from "react";
 import React from "react";
 
 import MaterialButton from "@material-ui/core/Button";
 
 import HelpText from './HelpText';
+import {BaseModel} from "./BaseModel";
 
-class Button extends Component {
+export class Model extends BaseModel {
+}
 
-    state = {};
+export function Button(props) {
+    let hooks = {
+      helpValue: useState(null),
+    };
+    let model = new Model(props, hooks);
 
-    render() {
-        let {props, helpProps} = HelpText.getProps(this, "jack");
-        return (
-            <div>
-                <MaterialButton {...props}>
-                    {props.children}
-                </MaterialButton>
-                <HelpText {...helpProps} />
-            </div>
-        );
-    }
+    let {targetProps, helpProps} = HelpText.getProps(model, "helpValue");
+    return (
+        <div>
+            <MaterialButton {...targetProps}>
+                {targetProps.children}
+            </MaterialButton>
+            <HelpText {...helpProps} />
+        </div>
+    );
 }
 
 Button.defaultProps = {

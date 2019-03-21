@@ -55,7 +55,7 @@ export function TreeControls(props) {
         <Toolbar>
             <Button
                 variant="contained"
-                onClick={console.log("Help")}
+                onClick={() => console.log("Help")}
                 corner="TR"
                 helpText="This is a help button."
             >

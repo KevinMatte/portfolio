@@ -53,9 +53,8 @@ export class Model extends BaseModel {
 }
 
 export function Treesheet(props) {
-    let createTreesheetModel = (props) => new TreesheetModel(props.name, props.types, props.dataTree);
     let hooks = {
-        treesheetModel: useState(createTreesheetModel(props))
+        treesheetModel: useState(() => new TreesheetModel(props.name, props.types, props.dataTree))
     };
     let model = new Model(props, hooks);
     let treesheetModel = model.getValue("treesheetModel");
@@ -83,7 +82,7 @@ export function Treesheet(props) {
                 </div>
             </div>
         </div>;
-    }
+    };
 
     let renderTreeControls = () => {
         return <div
