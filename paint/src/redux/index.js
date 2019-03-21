@@ -3,11 +3,11 @@
 import thunk from 'redux-thunk';
 import {createStore, applyMiddleware, compose} from 'redux';
 import {combineReducers} from "redux";
-import Options from './actions/options';
-import TempValues from './actions/tempValues'
-import Session from './actions/session';
-import Messages from './actions/messages';
-import Drawing from './actions/drawing';
+import Options from './options';
+import TempValues from './tempValues'
+import Session from './session';
+import Messages from './messages';
+import Drawing from './drawing';
 
 var rootReducer = combineReducers({
     session: Session.reducer,

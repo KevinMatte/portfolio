@@ -9,8 +9,8 @@ import Typography from '@material-ui/core/Typography';
 
 import Button from "../../core/Button";
 import {getValueByPath} from "../../general/Utils";
-import Drawing from "../../redux/actions/drawing";
-import TempValues from "../../redux/actions/tempValues";
+import Drawing from "../../redux/drawing";
+import TempValues from "../../redux/tempValues";
 
 class TreeControls extends Component {
 

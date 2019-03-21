@@ -6,7 +6,7 @@ import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 import LayeredSheetGrids from './LayeredSheetGrids';
 import TreesheetModel from "../../model/TreeModel";
-import Drawing from "../../redux/actions/drawing";
+import Drawing from "../../redux/drawing";
 // import renderer from 'react-test-renderer';
 
 const middlewares = [thunk]

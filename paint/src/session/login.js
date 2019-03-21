@@ -3,11 +3,11 @@
 import React, {Component} from 'react';
 // noinspection ES6CheckImport
 import PropTypes from 'prop-types';
-import Session from "../redux/actions/session";
+import Session from "../redux/session";
 import {connect} from "react-redux";
 import Button from "@material-ui/core/Button";
 import TextField from "@material-ui/core/TextField";
-import Messages from "../redux/actions/messages";
+import Messages from "../redux/messages";
 
 class Login extends Component {
     constructor(props) {

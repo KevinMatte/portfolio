@@ -15,8 +15,8 @@ import {getGridCellStyle, getValueByPath} from "../../general/Utils";
 import Cell from "./Cell";
 
 import './Treesheet.css'
-import Drawing from "../../redux/actions/drawing";
-import TempValues from "../../redux/actions/tempValues";
+import Drawing from "../../redux/drawing";
+import TempValues from "../../redux/tempValues";
 import {connect} from "react-redux";
 
 
