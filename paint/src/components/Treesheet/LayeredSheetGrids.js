@@ -18,15 +18,12 @@ import './Treesheet.css'
 import Drawing from "../../redux/drawing";
 import TempValues from "../../redux/tempValues";
 import {connect} from "react-redux";
+import {BaseModel} from "../../core/BaseModel";
 
-export class Methods {
-    constructor(props) {
-        this.props = props;
-    }
-
+export class Model extends BaseModel {
     setSheetPropValue = (field, value) => this.props.setTempValueByPath(`${this.props.name}/${field}`, value);
 
-    // Methods to simplify paths to setTempValueByPath calls.
+    // Model to simplify paths to setTempValueByPath calls.
     setEditValue = value => this.setSheetPropValue('editValue', value);
 
     // Determine row and path of cell.
@@ -78,13 +75,37 @@ export class Methods {
         }
     };
 
+    // +/- <button/>  click handler for opening/closing a row's sub-row contents.
+    toggleOpen = (row) => {
+        let {treesheetModel} = this.props;
+
+        row.isOpen = !row.isOpen;
+        treesheetModel.updateSpreadsheetOpenRows();
+        this.handleCellSelect(null, null, null);
+        this.dropSelection();
+    };
+
+    // Clears currently selected row.
+    dropSelection = () => {
+        let {updated} = this.props;
+        this.setSheetPropValue('updated', updated + 1);
+        this.setSheetPropValue('selectedSheetName', null);
+        this.setSheetPropValue('selectedRow', null);
+        this.setSheetPropValue('selectedCol', null);
+        this.setSheetPropValue('selectedPath', null);
+    };
+}
+
+export function LayeredSheetGrids(props) {
+    let model = new Model(props);
+
     // Returns an object keyed by sheet name with arrays of <Cell/>'s properly styled for their CSS grid.
     // Includes:
     //   <button/>'s for opening and collapsing rows.
     //   <div/>'s with shading to display selection.
-    getCellsBySheet = () => {
+    function renderCellsBySheet() {
         const dataCellCol = 4; // Leftmost data cell grid column. Skips: spacing, indent, spacing.
-        let {treesheetModel, selectedSheetName, selectedRow, selectedCol, editValue} = this.props;
+        let {treesheetModel, selectedSheetName, selectedRow, selectedCol, editValue} = props;
 
         // cellsBySheet contains an array of cells with arrays keyed by sheet name.
         let cellsBySheet = {};
@@ -105,7 +126,7 @@ export class Methods {
                         style={getGridCellStyle(cellRow + 1, 2)}
 
                     >
-                        <button data-testid={row.path} onClick={() => this.toggleOpen(row)}>{symbol}</button>
+                        <button data-testid={row.path} onClick={() => model.toggleOpen(row)}>{symbol}</button>
                     </div>));
             }
 
@@ -142,7 +163,7 @@ export class Methods {
                         dataTestId={dataTestId}
                         doEdit={isSelected}
                         value={editValue}
-                        setValue={value => this.setEditValue(value)}
+                        setValue={value => model.setEditValue(value)}
                     />;
                 } else {
                     cell = <Cell dataTestId={dataTestId} value={value}/>;
@@ -152,8 +173,8 @@ export class Methods {
                         key={++iCell}
                         style={getGridCellStyle(cellRow + 1, iCol)}
                         className={cellClasses}
-                        onMouseOver={() => this.handleCellHover(sheetName)}
-                        onMouseUp={() => this.handleCellSelect(sheetName, cellRow, cellCol)}
+                        onMouseOver={() => model.handleCellHover(sheetName)}
+                        onMouseUp={() => model.handleCellSelect(sheetName, cellRow, cellCol)}
                     >
                         {cell}
                     </div>
@@ -172,34 +193,10 @@ export class Methods {
         return filteredCellsBySheet;
     }
 
-    // +/- <button/>  click handler for opening/closing a row's sub-row contents.
-    toggleOpen = (row) => {
-        let {treesheetModel} = this.props;
-
-        row.isOpen = !row.isOpen;
-        treesheetModel.updateSpreadsheetOpenRows();
-        this.handleCellSelect(null, null, null);
-        this.dropSelection();
-    };
-
-    // Clears currently selected row.
-    dropSelection = () => {
-        let {updated} = this.props;
-        this.setSheetPropValue('updated', updated + 1);
-        this.setSheetPropValue('selectedSheetName', null);
-        this.setSheetPropValue('selectedRow', null);
-        this.setSheetPropValue('selectedCol', null);
-        this.setSheetPropValue('selectedPath', null);
-    };
-}
-
-export function LayeredSheetGrids(props) {
-    let methods = new Methods(props);
-
     // Returns an array of <div/>'s with CSS grids each for displaying a indent level of the tree.
     function renderSheets() {
         let {treesheetModel, gridSpacingWidth, indentPixels, rowHeight} = props;
-        let cellsBySheet = methods.getCellsBySheet();
+        let cellsBySheet = renderCellsBySheet();
 
         return Object.entries(cellsBySheet).map(([sheetName, sheetCells]) => {
 

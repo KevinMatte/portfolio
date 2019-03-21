@@ -1,26 +1,24 @@
-import {Component} from "react";
 import {getGridCellStyle, getValueByPath} from "../../general/Utils";
 import React from "react";
 import {connect} from "react-redux";
 
-export class TopLeftCorner extends Component {
+// export class Model { }
 
-    render() {
-        // Render grid header
-        let treesheetModel = this.props.treesheetModel;
-        let sheetName = this.props.selectedSheetName || treesheetModel.sheetNames[0];
-        let sheet = treesheetModel.sheetsByName[sheetName];
-        let sheetStyle = {
-            gridTemplateColumns: `${this.props.headerColumnWidth}px`,
-            gridTemplateRows: `${this.props.rowHeight}px`,
-        };
+export function TopLeftCorner(props) {
 
-        return (
-            <div style={sheetStyle} className="Spreadsheet">
-                <div className="SpreadsheetRowHeader" style={getGridCellStyle(1, 1)}>{sheet.typeName}</div>
-            </div>);
-    }
+    // Render grid header
+    let treesheetModel = props.treesheetModel;
+    let sheetName = props.selectedSheetName || treesheetModel.sheetNames[0];
+    let sheet = treesheetModel.sheetsByName[sheetName];
+    let sheetStyle = {
+        gridTemplateColumns: `${props.headerColumnWidth}px`,
+        gridTemplateRows: `${props.rowHeight}px`,
+    };
 
+    return (
+        <div style={sheetStyle} className="Spreadsheet">
+            <div className="SpreadsheetRowHeader" style={getGridCellStyle(1, 1)}>{sheet.typeName}</div>
+        </div>);
 }
 
 const mapStateToProps = (state, ownProps) => {
@@ -31,8 +29,7 @@ const mapStateToProps = (state, ownProps) => {
     }
 };
 
-const mapDispatchToProps = {
-};
+const mapDispatchToProps = {};
 
 export default connect(
     mapStateToProps,

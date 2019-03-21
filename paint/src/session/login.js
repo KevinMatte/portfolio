@@ -1,6 +1,6 @@
 /* Copyright (C) 2019 Kevin Matte - All Rights Reserved */
 
-import React, {Component} from 'react';
+import React, {useState} from 'react';
 // noinspection ES6CheckImport
 import PropTypes from 'prop-types';
 import Session from "../redux/session";
@@ -8,64 +8,60 @@ import {connect} from "react-redux";
 import Button from "@material-ui/core/Button";
 import TextField from "@material-ui/core/TextField";
 import Messages from "../redux/messages";
+import {BaseModel} from "../core/BaseModel";
 
-export class Login extends Component {
-    constructor(props) {
-        super(props);
-
-        this.state = {
-            username: "guest",
-            password: "guest"
-        };
-    }
-
+export class Model extends BaseModel {
     handleSubmit = () => {
-        this.props.sessionLogin(this.state.username, this.state.password);
+        let {username, password} = this.getValues();
+        this.props.sessionLogin(username, password);
     };
+}
 
-    handleTextChange = (event) => {
-        this.setState({[event.target.name]: event.target.value});
+export function Login(props) {
+    const hooks = {
+        username: useState("guest"),
+        password: useState("guest"),
     };
+    let model = new Model(props, hooks);
+    let {username, password} = model.getValues();
 
-    render() {
-        let {userIdMessage, passwordMessage} = this.props;
-        return (
-            <div className="flexVDisplay doIndent">
-                <div className="flexFixed">
-                    <TextField
-                        required
-                        name="username"
-                        id="standard-required"
-                        label="User name"
-                        margin="normal"
-                        onChange={event => this.handleTextChange(event)}
-                        value={this.state.username}
-                        helperText={userIdMessage}
-                        error={!!userIdMessage}
-                    />
-                </div>
-                <div className="flexFixed">
-                    <TextField
-                        id="standard-password-input"
-                        name="password"
-                        label="Password"
-                        type="password"
-                        autoComplete="current-password"
-                        margin="normal"
-                        onChange={event => this.handleTextChange(event)}
-                        value={this.state.password}
-                        helperText={passwordMessage}
-                        error={!!passwordMessage}
-                    />
-                </div>
-                <div className="flexFixed">
-                    <Button color="primary" variant="contained" onClick={this.handleSubmit}>
-                        Login
-                    </Button>
-                </div>
+    let {userIdMessage, passwordMessage} = props;
+    return (
+        <div className="flexVDisplay doIndent">
+            <div className="flexFixed">
+                <TextField
+                    required
+                    name="username"
+                    id="standard-required"
+                    label="User name"
+                    margin="normal"
+                    onChange={event => model.handleTextChange(event)}
+                    value={username}
+                    helperText={userIdMessage}
+                    error={!!userIdMessage}
+                />
             </div>
-        );
-    }
+            <div className="flexFixed">
+                <TextField
+                    id="standard-password-input"
+                    name="password"
+                    label="Password"
+                    type="password"
+                    autoComplete="current-password"
+                    margin="normal"
+                    onChange={event => model.handleTextChange(event)}
+                    value={password}
+                    helperText={passwordMessage}
+                    error={!!passwordMessage}
+                />
+            </div>
+            <div className="flexFixed">
+                <Button color="primary" variant="contained" onClick={model.handleSubmit}>
+                    Login
+                </Button>
+            </div>
+        </div>
+    );
 }
 
 Login.propTypes = {

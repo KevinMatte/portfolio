@@ -1,15 +1,15 @@
-import {Component} from "react";
 import {getGridCellStyle, getValueByPath} from "../../general/Utils";
 import React from "react";
 import {connect} from "react-redux";
 import TempValues from "../../redux/tempValues";
 import Drawing from "../../redux/drawing";
+import {BaseModel} from "../../core/BaseModel";
 
-export class RowHeaders extends Component {
+export class Model extends BaseModel {
 
     setTempValueByPath = (field, value) => this.props.setTempValueByPath(`${this.props.name}/${field}`, value);
 
-    handleCellSelect(sheetName, cellRow, cellCol) {
+    handleCellSelect = (sheetName, cellRow, cellCol) => {
         let row;
         console.log(`select ${sheetName} ${cellRow} ${cellCol}`)
         let {selectedRow, selectedCol, treesheetModel, editValue} = this.props;
@@ -40,39 +40,41 @@ export class RowHeaders extends Component {
         }
     }
 
-    render() {
-        // Render grid div
+}
 
-        let {selectedRow, treesheetModel} = this.props;
-        let sheetStyle = {
-            gridTemplateColumns: `${this.props.headerColumnWidth}px`,
-            gridTemplateRows: `repeat(${treesheetModel.openRows.length}, ${this.props.rowHeight}px)`,
-        };
-        let cells = [];
-        let iCell = 0;
-        treesheetModel.openRows.every((row, cellRow) => {
-            let sheet = treesheetModel.sheetsByName[row.sheetName];
-            cells.push((
-                <div
-                    key={++iCell}
-                    style={getGridCellStyle(cellRow + 1, 1)
-                    }
-                    onMouseUp={() => this.handleCellSelect(row.sheetName, cellRow, null)}
-                    className={"SpreadsheetRowHeader " + (cellRow === selectedRow ? "selectedHeader" : "")}>
-                    {sheet.typeName}
-                </div>
-            ));
-            return true;
-        });
+export function RowHeaders(props)  {
+    let model = new Model(props);
 
-        return (
-            <div className="overflowHidden rowHeaders">
-                <div style={sheetStyle} className="Spreadsheet max_size">
-                    {cells}
-                </div>
-            </div>);
-    }
+    // Render grid div
 
+    let {selectedRow, treesheetModel} = props;
+    let sheetStyle = {
+        gridTemplateColumns: `${props.headerColumnWidth}px`,
+        gridTemplateRows: `repeat(${treesheetModel.openRows.length}, ${props.rowHeight}px)`,
+    };
+    let cells = [];
+    let iCell = 0;
+    treesheetModel.openRows.every((row, cellRow) => {
+        let sheet = treesheetModel.sheetsByName[row.sheetName];
+        cells.push((
+            <div
+                key={++iCell}
+                style={getGridCellStyle(cellRow + 1, 1)
+                }
+                onMouseUp={() => model.handleCellSelect(row.sheetName, cellRow, null)}
+                className={"SpreadsheetRowHeader " + (cellRow === selectedRow ? "selectedHeader" : "")}>
+                {sheet.typeName}
+            </div>
+        ));
+        return true;
+    });
+
+    return (
+        <div className="overflowHidden rowHeaders">
+            <div style={sheetStyle} className="Spreadsheet max_size">
+                {cells}
+            </div>
+        </div>);
 }
 
 const mapStateToProps = (state, ownProps) => {

@@ -1,4 +1,3 @@
-import {Component} from "react";
 import React from "react";
 
 import {connect} from "react-redux";
@@ -11,9 +10,9 @@ import Button from "../../core/Button";
 import {getValueByPath} from "../../general/Utils";
 import Drawing from "../../redux/drawing";
 import TempValues from "../../redux/tempValues";
+import {BaseModel} from "../../core/BaseModel";
 
-export class TreeControls extends Component {
-
+export class Model extends BaseModel {
     handleDuplicate = () => {
         let rowPath = [...this.props.selectedPath];
         rowPath.pop();
@@ -34,57 +33,60 @@ export class TreeControls extends Component {
 
     setTempValueByPath = (field, value) => this.props.setTempValueByPath(`${this.props.name}/${field}`, value);
 
-    render() {
-        let {selectedPath} = this.props;
-        let message = "";
-        if (selectedPath) {
-            if (this.props.selectedCol !== null) {
-                message = [...selectedPath];
-                message.pop();
-            } else
-                message = selectedPath;
-            message = `path ${message.join("/")}`
-        } else {
-            message = "No selection."
-        }
-        let hasSelection = !!selectedPath;
-        return (
-            <Toolbar>
-                <Button
-                    variant="contained"
-                    onClick={console.log("Help")}
-                    corner="TR"
-                    helpText="This is a help button."
-                >
-                    Help
-                </Button>
-                {hasSelection &&
-                <Button
-                    variant="contained"
-                    onClick={this.handleDuplicate}
-                    corner="TR"
-                    helpText="Duplicates the selected row, and it's children (indent) if any."
-                >
-                    Duplicate
-                </Button>
-                }
-                {hasSelection &&
-                <Button
-                    variant="contained"
-                    onClick={this.handleDelete}
-                    corner="TR"
-                    helpText="Deletes the selected row, and it's children (indent) if any."
-                >
-                    Delete
-                </Button>
-                }
-                &nbsp;
-                <Typography>
-                    {message}
-                </Typography>
-            </Toolbar>
-        );
+}
+export function TreeControls(props) {
+    let model = new Model(props);
+
+
+    let {selectedPath} = props;
+    let message = "";
+    if (selectedPath) {
+        if (props.selectedCol !== null) {
+            message = [...selectedPath];
+            message.pop();
+        } else
+            message = selectedPath;
+        message = `path ${message.join("/")}`
+    } else {
+        message = "No selection."
     }
+    let hasSelection = !!selectedPath;
+    return (
+        <Toolbar>
+            <Button
+                variant="contained"
+                onClick={console.log("Help")}
+                corner="TR"
+                helpText="This is a help button."
+            >
+                Help
+            </Button>
+            {hasSelection &&
+            <Button
+                variant="contained"
+                onClick={model.handleDuplicate}
+                corner="TR"
+                helpText="Duplicates the selected row, and it's children (indent) if any."
+            >
+                Duplicate
+            </Button>
+            }
+            {hasSelection &&
+            <Button
+                variant="contained"
+                onClick={model.handleDelete}
+                corner="TR"
+                helpText="Deletes the selected row, and it's children (indent) if any."
+            >
+                Delete
+            </Button>
+            }
+            &nbsp;
+            <Typography>
+                {message}
+            </Typography>
+        </Toolbar>
+    );
 }
 
 const mapStateToProps = (state, ownProps) => {

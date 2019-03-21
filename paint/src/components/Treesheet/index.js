@@ -2,7 +2,7 @@
 
 /* Copyright (C) 2019 Kevin Matte - All Rights Reserved */
 
-import React, {Component} from 'react';
+import React, {useState} from 'react';
 // noinspection ES6CheckImport
 import PropTypes from 'prop-types';
 import {connect} from "react-redux";
@@ -17,28 +17,12 @@ import TopLeftCorner from './TopLeftCorner';
 import TreeControls from './TreeControls';
 
 import './Treesheet.css'
+import {BaseModel} from "../../core/BaseModel";
 
-export class Treesheet extends Component {
-
-    constructor(props) {
-        super(props);
-
+export class Model extends BaseModel {
+    constructor(props, hooks) {
+        super(props, hooks);
         this.topDivId = "TopDiv";
-
-        this.state = {
-            treesheetModel: Treesheet.createTreesheetModel(props),
-        }
-    }
-
-    static createTreesheetModel = (props) => new TreesheetModel(props.name, props.types, props.dataTree);
-
-    static getDerivedStateFromProps(nextProps, prevState) {
-        let treesheetModel;
-        if (!prevState.hasOwnProperty("treesheetModel") || prevState.treesheetModel.name !== nextProps.name)
-            treesheetModel = Treesheet.createTreesheetModel(nextProps);
-        else
-            treesheetModel = prevState.treesheetModel;
-        return {treesheetModel}
     }
 
     handleScroll = (event) => {
@@ -66,23 +50,18 @@ export class Treesheet extends Component {
             }
         }
     };
+}
+
+export function Treesheet(props) {
+    let createTreesheetModel = (props) => new TreesheetModel(props.name, props.types, props.dataTree);
+    let hooks = {
+        treesheetModel: useState(createTreesheetModel(props))
+    };
+    let model = new Model(props, hooks);
+    let treesheetModel = model.getValue("treesheetModel");
 
 
-    render() {
-        let {headerColumnWidth, rowHeight, indentPixels, gridSpacingWidth, name} = this.props;
-        let commonProps = {name, rowHeight, gridSpacingWidth, treesheetModel: this.state.treesheetModel};
-        let rowHeaderProps = {...commonProps, headerColumnWidth};
-        let colHeaderProps = {...commonProps, indentPixels};
-
-        return (
-            <div id={this.topDivId} className="flexVDisplay max_size overflowHidden">
-                {this.renderTreesheet(rowHeaderProps, colHeaderProps)}
-                {this.renderTreeControls()}
-            </div>
-        );
-    }
-
-    renderTreesheet(rowHeaderProps, colHeaderProps) {
+    let renderTreesheet = (rowHeaderProps, colHeaderProps) => {
         return <div className="flexVStretched flexVDisplay borderBottom">
 
             {/*<!-- Headers for Columns --> */}
@@ -98,7 +77,7 @@ export class Treesheet extends Component {
                 {/*<!-- Edit/Body of Treesheet --> */}
                 <div
                     className="flexHStretched SpreadsheetScrollArea"
-                    onScroll={(event) => this.handleScroll(event)}
+                    onScroll={(event) => model.handleScroll(event)}
                 >
                     <LayeredSheetGrids {...colHeaderProps}/>
                 </div>
@@ -106,15 +85,27 @@ export class Treesheet extends Component {
         </div>;
     }
 
-    renderTreeControls() {
+    let renderTreeControls = () => {
         return <div
             className="flexFixed">
             <TreeControls
-                name={this.props.name}
-                treesheetModel={this.state.treesheetModel}
+                name={props.name}
+                treesheetModel={treesheetModel}
             />
         </div>;
-    }
+    };
+
+    let {headerColumnWidth, rowHeight, indentPixels, gridSpacingWidth, name} = props;
+    let commonProps = {name, rowHeight, gridSpacingWidth, treesheetModel};
+    let rowHeaderProps = {...commonProps, headerColumnWidth};
+    let colHeaderProps = {...commonProps, indentPixels};
+
+    return (
+        <div id={model.topDivId} className="flexVDisplay max_size overflowHidden">
+            {renderTreesheet(rowHeaderProps, colHeaderProps)}
+            {renderTreeControls()}
+        </div>
+    );
 }
 
 Treesheet.defaultProps = {
