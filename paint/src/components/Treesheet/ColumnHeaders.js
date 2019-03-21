@@ -2,7 +2,7 @@ import {getGridCellStyle, getValueByPath} from "../../general/Utils";
 import React from "react";
 import {connect} from "react-redux";
 
-function ColumnHeaders(props) {
+export function ColumnHeaders(props) {
 
     // Render grid header
     let {selectedSheetName, selectedCol, treesheetModel, indentPixels, gridSpacingWidth, rowHeight} = props;

@@ -5,7 +5,7 @@ import {connect} from "react-redux";
 import TempValues from "../../redux/tempValues";
 import Drawing from "../../redux/drawing";
 
-class RowHeaders extends Component {
+export class RowHeaders extends Component {
 
     setTempValueByPath = (field, value) => this.props.setTempValueByPath(`${this.props.name}/${field}`, value);
 

@@ -3,7 +3,7 @@ import {getGridCellStyle, getValueByPath} from "../../general/Utils";
 import React from "react";
 import {connect} from "react-redux";
 
-class TopLeftCorner extends Component {
+export class TopLeftCorner extends Component {
 
     render() {
         // Render grid header

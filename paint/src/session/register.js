@@ -9,7 +9,7 @@ import TextField from "@material-ui/core/TextField";
 import Session from "../redux/session";
 import Messages from "../redux/messages";
 
-class Register extends Component {
+export class Register extends Component {
     constructor(props) {
         super(props);
 

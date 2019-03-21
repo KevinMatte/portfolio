@@ -109,7 +109,7 @@ const muiTheme = createMuiTheme({
     }
 });
 
-class App extends Component {
+export class App extends Component {
 
     constructor(props, context) {
         super(props, context);

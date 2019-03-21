@@ -19,17 +19,19 @@ import Drawing from "../../redux/drawing";
 import TempValues from "../../redux/tempValues";
 import {connect} from "react-redux";
 
+export class Methods {
+    constructor(props) {
+        this.props = props;
+    }
 
-function LayeredSheetGrids(props) {
-    let {setTempValueByPath, name, selectedRow} = props;
+    setSheetPropValue = (field, value) => this.props.setTempValueByPath(`${this.props.name}/${field}`, value);
 
     // Methods to simplify paths to setTempValueByPath calls.
-    let setSheetPropValue = (field, value) => setTempValueByPath(`${name}/${field}`, value);
-    let setEditValue = value => setSheetPropValue('editValue', value);
+    setEditValue = value => this.setSheetPropValue('editValue', value);
 
     // Determine row and path of cell.
-    let getRowAndPath = (cellRow, cellCol) => {
-        let {treesheetModel} = props;
+    getRowAndPath = (cellRow, cellCol) => {
+        let {treesheetModel} = this.props;
 
         let row = treesheetModel.openRows[cellRow];
         let sheet = treesheetModel.sheetsByName[row.sheetName];
@@ -41,37 +43,37 @@ function LayeredSheetGrids(props) {
     };
 
     // Saves the current value of the selected cell.
-    let saveEditValue = (cellRow, cellCol) => {
-        let {editValue, setValueByPath} = props;
+    saveEditValue = (cellRow, cellCol) => {
+        let {editValue, setValueByPath} = this.props;
 
         // Update external and internal values.
-        let {row, path} = getRowAndPath(cellRow, cellCol);
+        let {row, path} = this.getRowAndPath(cellRow, cellCol);
         setValueByPath(path, editValue);
         row.values[cellCol] = editValue;
     };
 
     // Show sheet by cell's hover if there's no selection.
-    let handleCellHover = (sheetName) => {
-        if (selectedRow === null) {
-            setSheetPropValue('selectedSheetName', sheetName);
+    handleCellHover = (sheetName) => {
+        if (this.props.selectedRow === null) {
+            this.setSheetPropValue('selectedSheetName', sheetName);
         }
     };
 
     // Updates selection, cell and saves any changed value.
-    let handleCellSelect = (sheetName, cellRow, cellCol) => {
-        let {selectedRow, selectedCol} = props;
+    handleCellSelect = (sheetName, cellRow, cellCol) => {
+        let {selectedRow, selectedCol} = this.props;
         if (cellRow !== selectedRow || selectedCol !== cellCol) {
             if (selectedRow !== null && selectedCol != null) {
-                saveEditValue(selectedRow, selectedCol);
+                this.saveEditValue(selectedRow, selectedCol);
             }
             if (cellRow != null && cellCol != null) {
-                let {row, path} = getRowAndPath(cellRow, cellCol);
+                let {row, path} = this.getRowAndPath(cellRow, cellCol);
                 let value = row.values[cellCol];
-                setEditValue(value);
-                setSheetPropValue('selectedSheetName', sheetName);
-                setSheetPropValue('selectedRow', cellRow);
-                setSheetPropValue('selectedCol', cellCol);
-                setSheetPropValue('selectedPath', path);
+                this.setEditValue(value);
+                this.setSheetPropValue('selectedSheetName', sheetName);
+                this.setSheetPropValue('selectedRow', cellRow);
+                this.setSheetPropValue('selectedCol', cellCol);
+                this.setSheetPropValue('selectedPath', path);
             }
         }
     };
@@ -80,9 +82,9 @@ function LayeredSheetGrids(props) {
     // Includes:
     //   <button/>'s for opening and collapsing rows.
     //   <div/>'s with shading to display selection.
-    function getCellsBySheet() {
+    getCellsBySheet = () => {
         const dataCellCol = 4; // Leftmost data cell grid column. Skips: spacing, indent, spacing.
-        let {treesheetModel, selectedSheetName, selectedRow, selectedCol, editValue} = props;
+        let {treesheetModel, selectedSheetName, selectedRow, selectedCol, editValue} = this.props;
 
         // cellsBySheet contains an array of cells with arrays keyed by sheet name.
         let cellsBySheet = {};
@@ -103,7 +105,7 @@ function LayeredSheetGrids(props) {
                         style={getGridCellStyle(cellRow + 1, 2)}
 
                     >
-                        <button dataTestId={row.path} onClick={() => toggleOpen(row)}>{symbol}</button>
+                        <button data-testid={row.path} onClick={() => this.toggleOpen(row)}>{symbol}</button>
                     </div>));
             }
 
@@ -140,7 +142,7 @@ function LayeredSheetGrids(props) {
                         dataTestId={dataTestId}
                         doEdit={isSelected}
                         value={editValue}
-                        setValue={value => setEditValue(value)}
+                        setValue={value => this.setEditValue(value)}
                     />;
                 } else {
                     cell = <Cell dataTestId={dataTestId} value={value}/>;
@@ -150,8 +152,8 @@ function LayeredSheetGrids(props) {
                         key={++iCell}
                         style={getGridCellStyle(cellRow + 1, iCol)}
                         className={cellClasses}
-                        onMouseOver={() => handleCellHover(sheetName)}
-                        onMouseUp={() => handleCellSelect(sheetName, cellRow, cellCol)}
+                        onMouseOver={() => this.handleCellHover(sheetName)}
+                        onMouseUp={() => this.handleCellSelect(sheetName, cellRow, cellCol)}
                     >
                         {cell}
                     </div>
@@ -170,10 +172,34 @@ function LayeredSheetGrids(props) {
         return filteredCellsBySheet;
     }
 
+    // +/- <button/>  click handler for opening/closing a row's sub-row contents.
+    toggleOpen = (row) => {
+        let {treesheetModel} = this.props;
+
+        row.isOpen = !row.isOpen;
+        treesheetModel.updateSpreadsheetOpenRows();
+        this.handleCellSelect(null, null, null);
+        this.dropSelection();
+    };
+
+    // Clears currently selected row.
+    dropSelection = () => {
+        let {updated} = this.props;
+        this.setSheetPropValue('updated', updated + 1);
+        this.setSheetPropValue('selectedSheetName', null);
+        this.setSheetPropValue('selectedRow', null);
+        this.setSheetPropValue('selectedCol', null);
+        this.setSheetPropValue('selectedPath', null);
+    };
+}
+
+export function LayeredSheetGrids(props) {
+    let methods = new Methods(props);
+
     // Returns an array of <div/>'s with CSS grids each for displaying a indent level of the tree.
-    let renderSheets = () => {
+    function renderSheets() {
         let {treesheetModel, gridSpacingWidth, indentPixels, rowHeight} = props;
-        let cellsBySheet = getCellsBySheet();
+        let cellsBySheet = methods.getCellsBySheet();
 
         return Object.entries(cellsBySheet).map(([sheetName, sheetCells]) => {
 
@@ -198,26 +224,6 @@ function LayeredSheetGrids(props) {
                     {sheetCells}
                 </div>);
         });
-    };
-
-    // +/- <button/>  click handler for opening/closing a row's sub-row contents.
-    let toggleOpen = (row) => {
-        let {treesheetModel} = props;
-
-        row.isOpen = !row.isOpen;
-        treesheetModel.updateSpreadsheetOpenRows();
-        handleCellSelect(null, null, null);
-        dropSelection();
-    };
-
-    // Clears currently selected row.
-    let dropSelection = () => {
-        let {updated} = props;
-        setSheetPropValue('updated', updated + 1);
-        setSheetPropValue('selectedSheetName', null);
-        setSheetPropValue('selectedRow', null);
-        setSheetPropValue('selectedCol', null);
-        setSheetPropValue('selectedPath', null);
     };
 
     return (

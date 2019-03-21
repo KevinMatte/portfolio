@@ -18,7 +18,7 @@ import TreeControls from './TreeControls';
 
 import './Treesheet.css'
 
-class Treesheet extends Component {
+export class Treesheet extends Component {
 
     constructor(props) {
         super(props);

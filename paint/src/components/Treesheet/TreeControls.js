@@ -12,7 +12,7 @@ import {getValueByPath} from "../../general/Utils";
 import Drawing from "../../redux/drawing";
 import TempValues from "../../redux/tempValues";
 
-class TreeControls extends Component {
+export class TreeControls extends Component {
 
     handleDuplicate = () => {
         let rowPath = [...this.props.selectedPath];

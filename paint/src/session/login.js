@@ -9,7 +9,7 @@ import Button from "@material-ui/core/Button";
 import TextField from "@material-ui/core/TextField";
 import Messages from "../redux/messages";
 
-class Login extends Component {
+export class Login extends Component {
     constructor(props) {
         super(props);
 

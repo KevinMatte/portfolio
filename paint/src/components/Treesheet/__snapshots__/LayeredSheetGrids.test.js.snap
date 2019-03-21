@@ -1,0 +1,497 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`LayeredSheetGrids: Basic 1`] = `
+<DocumentFragment>
+  <div
+    class="max_size overflowAuto"
+  >
+    <div
+      class="SpreadsheetOverlay"
+    >
+      <div
+        class="Spreadsheet max_size"
+        id="drawing_1"
+      >
+        <div
+          class="middleText"
+        >
+          <button
+            data-testid="0"
+          >
+            -
+          </button>
+        </div>
+        <div
+          class="ValueCell Cell middleText"
+        >
+          <span
+            data-testid="0:0"
+          >
+            First drawing
+          </span>
+        </div>
+        <div
+          class="ValueCell Cell middleText"
+        >
+          <span
+            data-testid="0:1"
+          >
+            drawing
+          </span>
+        </div>
+      </div>
+      <div
+        class="Spreadsheet max_size"
+        id="graph_3"
+      >
+        <div
+          class="middleText"
+        >
+          <button
+            data-testid="0,graphs,0"
+          >
+            -
+          </button>
+        </div>
+        <div
+          class="ValueCell Cell middleText"
+        >
+          <span
+            data-testid="0,graphs,0:0"
+          >
+            line 1
+          </span>
+        </div>
+        <div
+          class="ValueCell Cell middleText"
+        >
+          <span
+            data-testid="0,graphs,0:1"
+          >
+            line
+          </span>
+        </div>
+        <div
+          class="middleText"
+        >
+          <button
+            data-testid="0,graphs,1"
+          >
+            -
+          </button>
+        </div>
+        <div
+          class="ValueCell Cell middleText"
+        >
+          <span
+            data-testid="0,graphs,1:0"
+          >
+            cube 1
+          </span>
+        </div>
+        <div
+          class="ValueCell Cell middleText"
+        >
+          <span
+            data-testid="0,graphs,1:1"
+          >
+            cube
+          </span>
+        </div>
+        <div
+          class="middleText"
+        >
+          <button
+            data-testid="0,graphs,2"
+          >
+            -
+          </button>
+        </div>
+        <div
+          class="ValueCell Cell middleText"
+        >
+          <span
+            data-testid="0,graphs,2:0"
+          >
+            box 1
+          </span>
+        </div>
+        <div
+          class="ValueCell Cell middleText"
+        >
+          <span
+            data-testid="0,graphs,2:1"
+          >
+            box
+          </span>
+        </div>
+      </div>
+      <div
+        class="Spreadsheet max_size"
+        id="vector3_5"
+      >
+        <div
+          class="ValueCell Cell middleText"
+        >
+          <span
+            data-testid="0,graphs,0,points,0:0"
+          >
+            start
+          </span>
+        </div>
+        <div
+          class="ValueCell Cell middleText"
+        >
+          <span
+            data-testid="0,graphs,0,points,0:1"
+          >
+            point
+          </span>
+        </div>
+        <div
+          class="ValueCell Cell middleText"
+        >
+          <span
+            data-testid="0,graphs,0,points,0:2"
+          >
+            1
+          </span>
+        </div>
+        <div
+          class="ValueCell Cell middleText"
+        >
+          <span
+            data-testid="0,graphs,0,points,0:3"
+          >
+            2
+          </span>
+        </div>
+        <div
+          class="ValueCell Cell middleText"
+        >
+          <span
+            data-testid="0,graphs,0,points,0:4"
+          >
+            3
+          </span>
+        </div>
+        <div
+          class="ValueCell Cell middleText"
+        >
+          <span
+            data-testid="0,graphs,0,points,1:0"
+          >
+            end
+          </span>
+        </div>
+        <div
+          class="ValueCell Cell middleText"
+        >
+          <span
+            data-testid="0,graphs,0,points,1:1"
+          >
+            point
+          </span>
+        </div>
+        <div
+          class="ValueCell Cell middleText"
+        >
+          <span
+            data-testid="0,graphs,0,points,1:2"
+          >
+            3
+          </span>
+        </div>
+        <div
+          class="ValueCell Cell middleText"
+        >
+          <span
+            data-testid="0,graphs,0,points,1:3"
+          >
+            2
+          </span>
+        </div>
+        <div
+          class="ValueCell Cell middleText"
+        >
+          <span
+            data-testid="0,graphs,0,points,1:4"
+          >
+            1
+          </span>
+        </div>
+        <div
+          class="ValueCell Cell middleText"
+        >
+          <span
+            data-testid="0,graphs,1,points,0:0"
+          >
+            vertex
+          </span>
+        </div>
+        <div
+          class="ValueCell Cell middleText"
+        >
+          <span
+            data-testid="0,graphs,1,points,0:1"
+          >
+            point
+          </span>
+        </div>
+        <div
+          class="ValueCell Cell middleText"
+        >
+          <span
+            data-testid="0,graphs,1,points,0:2"
+          >
+            11
+          </span>
+        </div>
+        <div
+          class="ValueCell Cell middleText"
+        >
+          <span
+            data-testid="0,graphs,1,points,0:3"
+          >
+            21
+          </span>
+        </div>
+        <div
+          class="ValueCell Cell middleText"
+        >
+          <span
+            data-testid="0,graphs,1,points,0:4"
+          >
+            31
+          </span>
+        </div>
+        <div
+          class="ValueCell Cell middleText"
+        >
+          <span
+            data-testid="0,graphs,1,points,1:0"
+          >
+            edge
+          </span>
+        </div>
+        <div
+          class="ValueCell Cell middleText"
+        >
+          <span
+            data-testid="0,graphs,1,points,1:1"
+          >
+            vector
+          </span>
+        </div>
+        <div
+          class="ValueCell Cell middleText"
+        >
+          <span
+            data-testid="0,graphs,1,points,1:2"
+          >
+            0
+          </span>
+        </div>
+        <div
+          class="ValueCell Cell middleText"
+        >
+          <span
+            data-testid="0,graphs,1,points,1:3"
+          >
+            0
+          </span>
+        </div>
+        <div
+          class="ValueCell Cell middleText"
+        >
+          <span
+            data-testid="0,graphs,1,points,1:4"
+          >
+            5
+          </span>
+        </div>
+        <div
+          class="ValueCell Cell middleText"
+        >
+          <span
+            data-testid="0,graphs,2,points,0:0"
+          >
+            vertex
+          </span>
+        </div>
+        <div
+          class="ValueCell Cell middleText"
+        >
+          <span
+            data-testid="0,graphs,2,points,0:1"
+          >
+            point
+          </span>
+        </div>
+        <div
+          class="ValueCell Cell middleText"
+        >
+          <span
+            data-testid="0,graphs,2,points,0:2"
+          >
+            -11
+          </span>
+        </div>
+        <div
+          class="ValueCell Cell middleText"
+        >
+          <span
+            data-testid="0,graphs,2,points,0:3"
+          >
+            21
+          </span>
+        </div>
+        <div
+          class="ValueCell Cell middleText"
+        >
+          <span
+            data-testid="0,graphs,2,points,0:4"
+          >
+            31
+          </span>
+        </div>
+        <div
+          class="ValueCell Cell middleText"
+        >
+          <span
+            data-testid="0,graphs,2,points,1:0"
+          >
+            x
+          </span>
+        </div>
+        <div
+          class="ValueCell Cell middleText"
+        >
+          <span
+            data-testid="0,graphs,2,points,1:1"
+          >
+            vector
+          </span>
+        </div>
+        <div
+          class="ValueCell Cell middleText"
+        >
+          <span
+            data-testid="0,graphs,2,points,1:2"
+          >
+            0
+          </span>
+        </div>
+        <div
+          class="ValueCell Cell middleText"
+        >
+          <span
+            data-testid="0,graphs,2,points,1:3"
+          >
+            0
+          </span>
+        </div>
+        <div
+          class="ValueCell Cell middleText"
+        >
+          <span
+            data-testid="0,graphs,2,points,1:4"
+          >
+            5
+          </span>
+        </div>
+        <div
+          class="ValueCell Cell middleText"
+        >
+          <span
+            data-testid="0,graphs,2,points,2:0"
+          >
+            y
+          </span>
+        </div>
+        <div
+          class="ValueCell Cell middleText"
+        >
+          <span
+            data-testid="0,graphs,2,points,2:1"
+          >
+            vector
+          </span>
+        </div>
+        <div
+          class="ValueCell Cell middleText"
+        >
+          <span
+            data-testid="0,graphs,2,points,2:2"
+          >
+            0
+          </span>
+        </div>
+        <div
+          class="ValueCell Cell middleText"
+        >
+          <span
+            data-testid="0,graphs,2,points,2:3"
+          >
+            5
+          </span>
+        </div>
+        <div
+          class="ValueCell Cell middleText"
+        >
+          <span
+            data-testid="0,graphs,2,points,2:4"
+          >
+            0
+          </span>
+        </div>
+        <div
+          class="ValueCell Cell middleText"
+        >
+          <span
+            data-testid="0,graphs,2,points,3:0"
+          >
+            z
+          </span>
+        </div>
+        <div
+          class="ValueCell Cell middleText"
+        >
+          <span
+            data-testid="0,graphs,2,points,3:1"
+          >
+            vector
+          </span>
+        </div>
+        <div
+          class="ValueCell Cell middleText"
+        >
+          <span
+            data-testid="0,graphs,2,points,3:2"
+          >
+            5
+          </span>
+        </div>
+        <div
+          class="ValueCell Cell middleText"
+        >
+          <span
+            data-testid="0,graphs,2,points,3:3"
+          >
+            0
+          </span>
+        </div>
+        <div
+          class="ValueCell Cell middleText"
+        >
+          <span
+            data-testid="0,graphs,2,points,3:4"
+          >
+            0
+          </span>
+        </div>
+      </div>
+    </div>
+  </div>
+</DocumentFragment>
+`;
