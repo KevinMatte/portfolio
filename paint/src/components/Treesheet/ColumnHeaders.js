@@ -7,8 +7,8 @@ import {connect} from "react-redux";
 export function ColumnHeaders(props) {
 
     // Render grid header
-    let {selectedSheetName, selectedCol, treesheetModel, indentPixels, gridSpacingWidth, rowHeight} = props;
-    let sheet = treesheetModel.sheetsByName[selectedSheetName || treesheetModel.sheetNames[0]];
+    let {selectedSheetName, selectedCol, rowModel, indentPixels, gridSpacingWidth, rowHeight} = props;
+    let sheet = rowModel.sheetsByName[selectedSheetName || rowModel.sheetNames[0]];
 
     let cells = [];
     let iCell = 0;

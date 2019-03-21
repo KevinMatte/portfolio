@@ -1,6 +1,6 @@
-import {cloneObject, getValueByPath} from "../general/Utils";
+import {cloneObject, getValueByPath} from "../../general/Utils";
 
-export default class TreeModel {
+export default class RowModel {
 
     constructor(name, types, dataTree) {
         this.name = name;
@@ -50,7 +50,7 @@ export default class TreeModel {
 
         if (type.hasOwnProperty('fields')) {
             type.fields.every((key) => {
-                this.createRows([obj[key]], [...path, key]);
+                this.createRow(obj[key], [...path, key]);
                 row.isOpen = true;
                 return true;
             })

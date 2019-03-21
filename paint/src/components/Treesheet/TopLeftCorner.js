@@ -7,9 +7,9 @@ import {connect} from "react-redux";
 export function TopLeftCorner(props) {
 
     // Render grid header
-    let treesheetModel = props.treesheetModel;
-    let sheetName = props.selectedSheetName || treesheetModel.sheetNames[0];
-    let sheet = treesheetModel.sheetsByName[sheetName];
+    let rowModel = props.rowModel;
+    let sheetName = props.selectedSheetName || rowModel.sheetNames[0];
+    let sheet = rowModel.sheetsByName[sheetName];
     let sheetStyle = {
         gridTemplateColumns: `${props.headerColumnWidth}px`,
         gridTemplateRows: `${props.rowHeight}px`,

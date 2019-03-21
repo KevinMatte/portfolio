@@ -12,11 +12,11 @@ export class Model extends BaseModel {
     handleCellSelect = (sheetName, cellRow, cellCol) => {
         let row;
         console.log(`select ${sheetName} ${cellRow} ${cellCol}`)
-        let {selectedRow, selectedCol, treesheetModel, editValue} = this.props;
+        let {selectedRow, selectedCol, rowModel, editValue} = this.props;
         if (cellRow !== selectedRow || selectedCol !== cellCol) {
             if (selectedRow !== null && selectedCol != null) {
-                row = treesheetModel.openRows[selectedRow];
-                let sheet = treesheetModel.sheetsByName[row.sheetName];
+                row = rowModel.openRows[selectedRow];
+                let sheet = rowModel.sheetsByName[row.sheetName];
                 let columnPath = sheet.type.columns[selectedCol].path;
                 columnPath = Array.isArray(columnPath) ? columnPath : [columnPath];
                 let path = [...row.path, ...columnPath];
@@ -24,7 +24,7 @@ export class Model extends BaseModel {
                 row.values[selectedCol] = editValue;
             }
             if (cellRow != null) {
-                row = treesheetModel.openRows[cellRow];
+                row = rowModel.openRows[cellRow];
                 this.setTempValueByPath('selectedSheetName', sheetName);
                 this.setTempValueByPath('selectedRow', cellRow);
                 this.setTempValueByPath('selectedCol', cellCol);
@@ -47,15 +47,15 @@ export function RowHeaders(props)  {
 
     // Render grid div
 
-    let {selectedRow, treesheetModel} = props;
+    let {selectedRow, rowModel} = props;
     let sheetStyle = {
         gridTemplateColumns: `${props.headerColumnWidth}px`,
-        gridTemplateRows: `repeat(${treesheetModel.openRows.length}, ${props.rowHeight}px)`,
+        gridTemplateRows: `repeat(${rowModel.openRows.length}, ${props.rowHeight}px)`,
     };
     let cells = [];
     let iCell = 0;
-    treesheetModel.openRows.every((row, cellRow) => {
-        let sheet = treesheetModel.sheetsByName[row.sheetName];
+    rowModel.openRows.every((row, cellRow) => {
+        let sheet = rowModel.sheetsByName[row.sheetName];
         cells.push((
             <div
                 key={++iCell}

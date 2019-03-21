@@ -9,7 +9,7 @@ import {connect} from "react-redux";
 
 
 import {getValueByPath} from "../../general/Utils";
-import TreesheetModel from "../../model/TreeModel";
+import RowModel from "./RowModel";
 import LayeredSheetGrids from './LayeredSheetGrids';
 import RowHeaders from './RowHeaders';
 import ColumnHeaders from './ColumnHeaders';
@@ -54,10 +54,10 @@ export class Model extends BaseModel {
 
 export function Treesheet(props) {
     let hooks = {
-        treesheetModel: useState(() => new TreesheetModel(props.name, props.types, props.dataTree))
+        rowModel: useState(() => new RowModel(props.name, props.types, props.dataTree))
     };
     let model = new Model(props, hooks);
-    let treesheetModel = model.getValue("treesheetModel");
+    let rowModel = model.getValue("rowModel");
 
 
     let renderTreesheet = (rowHeaderProps, colHeaderProps) => {
@@ -89,13 +89,13 @@ export function Treesheet(props) {
             className="flexFixed">
             <TreeControls
                 name={props.name}
-                treesheetModel={treesheetModel}
+                rowModel={rowModel}
             />
         </div>;
     };
 
     let {headerColumnWidth, rowHeight, indentPixels, gridSpacingWidth, name} = props;
-    let commonProps = {name, rowHeight, gridSpacingWidth, treesheetModel};
+    let commonProps = {name, rowHeight, gridSpacingWidth, rowModel};
     let rowHeaderProps = {...commonProps, headerColumnWidth};
     let colHeaderProps = {...commonProps, indentPixels};
 

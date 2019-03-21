@@ -28,10 +28,10 @@ export class Model extends BaseModel {
 
     // Determine row and path of cell.
     getRowAndPath = (cellRow, cellCol) => {
-        let {treesheetModel} = this.props;
+        let {rowModel} = this.props;
 
-        let row = treesheetModel.openRows[cellRow];
-        let sheet = treesheetModel.sheetsByName[row.sheetName];
+        let row = rowModel.openRows[cellRow];
+        let sheet = rowModel.sheetsByName[row.sheetName];
         let columnPath = sheet.type.columns[cellCol].path;
         columnPath = Array.isArray(columnPath) ? columnPath : [columnPath];
         let path = [...row.path, ...columnPath];
@@ -77,10 +77,10 @@ export class Model extends BaseModel {
 
     // +/- <button/>  click handler for opening/closing a row's sub-row contents.
     toggleOpen = (row) => {
-        let {treesheetModel} = this.props;
+        let {rowModel} = this.props;
 
         row.isOpen = !row.isOpen;
-        treesheetModel.updateSpreadsheetOpenRows();
+        rowModel.updateSpreadsheetOpenRows();
         this.handleCellSelect(null, null, null);
         this.dropSelection();
     };
@@ -105,14 +105,14 @@ export function LayeredSheetGrids(props) {
     //   <div/>'s with shading to display selection.
     function renderCellsBySheet() {
         const dataCellCol = 4; // Leftmost data cell grid column. Skips: spacing, indent, spacing.
-        let {treesheetModel, selectedSheetName, selectedRow, selectedCol, editValue} = props;
+        let {rowModel, selectedSheetName, selectedRow, selectedCol, editValue} = props;
 
         // cellsBySheet contains an array of cells with arrays keyed by sheet name.
         let cellsBySheet = {};
-        treesheetModel.sheetNames.forEach(name => cellsBySheet[name] = []);
+        rowModel.sheetNames.forEach(name => cellsBySheet[name] = []);
 
         let iCell = 0;
-        treesheetModel.openRows.every((row, cellRow) => {
+        rowModel.openRows.every((row, cellRow) => {
             let sheetName = row.sheetName;
             let cells = cellsBySheet[row.sheetName];
 
@@ -195,12 +195,12 @@ export function LayeredSheetGrids(props) {
 
     // Returns an array of <div/>'s with CSS grids each for displaying a indent level of the tree.
     function renderSheets() {
-        let {treesheetModel, gridSpacingWidth, indentPixels, rowHeight} = props;
+        let {rowModel, gridSpacingWidth, indentPixels, rowHeight} = props;
         let cellsBySheet = renderCellsBySheet();
 
         return Object.entries(cellsBySheet).map(([sheetName, sheetCells]) => {
 
-            let sheet = treesheetModel.sheetsByName[sheetName];
+            let sheet = rowModel.sheetsByName[sheetName];
 
             // Setup column placements with grid spacing
             let spacing = `${gridSpacingWidth}px`;
@@ -214,7 +214,7 @@ export function LayeredSheetGrids(props) {
                     className="Spreadsheet max_size"
                     style={{
                         ...getGridCellStyle(1, 1),
-                        gridTemplateRows: `repeat(${treesheetModel.openRows.length}, ${rowHeight}px)`,
+                        gridTemplateRows: `repeat(${rowModel.openRows.length}, ${rowHeight}px)`,
                         gridTemplateColumns: `${spacing} ${indentWidth}px ${spacing} ${widths} ${spacing}`,
                     }}
                 >
@@ -240,7 +240,7 @@ LayeredSheetGrids.defaultProps = {
 
 LayeredSheetGrids.propTypes = {
     name: PropTypes.string.isRequired,
-    treesheetModel: PropTypes.object.isRequired,
+    rowModel: PropTypes.object.isRequired,
     rowHeight: PropTypes.number,
     indentPixels: PropTypes.number,
     gridSpacingWidth: PropTypes.number,

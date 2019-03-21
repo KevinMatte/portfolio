@@ -17,7 +17,7 @@ export class Model extends BaseModel {
         let rowPath = [...this.props.selectedPath];
         rowPath.pop();
         this.props.duplicatePath(rowPath);
-        let selectedRow = this.props.treesheetModel.duplicateRow(this.props.selectedRow);
+        let selectedRow = this.props.rowModel.duplicateRow(this.props.selectedRow);
         this.setTempValueByPath('selectedRow', selectedRow);
         this.setTempValueByPath('updated', this.props.updated + 1);
     };
@@ -26,7 +26,7 @@ export class Model extends BaseModel {
         let rowPath = [...this.props.selectedPath];
         rowPath.pop();
         this.props.deletePath(rowPath);
-        let selectedRow = this.props.treesheetModel.deleteRow(this.props.selectedRow);
+        let selectedRow = this.props.rowModel.deleteRow(this.props.selectedRow);
         this.setTempValueByPath('selectedRow', selectedRow);
         this.setTempValueByPath('updated', this.props.updated + 1);
     };
