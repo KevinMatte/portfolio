@@ -18,7 +18,7 @@ import TreeControls from './TreeControls';
 
 import './Treesheet.css'
 
-class Index extends Component {
+class Treesheet extends Component {
 
     constructor(props) {
         super(props);
@@ -26,7 +26,7 @@ class Index extends Component {
         this.topDivId = "TopDiv";
 
         this.state = {
-            treesheetModel: Index.createTreesheetModel(props),
+            treesheetModel: Treesheet.createTreesheetModel(props),
         }
     }
 
@@ -35,7 +35,7 @@ class Index extends Component {
     static getDerivedStateFromProps(nextProps, prevState) {
         let treesheetModel;
         if (!prevState.hasOwnProperty("treesheetModel") || prevState.treesheetModel.name !== nextProps.name)
-            treesheetModel = Index.createTreesheetModel(nextProps);
+            treesheetModel = Treesheet.createTreesheetModel(nextProps);
         else
             treesheetModel = prevState.treesheetModel;
         return {treesheetModel}
@@ -95,7 +95,7 @@ class Index extends Component {
                 {/*<!-- Headers for rows --> */}
                 <RowHeaders className="flexFixed" {...rowHeaderProps}/>
 
-                {/*<!-- Edit/Body of Index --> */}
+                {/*<!-- Edit/Body of Treesheet --> */}
                 <div
                     className="flexHStretched SpreadsheetScrollArea"
                     onScroll={(event) => this.handleScroll(event)}
@@ -117,7 +117,7 @@ class Index extends Component {
     }
 }
 
-Index.defaultProps = {
+Treesheet.defaultProps = {
     updated: 0,
     headerColumnWidth: 150,
     rowHeight: 50,
@@ -125,7 +125,7 @@ Index.defaultProps = {
     gridSpacingWidth: 5,
 };
 
-Index.propTypes = {
+Treesheet.propTypes = {
     types: PropTypes.object.isRequired,
     dataTree: PropTypes.array.isRequired,
     name: PropTypes.string.isRequired,
@@ -149,4 +149,4 @@ const mapDispatchToProps = {};
 export default connect(
     mapStateToProps,
     mapDispatchToProps
-)(Index)
+)(Treesheet)
