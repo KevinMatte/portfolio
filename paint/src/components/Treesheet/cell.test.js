@@ -2,7 +2,7 @@
 import React from 'react';
 import {render, fireEvent, cleanup, waitForElement} from 'react-testing-library';
 import 'jest-dom/extend-expect'
-import Cell from './Cell';
+import Cell from './cell';
 // import renderer from 'react-test-renderer';
 
 // automatically unmount and cleanup DOM after the test is finished.

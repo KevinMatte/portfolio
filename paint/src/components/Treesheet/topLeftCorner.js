@@ -1,4 +1,4 @@
-import {getGridCellStyle, getValueByPath} from "../../general/Utils";
+import {getGridCellStyle, getValueByPath} from "../../general/utils";
 import React from "react";
 import {connect} from "react-redux";
 

@@ -28,7 +28,7 @@ import Login from './session/login';
 import Session from "./redux/session";
 import Options from "./redux/options";
 import Messages from './redux/messages';
-import {renderText} from "./general/Utils";
+import {renderText} from "./general/utils";
 import Treesheet from "./components/Treesheet";
 import LogoSplash from "./components/LogoSplash";
 

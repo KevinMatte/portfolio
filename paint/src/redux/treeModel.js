@@ -1,9 +1,9 @@
 /* Copyright (C) 2019 Kevin Matte - All Rights Reserved */
 
-import {setStateValueByPath} from "./PathUtils";
-import {deleteStateValueByPath, duplicateStateValueByPath} from "./PathUtils";
+import {setStateValueByPath} from "./pathUtils";
+import {deleteStateValueByPath, duplicateStateValueByPath} from "./pathUtils";
 
-export default class Drawing {
+export default class TreeModel {
     static initialState = {
         types: {
             drawing: {
@@ -34,7 +34,7 @@ export default class Drawing {
                 fields: [],
             },
         },
-        drawings: [
+        models: [
             {
                 name: 'First drawing',
                 type: 'drawing',
@@ -122,7 +122,7 @@ export default class Drawing {
 
     static setValueByPath(path, value) {
         return {
-            type: Drawing.SET_VALUE_BY_PATH,
+            type: TreeModel.SET_VALUE_BY_PATH,
             path: Array.isArray(path) ? path : [path],
             value
         };
@@ -133,23 +133,23 @@ export default class Drawing {
 
         return {
             ...state,
-            drawings: setStateValueByPath(state.drawings, path, value),
+            models: setStateValueByPath(state.models, path, value),
         };
     }
 
     static SET_DRAWINGS = "SET_DRAWINGS";
 
-    static setDrawings(drawings) {
+    static setDrawings(models) {
         return {
-            type: Drawing.SET_DRAWINGS,
-            drawings
+            type: TreeModel.SET_DRAWINGS,
+            models
         };
     }
 
     static setDrawingsReducer(state, action) {
         return {
             ...state,
-            drawings: action.drawings,
+            models: action.models,
         };
     }
 
@@ -157,7 +157,7 @@ export default class Drawing {
 
     static setTypes(types) {
         return {
-            type: Drawing.SET_TYPES,
+            type: TreeModel.SET_TYPES,
             types
         };
     }
@@ -173,7 +173,7 @@ export default class Drawing {
 
     static deletePath(path, value, newField=null) {
         return {
-            type: Drawing.DELETE_PATH,
+            type: TreeModel.DELETE_PATH,
             path: Array.isArray(path) ? path : [path],
             value,
             newField,
@@ -184,7 +184,7 @@ export default class Drawing {
 
         return {
             ...state,
-            drawings: deleteStateValueByPath(state.drawings, path, value, newField),
+            models: deleteStateValueByPath(state.models, path, value, newField),
         };
     }
 
@@ -192,7 +192,7 @@ export default class Drawing {
 
     static duplicatePath(path, newField=null) {
         return {
-            type: Drawing.DUPLICATE_PATH,
+            type: TreeModel.DUPLICATE_PATH,
             path: Array.isArray(path) ? path : [path],
             newField,
         };
@@ -202,29 +202,29 @@ export default class Drawing {
 
         return {
             ...state,
-            drawings: duplicateStateValueByPath(state.drawings, path, newField),
+            models: duplicateStateValueByPath(state.models, path, newField),
         };
     }
 
-    static reducer(drawing = Drawing.initialState, action) {
+    static reducer(treeModel = TreeModel.initialState, action) {
         switch (action.type) {
-            case Drawing.SET_VALUE_BY_PATH:
-                return Drawing.setValueByPathReducer(drawing, action);
+            case TreeModel.SET_VALUE_BY_PATH:
+                return TreeModel.setValueByPathReducer(treeModel, action);
 
-            case Drawing.DUPLICATE_PATH:
-                return Drawing.duplicatePathReducer(drawing, action);
+            case TreeModel.DUPLICATE_PATH:
+                return TreeModel.duplicatePathReducer(treeModel, action);
 
-            case Drawing.DELETE_PATH:
-                return Drawing.deletePathReducer(drawing, action);
+            case TreeModel.DELETE_PATH:
+                return TreeModel.deletePathReducer(treeModel, action);
 
-            case Drawing.SET_DRAWINGS:
-                return Drawing.setDrawingsReducer(drawing, action);
+            case TreeModel.SET_DRAWINGS:
+                return TreeModel.setDrawingsReducer(treeModel, action);
 
-            case Drawing.SET_TYPES:
-                return Drawing.setTypesReducer(drawing, action);
+            case TreeModel.SET_TYPES:
+                return TreeModel.setTypesReducer(treeModel, action);
 
             default:
-                return drawing;
+                return treeModel;
         }
 
     }

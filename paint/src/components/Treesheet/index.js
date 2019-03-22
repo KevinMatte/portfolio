@@ -8,17 +8,17 @@ import PropTypes from 'prop-types';
 import {connect} from "react-redux";
 
 
-import {getValueByPath} from "../../general/Utils";
-import RowModel from "./RowModel";
-import LayeredSheetGrids from './LayeredSheetGrids';
-import RowHeaders from './RowHeaders';
-import ColumnHeaders from './ColumnHeaders';
-import TopLeftCorner from './TopLeftCorner';
-import TreeControls from './TreeControls';
+import {getValueByPath} from "../../general/utils";
+import RowModel from "./rowModel";
+import LayeredSheetGrids from './layeredSheetGrids';
+import RowHeaders from './rowHeaders';
+import ColumnHeaders from './columnHeaders';
+import TopLeftCorner from './topLeftCorner';
+import TreeControls from './treeControls';
 
-import './Treesheet.css'
-import {BaseController} from "../../core/BaseController";
-import Drawing from "../../redux/drawing";
+import './treesheet.css'
+import {BaseController} from "../../core/baseController";
+import TreeModel from "../../redux/treeModel";
 
 export class Controller extends BaseController {
     constructor(props, hooks) {
@@ -129,14 +129,14 @@ Treesheet.propTypes = {
 
 const mapStateToProps = (state, ownProps) => {
     return {
-        types: state.drawing.types,
-        dataTree: state.drawing.drawings,
+        types: state.treeModel.types,
+        dataTree: state.treeModel.models,
         updated: getValueByPath(state.tempValues.values, `${ownProps.name}/updated`, 0),
     }
 };
 
 const mapDispatchToProps = {
-    duplicatePath: Drawing.duplicatePath,
+    duplicatePath: TreeModel.duplicatePath,
 };
 
 export default connect(

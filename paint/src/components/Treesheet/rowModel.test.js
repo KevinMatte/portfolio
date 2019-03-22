@@ -1,11 +1,11 @@
-import RowModel from "./RowModel";
-import Drawing from "../../redux/drawing";
+import RowModel from "./rowModel";
+import TreeModel from "../../redux/treeModel";
 import {applyMiddleware, combineReducers, compose, createStore} from "redux";
 import thunk from "redux-thunk";
 import TempValues from "../../redux/tempValues";
 
 var rootReducer = combineReducers({
-    drawing: Drawing.reducer,
+    treeModel: TreeModel.reducer,
     tempValues: TempValues.reducer,
 });
 
@@ -84,15 +84,15 @@ test('RowModel', () => {
         },
     ];
 
-    store.dispatch(Drawing.setDrawings(dataTree));
-    store.dispatch(Drawing.setTypes(types));
+    store.dispatch(TreeModel.setDrawings(dataTree));
+    store.dispatch(TreeModel.setTypes(types));
     let state = store.getState();
 
-    let props = {name, types: state.drawing.types, dataTree: state.drawing.drawings};
-    Object.getOwnPropertyNames(Drawing).forEach((k) => {
-        if (typeof (Drawing[k]) === "function" && !k.endsWith("Reducer")) {
+    let props = {name, types: state.treeModel.types, dataTree: state.treeModel.models};
+    Object.getOwnPropertyNames(TreeModel).forEach((k) => {
+        if (typeof (TreeModel[k]) === "function" && !k.endsWith("Reducer")) {
             props[k] = function () {
-                store.dispatch(Drawing[k].apply(null, arguments));
+                store.dispatch(TreeModel[k].apply(null, arguments));
             }
         }
     });
@@ -101,12 +101,12 @@ test('RowModel', () => {
     expect(model.dataTree).toMatchSnapshot();
 
     let oldRowsLength = model.openRows.length;
-    let oldGraphsLength = state.drawing.drawings[0].graphs.length;
+    let oldGraphsLength = state.treeModel.models[0].graphs.length;
 
     model.duplicateRow(1);
     expect(model.openRows.length).toBe(oldRowsLength + 3);
     state = store.getState();
-    expect(state.drawing.drawings[0].graphs.length).toBe(oldGraphsLength + 1);
+    expect(state.treeModel.models[0].graphs.length).toBe(oldGraphsLength + 1);
 
     model.toggleOpen(model.rows[1]);
     expect(model.openRows.length).toBe(oldRowsLength + 1);
@@ -122,5 +122,5 @@ test('RowModel', () => {
     model.deleteRow(1);
     expect(model.openRows.length).toBe(oldRowsLength);
     state = store.getState();
-    expect(state.drawing.drawings[0].graphs.length).toBe(oldGraphsLength);
+    expect(state.treeModel.models[0].graphs.length).toBe(oldGraphsLength);
 });

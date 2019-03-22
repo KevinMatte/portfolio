@@ -1,6 +1,6 @@
 /* Copyright (C) 2019 Kevin Matte - All Rights Reserved */
 
-import {setStateValueByPath} from "./PathUtils";
+import {setStateValueByPath} from "./pathUtils";
 
 export default class TempValues {
     static SET_VALUE_BY_PATH = "SET_VALUE_BY_PATH";

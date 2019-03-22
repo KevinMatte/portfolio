@@ -4,7 +4,7 @@ import Popover from '@material-ui/core/Popover';
 import {withStyles} from '@material-ui/core/styles';
 
 import Typography from '@material-ui/core/Typography';
-import {BaseController} from "./BaseController";
+import {BaseController} from "./baseController";
 
 const styles = theme => ({
     popover: {

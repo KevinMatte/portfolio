@@ -1,4 +1,4 @@
-import * as pathUtils from "./PathUtils";
+import * as pathUtils from "./pathUtils";
 
 test('setStateValueByPath(state, path, value)', () => {
 

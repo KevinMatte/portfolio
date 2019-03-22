@@ -3,8 +3,8 @@ import React from "react";
 
 import MaterialButton from "@material-ui/core/Button";
 
-import HelpText from './HelpText';
-import {BaseController} from "./BaseController";
+import HelpText from './helpText';
+import {BaseController} from "./baseController";
 
 export class Controller extends BaseController {
 }

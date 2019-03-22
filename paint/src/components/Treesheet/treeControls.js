@@ -6,11 +6,11 @@ import Toolbar from '@material-ui/core/Toolbar'
 // import Button from "@material-ui/core/Button";
 import Typography from '@material-ui/core/Typography';
 
-import Button from "../../core/Button";
-import {getValueByPath} from "../../general/Utils";
-import Drawing from "../../redux/drawing";
+import Button from "../../core/button";
+import {getValueByPath} from "../../general/utils";
+import TreeModel from "../../redux/treeModel";
 import TempValues from "../../redux/tempValues";
-import {BaseController} from "../../core/BaseController";
+import {BaseController} from "../../core/baseController";
 
 export class Controller extends BaseController {
     handleDuplicate = () => {
@@ -99,8 +99,8 @@ const mapStateToProps = (state, ownProps) => {
 };
 
 const mapDispatchToProps = {
-    duplicatePath: Drawing.duplicatePath,
-    deletePath: Drawing.deletePath,
+    duplicatePath: TreeModel.duplicatePath,
+    deletePath: TreeModel.deletePath,
     setTempValueByPath: TempValues.setValueByPath,
 };
 

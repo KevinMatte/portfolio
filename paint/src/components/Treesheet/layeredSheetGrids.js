@@ -11,14 +11,14 @@
 import React from 'react';
 import PropTypes from 'prop-types'
 
-import {getGridCellStyle, getValueByPath} from "../../general/Utils";
-import Cell from "./Cell";
+import {getGridCellStyle, getValueByPath} from "../../general/utils";
+import Cell from "./cell";
 
-import './Treesheet.css'
-import Drawing from "../../redux/drawing";
+import './treesheet.css'
+import TreeModel from "../../redux/treeModel";
 import TempValues from "../../redux/tempValues";
 import {connect} from "react-redux";
-import {BaseController} from "../../core/BaseController";
+import {BaseController} from "../../core/baseController";
 
 export class Controller extends BaseController {
     setSheetPropValue = (field, value) => this.props.setTempValueByPath(`${this.props.name}/${field}`, value);
@@ -246,8 +246,8 @@ LayeredSheetGrids.propTypes = {
 
 const mapStateToProps = (state, ownProps) => {
     return {
-        types: state.drawing.types,
-        dataTree: state.drawing.drawings,
+        types: state.treeModel.types,
+        dataTree: state.treeModel.models,
         updated: getValueByPath(state.tempValues.values, `${ownProps.name}/updated`, 0),
         editValue: getValueByPath(state.tempValues.values, `${ownProps.name}/editValue`, null),
         selectedSheetName: getValueByPath(state.tempValues.values, `${ownProps.name}/selectedSheetName`, null),
@@ -258,7 +258,7 @@ const mapStateToProps = (state, ownProps) => {
 };
 
 const mapDispatchToProps = {
-    setValueByPath: Drawing.setValueByPath,
+    setValueByPath: TreeModel.setValueByPath,
     setTempValueByPath: TempValues.setValueByPath,
 };
 

@@ -1,5 +1,5 @@
-import {getValueByPath} from "../../general/Utils";
-import {cloneObject} from "../../redux/PathUtils";
+import {getValueByPath} from "../../general/utils";
+import {cloneObject} from "../../redux/pathUtils";
 
 export default class RowModel {
 

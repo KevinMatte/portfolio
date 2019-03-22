@@ -8,7 +8,7 @@
  * Easier for imports and extending the code, I believe.
  */
 
-import {apiPost, ID_TOKEN_KEY} from "../general/Utils";
+import {apiPost, ID_TOKEN_KEY} from "../general/utils";
 import Messages from './messages';
 
 export default class Session {

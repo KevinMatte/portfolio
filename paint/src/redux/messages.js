@@ -1,6 +1,6 @@
 /* Copyright (C) 2019 Kevin Matte - All Rights Reserved */
 
-import {filterObject} from "../general/Utils";
+import {filterObject} from "../general/utils";
 
 export default class Messages {
 

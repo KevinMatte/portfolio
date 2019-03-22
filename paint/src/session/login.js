@@ -8,7 +8,7 @@ import {connect} from "react-redux";
 import Button from "@material-ui/core/Button";
 import TextField from "@material-ui/core/TextField";
 import Messages from "../redux/messages";
-import {BaseController} from "../core/BaseController";
+import {BaseController} from "../core/baseController";
 
 export class Controller extends BaseController {
     handleSubmit = () => {

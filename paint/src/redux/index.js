@@ -7,14 +7,14 @@ import Options from './options';
 import TempValues from './tempValues'
 import Session from './session';
 import Messages from './messages';
-import Drawing from './drawing';
+import TreeModel from './treeModel';
 
 var rootReducer = combineReducers({
     session: Session.reducer,
     options: Options.reducer,
     tempValues: TempValues.reducer,
     messages: Messages.reducer,
-    drawing: Drawing.reducer,
+    treeModel: TreeModel.reducer,
 });
 
 
