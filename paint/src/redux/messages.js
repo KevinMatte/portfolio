@@ -1,14 +1,16 @@
 /* Copyright (C) 2019 Kevin Matte - All Rights Reserved */
 
 import {filterObject} from "../general/utils";
+import {ReduxState} from "./reduxState";
 
-export default class Messages {
-
-    static initialState = {
+export default class Messages extends ReduxState {
+    constructor(initialState={
         list: [],
         messageId: 0,
         messageByField: {}
-    };
+    }) {
+        super(Messages, initialState);
+    }
 
     static SESSION_MESSAGE = "SESSION_MESSAGE";
 
@@ -133,21 +135,5 @@ export default class Messages {
             ...messages,
             list: messages.list.filter(predicate),
         };
-    }
-
-    static reducer(messages = Messages.initialState, action) {
-        switch (action.type) {
-            case Messages.SESSION_MESSAGE:
-                return Messages.addReducer(messages, action);
-
-            case Messages.MESSAGE_REMOVE:
-                return Messages.removeReducer(messages, action);
-
-            case Messages.MESSAGE_REMOVE_BY_FIELD:
-                return Messages.removeByFieldReducer(messages, action)
-
-            default:
-                return messages;
-        }
     }
 }

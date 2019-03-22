@@ -10,15 +10,16 @@
 
 import {apiPost, ID_TOKEN_KEY} from "../general/utils";
 import Messages from './messages';
+import {ReduxState} from "./reduxState";
 
-export default class Session {
-
-    static initialState = {
+export default class Session extends ReduxState {
+    constructor(initialState = {
         sessionId: sessionStorage.getItem(ID_TOKEN_KEY),
         permissions: [],
         title: "Kevin Matte's Portfolio",
-    };
-
+    }) {
+        super(Session, initialState);
+    }
 
     static SESSION_REGISTER = "SESSION_REGISTER";
 
@@ -100,23 +101,6 @@ export default class Session {
 
     static logoutReducer(/* session, action */) {
         return {...Session.initialState, sessionId: null};
-    }
-
-    static reducer(session = Session.initialState, action) {
-        switch (action.type) {
-            case Session.SESSION_LOGIN:
-                return Session.loginReducer(session, action);
-
-            case Session.SESSION_REGISTER:
-                return Session.registerReducer(session, action);
-
-            case Session.SESSION_LOGOUT:
-                return Session.logoutReducer(session, action);
-
-            default:
-                return session;
-        }
-
     }
 }
 

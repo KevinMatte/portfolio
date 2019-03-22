@@ -1,13 +1,14 @@
 /* Copyright (C) 2019 Kevin Matte - All Rights Reserved */
 
 import {setStateValueByPath} from "./pathUtils";
+import {ReduxState} from "./reduxState";
 
-export default class TempValues {
+export default class TempValues extends ReduxState {
+    constructor(initialState={values: {}}) {
+        super(TempValues, initialState)
+    }
+
     static SET_VALUE_BY_PATH = "SET_VALUE_BY_PATH";
-
-    static initialState = {
-        values: {},
-    };
 
     static setValueByPath(path, value) {
         return {
@@ -23,16 +24,5 @@ export default class TempValues {
             ...editValue,
             values: setStateValueByPath(editValue.values, path, value),
         };
-    }
-
-    static reducer(editValue = TempValues.initialState, action) {
-        switch (action.type) {
-            case TempValues.SET_VALUE_BY_PATH:
-                return TempValues.setValueByPathReducer(editValue, action);
-
-            default:
-                return editValue;
-        }
-
     }
 }

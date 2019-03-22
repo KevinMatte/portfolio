@@ -14,7 +14,7 @@ import LayeredSheetGrids from './layeredSheetGrids';
 import RowHeaders from './rowHeaders';
 import ColumnHeaders from './columnHeaders';
 import TopLeftCorner from './topLeftCorner';
-import TreeControls from './treeControls';
+import TreeControls from './sheetToolbar';
 
 import './treesheet.css'
 import {BaseController} from "../../core/baseController";
@@ -137,6 +137,7 @@ const mapStateToProps = (state, ownProps) => {
 
 const mapDispatchToProps = {
     duplicatePath: TreeModel.duplicatePath,
+    deletePath: TreeModel.duplicatePath,
 };
 
 export default connect(

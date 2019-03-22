@@ -32,9 +32,9 @@ export class Controller extends BaseController {
     };
 
     setTempValueByPath = (field, value) => this.props.setTempValueByPath(`${this.props.name}/${field}`, value);
-
 }
-export function TreeControls(props) {
+
+export function sheetToolbar(props) {
     let controller = new Controller(props);
 
 
@@ -107,6 +107,6 @@ const mapDispatchToProps = {
 export default connect(
     mapStateToProps,
     mapDispatchToProps
-)(TreeControls)
+)(sheetToolbar)
 
 

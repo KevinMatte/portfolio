@@ -1,11 +1,13 @@
 /* Copyright (C) 2019 Kevin Matte - All Rights Reserved */
 
-export default class Options {
-    static ADVANCED_MODE_TOGGLE = "ADVANCED_MODE_TOGGLE";
+import {ReduxState} from "./reduxState";
 
-    static initialState = {
-        advancedMode: false
-    };
+export default class Options extends ReduxState {
+    constructor(initialState={advancedMode: false}) {
+        super(Options, initialState);
+    }
+
+    static ADVANCED_MODE_TOGGLE = "ADVANCED_MODE_TOGGLE";
 
     static toggleAdvancedMode() {
         return {
@@ -18,16 +20,5 @@ export default class Options {
             ...options,
             advancedMode: !options.advancedMode,
         };
-    }
-
-    static reducer(options = Options.initialState, action) {
-        switch (action.type) {
-            case Options.ADVANCED_MODE_TOGGLE:
-                return Options.toggleAdvancedModeReducer(options, action);
-
-            default:
-                return options;
-        }
-
     }
 }

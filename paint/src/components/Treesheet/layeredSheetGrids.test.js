@@ -5,6 +5,7 @@ import 'jest-dom/extend-expect'
 import {LayeredSheetGrids, Controller} from './layeredSheetGrids';
 import RowModel from "./rowModel";
 import TreeModel from "../../redux/treeModel";
+import {setupDemo, types, dataTree} from "../../demo";
 
 // automatically unmount and cleanup DOM after the test is finished.
 afterEach(cleanup);
@@ -16,8 +17,7 @@ test('LayeredSheetGrids: Basic', () => {
     let rowHeight = 50;
     let indentPixels = 30;
     let gridSpacingWidth = 5;
-    let types = TreeModel.initialState.types;
-    let dataTree = TreeModel.initialState.models;
+
     let rowModel = new RowModel({name, types, dataTree});
     let commonProps = {name, rowHeight, gridSpacingWidth, rowModel};
     let colHeaderProps = {...commonProps, indentPixels};

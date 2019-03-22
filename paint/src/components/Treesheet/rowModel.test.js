@@ -4,8 +4,69 @@ import {applyMiddleware, combineReducers, compose, createStore} from "redux";
 import thunk from "redux-thunk";
 import TempValues from "../../redux/tempValues";
 
+let types = {
+    drawing: {
+        columns: [
+            {label: 'Name', width: '150px', path: 'name'},
+            {label: 'Type', width: '150px', path: 'type'},
+        ],
+        arrays: ['graphs'],
+        fields: [],
+    },
+    graph: {
+        columns: [
+            {label: 'Name', width: '160px', path: 'name'},
+            {label: 'Type', width: '160px', path: 'type'},
+        ],
+        arrays: ['points'],
+        fields: [],
+    },
+    vector3: {
+        columns: [
+            {label: 'Name', width: '150px', path: 'name'},
+            {label: 'Type', width: '150px', path: 'type'},
+            {label: 'X', width: '150px', path: ['axis', 0]},
+            {label: 'Y', width: '150px', path: ['axis', 1]},
+            {label: 'Z', width: '150px', path: ['axis', 2]},
+        ],
+        array: [],
+        fields: [],
+    },
+};
+let models = [
+    {
+        name: 'First drawing',
+        type: 'drawing',
+        table: 'drawing',
+        drawingId: 1,
+        graphs: [
+            {
+                name: 'line 1',
+                type: 'line',
+                table: 'graph',
+                points: [
+                    {
+                        type: 'point',
+                        name: 'start',
+                        table: 'vector3',
+                        axis: [1, 2, 3],
+                    },
+                    {
+                        type: 'point',
+                        name: 'end',
+                        table: 'vector3',
+                        axis: [3, 2, 1],
+                    },
+
+                ]
+            },
+        ],
+    },
+];
+
+var treeModel = new TreeModel({types, models});
 var rootReducer = combineReducers({
-    treeModel: TreeModel.reducer,
+    treeModel: treeModel.reducer,
     tempValues: TempValues.reducer,
 });
 
@@ -23,79 +84,10 @@ const store = createStore(rootReducer, {}, composeEnhancers(
 test('RowModel', () => {
 
     let name = "treesheet";
-
-    let types = {
-        drawing: {
-            columns: [
-                {label: 'Name', width: '150px', path: 'name'},
-                {label: 'Type', width: '150px', path: 'type'},
-            ],
-            arrays: ['graphs'],
-            fields: [],
-        },
-        graph: {
-            columns: [
-                {label: 'Name', width: '160px', path: 'name'},
-                {label: 'Type', width: '160px', path: 'type'},
-            ],
-            arrays: ['points'],
-            fields: [],
-        },
-        vector3: {
-            columns: [
-                {label: 'Name', width: '150px', path: 'name'},
-                {label: 'Type', width: '150px', path: 'type'},
-                {label: 'X', width: '150px', path: ['axis', 0]},
-                {label: 'Y', width: '150px', path: ['axis', 1]},
-                {label: 'Z', width: '150px', path: ['axis', 2]},
-            ],
-            array: [],
-            fields: [],
-        },
-    };
-    let dataTree = [
-        {
-            name: 'First drawing',
-            type: 'drawing',
-            table: 'drawing',
-            drawingId: 1,
-            graphs: [
-                {
-                    name: 'line 1',
-                    type: 'line',
-                    table: 'graph',
-                    points: [
-                        {
-                            type: 'point',
-                            name: 'start',
-                            table: 'vector3',
-                            axis: [1, 2, 3],
-                        },
-                        {
-                            type: 'point',
-                            name: 'end',
-                            table: 'vector3',
-                            axis: [3, 2, 1],
-                        },
-
-                    ]
-                },
-            ],
-        },
-    ];
-
-    store.dispatch(TreeModel.setDrawings(dataTree));
-    store.dispatch(TreeModel.setTypes(types));
     let state = store.getState();
 
-    let props = {name, types: state.treeModel.types, dataTree: state.treeModel.models};
-    Object.getOwnPropertyNames(TreeModel).forEach((k) => {
-        if (typeof (TreeModel[k]) === "function" && !k.endsWith("Reducer")) {
-            props[k] = function () {
-                store.dispatch(TreeModel[k].apply(null, arguments));
-            }
-        }
-    });
+    let props = treeModel.getMapDispatchToProps(store);
+    props = {...props, name, types: state.treeModel.types, dataTree: state.treeModel.models};
     let model = new RowModel(props);
     expect(model.openRows).toMatchSnapshot();
     expect(model.dataTree).toMatchSnapshot();

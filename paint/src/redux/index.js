@@ -10,11 +10,11 @@ import Messages from './messages';
 import TreeModel from './treeModel';
 
 var rootReducer = combineReducers({
-    session: Session.reducer,
-    options: Options.reducer,
-    tempValues: TempValues.reducer,
-    messages: Messages.reducer,
-    treeModel: TreeModel.reducer,
+    session: new Session().reducer,
+    options: new Options().reducer,
+    tempValues: new TempValues().reducer,
+    messages: new Messages().reducer,
+    treeModel: new TreeModel().reducer,
 });
 
 
