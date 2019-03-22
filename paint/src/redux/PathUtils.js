@@ -1,18 +1,21 @@
 export function setStateValueByPath(state, path, value) {
-    path = Array.isArray(path) ? path : path.split("/");
-    let valueField = path.pop();
+    if (path !== null)
+        path = Array.isArray(path) ? path : path.split("/");
 
     let newState = Array.isArray(state) ? [...state] : {...state};
 
-    let parent = newState;
-    path.every(pathNode => {
-        let child = parent[pathNode];
-        child = Array.isArray(child) ? [...child] : {...child};
-        parent[pathNode] = child;
-        parent = child;
-        return true;
-    });
-    parent[valueField] = value;
+    if (path !== null) {
+        let parent = newState;
+        let valueField = path.pop();
+        path.every(pathNode => {
+            let child = parent[pathNode];
+            child = Array.isArray(child) ? [...child] : {...child};
+            parent[pathNode] = child;
+            parent = child;
+            return true;
+        });
+        parent[valueField] = value;
+    }
 
     return newState;
 }

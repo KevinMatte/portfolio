@@ -18,6 +18,7 @@ import TreeControls from './TreeControls';
 
 import './Treesheet.css'
 import {BaseController} from "../../core/BaseController";
+import Drawing from "../../redux/drawing";
 
 export class Controller extends BaseController {
     constructor(props, hooks) {
@@ -134,7 +135,9 @@ const mapStateToProps = (state, ownProps) => {
     }
 };
 
-const mapDispatchToProps = {};
+const mapDispatchToProps = {
+    duplicatePath: Drawing.duplicatePath,
+};
 
 export default connect(
     mapStateToProps,

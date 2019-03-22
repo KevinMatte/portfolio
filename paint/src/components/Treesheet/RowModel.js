@@ -73,6 +73,9 @@ export default class RowModel {
     }
 
     duplicateRow(iFirstRow) {
+        let path = this.rows[iFirstRow].path;
+        // KM: this.props.duplicatePath(path);
+
         let iRow = iFirstRow;
         let iSplicePoint = iFirstRow;
         let newRows = [];
@@ -91,6 +94,7 @@ export default class RowModel {
             }
             this.rows.splice(iSplicePoint, 0, ...newRows);
         }
+
         this.updateSpreadsheetOpenRows();
         return iSplicePoint;
     }

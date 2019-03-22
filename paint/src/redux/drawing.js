@@ -137,6 +137,38 @@ export default class Drawing {
         };
     }
 
+    static SET_DRAWINGS = "SET_DRAWINGS";
+
+    static setDrawings(drawings) {
+        return {
+            type: Drawing.SET_DRAWINGS,
+            drawings
+        };
+    }
+
+    static setDrawingsReducer(state, action) {
+        return {
+            ...state,
+            drawings: action.drawings,
+        };
+    }
+
+    static SET_TYPES = "SET_TYPES";
+
+    static setTypes(types) {
+        return {
+            type: Drawing.SET_TYPES,
+            types
+        };
+    }
+
+    static setTypesReducer(state, action) {
+        return {
+            ...state,
+            types: action.types,
+        };
+    }
+
     static DELETE_PATH = "DELETE_PATH";
 
     static deletePath(path, value, newField=null) {
@@ -158,20 +190,19 @@ export default class Drawing {
 
     static DUPLICATE_PATH = "DUPLICATE_PATH";
 
-    static duplicatePath(path, value, newField=null) {
+    static duplicatePath(path, newField=null) {
         return {
             type: Drawing.DUPLICATE_PATH,
             path: Array.isArray(path) ? path : [path],
-            value,
             newField,
         };
     }
     static duplicatePathReducer(state, action) {
-        let {path, value, newField} = action;
+        let {path, newField} = action;
 
         return {
             ...state,
-            drawings: duplicateStateValueByPath(state.drawings, path, value, newField),
+            drawings: duplicateStateValueByPath(state.drawings, path, newField),
         };
     }
 
@@ -185,6 +216,12 @@ export default class Drawing {
 
             case Drawing.DELETE_PATH:
                 return Drawing.deletePathReducer(drawing, action);
+
+            case Drawing.SET_DRAWINGS:
+                return Drawing.setDrawingsReducer(drawing, action);
+
+            case Drawing.SET_TYPES:
+                return Drawing.setTypesReducer(drawing, action);
 
             default:
                 return drawing;
