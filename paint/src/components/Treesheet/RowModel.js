@@ -1,11 +1,13 @@
-import {cloneObject, getValueByPath} from "../../general/Utils";
+import {getValueByPath} from "../../general/Utils";
+import {cloneObject} from "../../redux/PathUtils";
 
 export default class RowModel {
 
-    constructor(name, types, dataTree) {
-        this.name = name;
-        this.types = types;
-        this.dataTree = dataTree;
+    constructor(props) {
+        this.props = props;
+        this.name = props.name;
+        this.types = props.types;
+        this.dataTree = props.dataTree;
         this.sheetsByName = {};
         this.sheetNames = [];
         this.rows = [];

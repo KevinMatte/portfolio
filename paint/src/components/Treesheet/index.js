@@ -54,7 +54,7 @@ export class Model extends BaseModel {
 
 export function Treesheet(props) {
     let hooks = {
-        rowModel: useState(() => new RowModel(props.name, props.types, props.dataTree))
+        rowModel: useState(() => new RowModel(props))
     };
     let model = new Model(props, hooks);
     let rowModel = model.getValue("rowModel");

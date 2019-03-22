@@ -1,6 +1,7 @@
 /* Copyright (C) 2019 Kevin Matte - All Rights Reserved */
 
-import {duplicateStateValueByPath, deleteStateValueByPath, setStateValueByPath} from "../general/Utils";
+import {setStateValueByPath} from "./PathUtils";
+import {deleteStateValueByPath, duplicateStateValueByPath} from "./PathUtils";
 
 export default class Drawing {
     static initialState = {

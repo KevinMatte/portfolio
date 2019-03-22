@@ -18,7 +18,7 @@ test('LayeredSheetGrids: Basic', () => {
     let gridSpacingWidth = 5;
     let types = Drawing.initialState.types;
     let dataTree = Drawing.initialState.drawings;
-    let rowModel = new RowModel(name, types, dataTree);
+    let rowModel = new RowModel({name, types, dataTree});
     let commonProps = {name, rowHeight, gridSpacingWidth, rowModel};
     let colHeaderProps = {...commonProps, indentPixels};
 
