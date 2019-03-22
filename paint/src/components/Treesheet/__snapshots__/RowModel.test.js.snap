@@ -1,0 +1,70 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`RowModel 1`] = `
+Array [
+  Object {
+    "isOpen": true,
+    "path": Array [
+      0,
+    ],
+    "sheetName": "drawing_1",
+    "typeName": "drawing",
+    "values": Array [
+      "First drawing",
+      "drawing",
+    ],
+  },
+  Object {
+    "isOpen": true,
+    "path": Array [
+      0,
+      "graphs",
+      0,
+    ],
+    "sheetName": "graph_3",
+    "typeName": "graph",
+    "values": Array [
+      "line 1",
+      "line",
+    ],
+  },
+  Object {
+    "path": Array [
+      0,
+      "graphs",
+      0,
+      "points",
+      0,
+    ],
+    "sheetName": "vector3_5",
+    "typeName": "vector3",
+    "values": Array [
+      "start",
+      "point",
+      1,
+      2,
+      3,
+    ],
+  },
+  Object {
+    "path": Array [
+      0,
+      "graphs",
+      0,
+      "points",
+      1,
+    ],
+    "sheetName": "vector3_5",
+    "typeName": "vector3",
+    "values": Array [
+      "end",
+      "point",
+      3,
+      2,
+      1,
+    ],
+  },
+]
+`;
+
+exports[`RowModel 2`] = `undefined`;

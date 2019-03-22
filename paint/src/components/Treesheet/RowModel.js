@@ -5,25 +5,23 @@ export default class RowModel {
 
     constructor(props) {
         this.props = props;
-        this.name = props.name;
-        this.types = props.types;
-        this.dataTree = props.dataTree;
         this.sheetsByName = {};
         this.sheetNames = [];
         this.rows = [];
         this.numColumns = 0;
         this.columns = [];
 
-        this.createRows(this.dataTree);
+        this.createRows(this.props.dataTree);
         this.updateSpreadsheetOpenRows();
     }
 
     createRow(obj, path) {
+        let {types} = this.props;
 
         let typeName = obj['type'];
-        if (!typeName || !this.types.hasOwnProperty(typeName))
+        if (!typeName || !types.hasOwnProperty(typeName))
             typeName = obj['table'];
-        let type = this.types[typeName];
+        let type = types[typeName];
         if (!type)
             return;
 
