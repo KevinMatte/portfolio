@@ -29,27 +29,52 @@ export class Utils {
 }
 
 export function getValueByPath(obj, path, defaultValue) {
+    let {value} = getValueInfoByPath(obj, path);
+
+    return value === undefined ? defaultValue : value;
+}
+
+export function getPathArray(path) {
+    if (path === null)
+        return path;
+
     if (!Array.isArray(path)) {
-        path = path.split("/").map(field => {
-            let index = Number(field);
-            if (Number.isInteger(index))
-                field = index;
-            return field;
-        });
+        path = path.split("/");
+    }
+    path = path.map(field => {
+        let index = parseInt(field);
+        if (!isNaN(index))
+            field = index;
+        return field;
+    });
+    return path;
+}
+
+export function getValueInfoByPath(obj, path) {
+    let parent, parentPath, value, valuePath;
+    path = getPathArray(path);
+    if (path === null)
+        return {parent, parentPath, value, valuePath}
+
+    parent = obj;
+    value = parent;
+    path.find((name, index) => {
+        if (!value.hasOwnProperty(name)) {
+            parentPath = path.slice(0, index);
+            valuePath = path.slice(index);
+            value = undefined;
+            return true;
+        }
+        parent = value;
+        value = value[name];
+        return false;
+    });
+    if (parentPath === undefined) {
+        parentPath = [...path];
+        valuePath = parentPath.length ? [parentPath.pop()] : [];
     }
 
-    let value = path.reduce((dst, name, index) => {
-        if (dst === undefined || !dst.hasOwnProperty(name)) {
-            if (index < path.length - 1) {
-                return undefined;
-            } else {
-                return defaultValue;
-            }
-        }
-        return dst[name];
-    }, obj);
-
-    return value;
+    return {parent, parentPath, value, valuePath}
 }
 
 export function compareObjects(obj1, obj2) {

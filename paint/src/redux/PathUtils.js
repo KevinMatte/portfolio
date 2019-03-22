@@ -1,44 +1,55 @@
-export function setStateValueByPath(state, path, value) {
-    if (path !== null)
-        path = Array.isArray(path) ? path : path.split("/");
+import {getPathArray, getValueInfoByPath} from "../general/Utils";
+
+export function cloneParentState(state, path) {
+    let {parentPath, value, valuePath} = getValueInfoByPath(state, path);
 
     let newState = Array.isArray(state) ? [...state] : {...state};
+    let parent = newState;
+    if (parentPath === undefined)
+        return {newState, parent, parentPath, value, valuePath};
 
-    if (path !== null) {
-        let parent = newState;
-        let valueField = path.pop();
-        path.every(pathNode => {
-            let child = parent[pathNode];
-            child = Array.isArray(child) ? [...child] : {...child};
-            parent[pathNode] = child;
-            parent = child;
-            return true;
-        });
-        parent[valueField] = value;
+    parentPath.forEach((field) => {
+        let value = parent[field];
+        value = Array.isArray(value) ? [...value] : {...value}
+        parent[field] = value;
+        parent = value;
+    });
+
+    return {newState, parent, parentPath, value, valuePath};
+}
+
+
+export function setStateValueByPath(state, path, value) {
+    if (path === null) {
+        return Array.isArray(state) ? [...state] : {...state};
     }
+
+    let {newState, parent, valuePath} = cloneParentState(state, path);
+
+    if (valuePath.length > 1) {
+        valuePath.slice(0, valuePath.length-1).forEach((field, index) => {
+            let nextField = valuePath[index+1];
+            parent[field] = isNaN(nextField) ? {} : [];
+            parent = parent[field];
+        });
+        valuePath = [valuePath.pop()];
+    }
+    parent[valuePath[0]] = value;
 
     return newState;
 }
 
 export function deleteStateValueByPath(state, path) {
-    path = Array.isArray(path) ? path : path.split("/");
-    let valueField = path.pop();
-
-    let newState = Array.isArray(state) ? [...state] : {...state};
-
-    let parent = newState;
-    path.every(pathNode => {
-        let child = parent[pathNode];
-        child = Array.isArray(child) ? [...child] : {...child};
-        parent[pathNode] = child;
-        parent = child;
-        return true;
-    });
-    if (Array.isArray(parent)) {
-        parent.splice(valueField, 1);
-    } else {
-        delete parent[valueField];
+    if (path === null) {
+        return Array.isArray(state) ? [] : {};
     }
+
+    let {newState, parent, valuePath} = cloneParentState(state, path);
+    let valueField = valuePath[0];
+    if (isNaN(valueField))
+        delete parent[valueField];
+    else
+        parent.splice(valueField, 1);
 
     return newState;
 }
@@ -64,25 +75,28 @@ export function cloneObject(obj) {
 }
 
 export function duplicateStateValueByPath(state, path, newField = null) {
-    path = Array.isArray(path) ? path : path.split("/");
-    let valueField = path.pop();
+    if (path === null) {
+        return Array.isArray(state) ? [...state] : {...state};
+    }
 
-    let newState = Array.isArray(state) ? [...state] : {...state};
+    let {newState, parent, valuePath} = cloneParentState(state, path);
 
-    let parent = newState;
-    path.every(pathNode => {
-        let child = parent[pathNode];
-        child = Array.isArray(child) ? [...child] : {...child};
-        parent[pathNode] = child;
-        parent = child;
-        return true;
-    });
+    if (valuePath.length > 1) {
+        valuePath.slice(0, valuePath.length-1).forEach((field, index) => {
+            let nextField = valuePath[index+1];
+            parent[field] = isNaN(nextField) ? {} : [];
+            parent = parent[field];
+        });
+        valuePath = [valuePath.pop()];
+    }
+    let valueField = valuePath[0];
+
+    let newValue = cloneObject(parent[valueField]);
     if (Array.isArray(parent)) {
-        valueField = parseInt(valueField);
         newField = (newField !== null) ? newField : valueField + 1;
-        parent.splice(newField, 0, cloneObject(parent[valueField]));
+        parent.splice(newField, 0, newValue);
     } else {
-        parent[newField] = cloneObject(parent[valueField]);
+        parent[newField] = newValue;
     }
 
     return newState;

@@ -74,7 +74,7 @@ export default class RowModel {
 
     duplicateRow(iFirstRow) {
         let path = this.rows[iFirstRow].path;
-        // KM: this.props.duplicatePath(path);
+        this.props.duplicatePath(path);
 
         let iRow = iFirstRow;
         let iSplicePoint = iFirstRow;
