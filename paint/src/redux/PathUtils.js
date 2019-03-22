@@ -20,7 +20,7 @@ export function setStateValueByPath(state, path, value) {
     return newState;
 }
 
-export function deleteStateValueByPath(state, path, newField = null) {
+export function deleteStateValueByPath(state, path) {
     path = Array.isArray(path) ? path : path.split("/");
     let valueField = path.pop();
 
@@ -78,8 +78,9 @@ export function duplicateStateValueByPath(state, path, newField = null) {
         return true;
     });
     if (Array.isArray(parent)) {
+        valueField = parseInt(valueField);
         newField = (newField !== null) ? newField : valueField + 1;
-        parent.splice(valueField + 1, 0, cloneObject(parent[valueField]));
+        parent.splice(newField, 0, cloneObject(parent[valueField]));
     } else {
         parent[newField] = cloneObject(parent[valueField]);
     }
