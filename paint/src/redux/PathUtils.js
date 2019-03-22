@@ -1,4 +1,4 @@
-import {getPathArray, getValueInfoByPath} from "../general/Utils";
+import {getValueInfoByPath} from "../general/Utils";
 
 export function cloneParentState(state, path) {
     let {parentPath, value, valuePath} = getValueInfoByPath(state, path);

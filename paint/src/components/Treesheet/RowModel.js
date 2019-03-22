@@ -11,11 +11,11 @@ export default class RowModel {
         this.numColumns = 0;
         this.columns = [];
 
-        this.createRows(this.props.dataTree);
-        this.updateSpreadsheetOpenRows();
+        this._createRows(this.props.dataTree);
+        this._updateSpreadsheetOpenRows();
     }
 
-    createRow(obj, path) {
+    _createRow(obj, path) {
         let {types} = this.props;
 
         let typeName = obj['type'];
@@ -50,7 +50,7 @@ export default class RowModel {
 
         if (type.hasOwnProperty('fields')) {
             type.fields.every((key) => {
-                this.createRow(obj[key], [...path, key]);
+                this._createRow(obj[key], [...path, key]);
                 row.isOpen = true;
                 return true;
             })
@@ -58,16 +58,16 @@ export default class RowModel {
 
         if (type.hasOwnProperty('arrays')) {
             type.arrays.every((key) => {
-                this.createRows(obj[key], [...path, key]);
+                this._createRows(obj[key], [...path, key]);
                 row.isOpen = true;
                 return true;
             })
         }
     }
 
-    createRows(aList, path = []) {
+    _createRows(aList, path = []) {
         aList.every((obj, iObj) => {
-            this.createRow(obj, [...path, iObj]);
+            this._createRow(obj, [...path, iObj]);
             return obj;
         });
     }
@@ -95,11 +95,14 @@ export default class RowModel {
             this.rows.splice(iSplicePoint, 0, ...newRows);
         }
 
-        this.updateSpreadsheetOpenRows();
+        this._updateSpreadsheetOpenRows();
         return iSplicePoint;
     }
 
     deleteRow(iFirstRow) {
+        let path = this.rows[iFirstRow].path;
+        this.props.deletePath(path);
+
         let iRow = iFirstRow;
         let iSplicePoint = iFirstRow;
         let deleteCount = 0;
@@ -114,11 +117,16 @@ export default class RowModel {
         }
         this.rows.splice(iSplicePoint, deleteCount);
 
-        this.updateSpreadsheetOpenRows();
+        this._updateSpreadsheetOpenRows();
         return iSplicePoint;
     }
 
-    updateSpreadsheetOpenRows() {
+    toggleOpen(row) {
+        row.isOpen = !row.isOpen;
+        this._updateSpreadsheetOpenRows();
+    }
+
+    _updateSpreadsheetOpenRows() {
         let openIndent = -1;
         this.openRows = this.rows.filter((row) => {
             let indent = row.path.length;

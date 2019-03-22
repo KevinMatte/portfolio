@@ -78,9 +78,7 @@ export class Controller extends BaseController {
     // +/- <button/>  click handler for opening/closing a row's sub-row contents.
     toggleOpen = (row) => {
         let {rowModel} = this.props;
-
-        row.isOpen = !row.isOpen;
-        rowModel.updateSpreadsheetOpenRows();
+        rowModel.toggleOpen(row);
         this.handleCellSelect(null, null, null);
         this.dropSelection();
     };

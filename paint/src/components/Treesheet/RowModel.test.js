@@ -99,13 +99,28 @@ test('RowModel', () => {
     let model = new RowModel(props);
     expect(model.openRows).toMatchSnapshot();
     expect(model.dataTree).toMatchSnapshot();
+
     let oldRowsLength = model.openRows.length;
     let oldGraphsLength = state.drawing.drawings[0].graphs.length;
-    model.duplicateRow(0);
-    expect(model.openRows.length).toBe(oldRowsLength + 4);
+
+    model.duplicateRow(1);
+    expect(model.openRows.length).toBe(oldRowsLength + 3);
     state = store.getState();
-    // expect(state.drawing.drawings[0].graphs.length).toBe(oldGraphsLength + 1);
-    model.deleteRow(0);
+    expect(state.drawing.drawings[0].graphs.length).toBe(oldGraphsLength + 1);
+
+    model.toggleOpen(model.rows[1]);
+    expect(model.openRows.length).toBe(oldRowsLength + 1);
+
+    // Do toggles.
+    model.toggleOpen(model.rows[1]);
+    expect(model.openRows.length).toBe(oldRowsLength + 3);
+    model.toggleOpen(model.rows[0]);
+    expect(model.openRows.length).toBe(1);
+    model.toggleOpen(model.rows[0]);
+    expect(model.openRows.length).toBe(oldRowsLength + 3);
+
+    model.deleteRow(1);
     expect(model.openRows.length).toBe(oldRowsLength);
-    // expect(state.drawing.drawings[0].graphs.length).toBe(oldGraphsLength);
+    state = store.getState();
+    expect(state.drawing.drawings[0].graphs.length).toBe(oldGraphsLength);
 });
