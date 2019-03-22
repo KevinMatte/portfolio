@@ -43,7 +43,7 @@ export class Controller extends BaseController {
 }
 
 export function RowHeaders(props)  {
-    let model = new Controller(props);
+    let controller = new Controller(props);
 
     // Render grid div
 
@@ -61,7 +61,7 @@ export function RowHeaders(props)  {
                 key={++iCell}
                 style={getGridCellStyle(cellRow + 1, 1)
                 }
-                onMouseUp={() => model.handleCellSelect(row.sheetName, cellRow, null)}
+                onMouseUp={() => controller.handleCellSelect(row.sheetName, cellRow, null)}
                 className={"SpreadsheetRowHeader " + (cellRow === selectedRow ? "selectedHeader" : "")}>
                 {sheet.typeName}
             </div>

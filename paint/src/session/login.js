@@ -22,8 +22,8 @@ export function Login(props) {
         username: useState("guest"),
         password: useState("guest"),
     };
-    let model = new Controller(props, hooks);
-    let {username, password} = model.getValues();
+    let controller = new Controller(props, hooks);
+    let {username, password} = controller.getValues();
 
     let {userIdMessage, passwordMessage} = props;
     return (
@@ -35,7 +35,7 @@ export function Login(props) {
                     id="standard-required"
                     label="User name"
                     margin="normal"
-                    onChange={event => model.handleTextChange(event)}
+                    onChange={event => controller.handleTextChange(event)}
                     value={username}
                     helperText={userIdMessage}
                     error={!!userIdMessage}
@@ -49,14 +49,14 @@ export function Login(props) {
                     type="password"
                     autoComplete="current-password"
                     margin="normal"
-                    onChange={event => model.handleTextChange(event)}
+                    onChange={event => controller.handleTextChange(event)}
                     value={password}
                     helperText={passwordMessage}
                     error={!!passwordMessage}
                 />
             </div>
             <div className="flexFixed">
-                <Button color="primary" variant="contained" onClick={model.handleSubmit}>
+                <Button color="primary" variant="contained" onClick={controller.handleSubmit}>
                     Login
                 </Button>
             </div>

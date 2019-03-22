@@ -56,8 +56,8 @@ export function Treesheet(props) {
     let hooks = {
         rowModel: useState(() => new RowModel(props))
     };
-    let model = new Controller(props, hooks);
-    let rowModel = model.getValue("rowModel");
+    let controller = new Controller(props, hooks);
+    let rowModel = controller.getValue("rowModel");
 
 
     let renderTreesheet = (rowHeaderProps, colHeaderProps) => {
@@ -76,7 +76,7 @@ export function Treesheet(props) {
                 {/*<!-- Edit/Body of Treesheet --> */}
                 <div
                     className="flexHStretched SpreadsheetScrollArea"
-                    onScroll={(event) => model.handleScroll(event)}
+                    onScroll={(event) => controller.handleScroll(event)}
                 >
                     <LayeredSheetGrids {...colHeaderProps}/>
                 </div>
@@ -100,7 +100,7 @@ export function Treesheet(props) {
     let colHeaderProps = {...commonProps, indentPixels};
 
     return (
-        <div id={model.topDivId} className="flexVDisplay max_size overflowHidden">
+        <div id={controller.topDivId} className="flexVDisplay max_size overflowHidden">
             {renderTreesheet(rowHeaderProps, colHeaderProps)}
             {renderTreeControls()}
         </div>

@@ -33,8 +33,8 @@ export function Register(props) {
         password2: useState(""),
         password2Message: useState(null),
     };
-    let model = new Controller(props, hooks);
-    let {username, email, password, password2, password2Message} = model.getValues();
+    let controller = new Controller(props, hooks);
+    let {username, email, password, password2, password2Message} = controller.getValues();
 
     let {emailMessage, userIdMessage, passwordMessage} = props;
     return (

@@ -97,7 +97,7 @@ export class Controller extends BaseController {
 }
 
 export function LayeredSheetGrids(props) {
-    let model = new Controller(props);
+    let controller = new Controller(props);
 
     // Returns an object keyed by sheet name with arrays of <Cell/>'s properly styled for their CSS grid.
     // Includes:
@@ -126,7 +126,7 @@ export function LayeredSheetGrids(props) {
                         style={getGridCellStyle(cellRow + 1, 2)}
 
                     >
-                        <button data-testid={row.path} onClick={() => model.toggleOpen(row)}>{symbol}</button>
+                        <button data-testid={row.path} onClick={() => controller.toggleOpen(row)}>{symbol}</button>
                     </div>));
             }
 
@@ -163,7 +163,7 @@ export function LayeredSheetGrids(props) {
                         dataTestId={dataTestId}
                         doEdit={isSelected}
                         value={editValue}
-                        setValue={value => model.setEditValue(value)}
+                        setValue={value => controller.setEditValue(value)}
                     />;
                 } else {
                     cell = <Cell dataTestId={dataTestId} value={value}/>;
@@ -173,8 +173,8 @@ export function LayeredSheetGrids(props) {
                         key={++iCell}
                         style={getGridCellStyle(cellRow + 1, iCol)}
                         className={cellClasses}
-                        onMouseOver={() => model.handleCellHover(sheetName)}
-                        onMouseUp={() => model.handleCellSelect(sheetName, cellRow, cellCol)}
+                        onMouseOver={() => controller.handleCellHover(sheetName)}
+                        onMouseUp={() => controller.handleCellSelect(sheetName, cellRow, cellCol)}
                     >
                         {cell}
                     </div>

@@ -13,9 +13,9 @@ export function Button(props) {
     let hooks = {
       helpValue: useState(null),
     };
-    let model = new Controller(props, hooks);
+    let controller = new Controller(props, hooks);
 
-    let {targetProps, helpProps} = HelpText.getProps(model, "helpValue");
+    let {targetProps, helpProps} = HelpText.getProps(controller, "helpValue");
     return (
         <div>
             <MaterialButton {...targetProps}>

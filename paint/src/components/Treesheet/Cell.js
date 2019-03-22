@@ -11,12 +11,12 @@ export class Controller extends BaseController {
 }
 
 export function Cell(props) {
-    let model = new Controller(props);
+    let controller = new Controller(props);
     let {value, doEdit, dataTestId} = props;
 
     if (doEdit) {
         return (
-            <TextField data-testid={dataTestId} value={value} onChange={model.handleChangeEvent}>
+            <TextField data-testid={dataTestId} value={value} onChange={controller.handleChangeEvent}>
             </TextField>
         )
     } else {

@@ -35,7 +35,7 @@ export class Controller extends BaseController {
 
 }
 export function TreeControls(props) {
-    let model = new Controller(props);
+    let controller = new Controller(props);
 
 
     let {selectedPath} = props;
@@ -64,7 +64,7 @@ export function TreeControls(props) {
             {hasSelection &&
             <Button
                 variant="contained"
-                onClick={model.handleDuplicate}
+                onClick={controller.handleDuplicate}
                 corner="TR"
                 helpText="Duplicates the selected row, and it's children (indent) if any."
             >
@@ -74,7 +74,7 @@ export function TreeControls(props) {
             {hasSelection &&
             <Button
                 variant="contained"
-                onClick={model.handleDelete}
+                onClick={controller.handleDelete}
                 corner="TR"
                 helpText="Deletes the selected row, and it's children (indent) if any."
             >
