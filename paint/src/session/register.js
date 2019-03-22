@@ -8,9 +8,9 @@ import Button from "@material-ui/core/Button";
 import TextField from "@material-ui/core/TextField";
 import Session from "../redux/session";
 import Messages from "../redux/messages";
-import {BaseModel} from "../core/BaseModel";
+import {BaseController} from "../core/BaseController";
 
-export class Model extends BaseModel {
+export class Controller extends BaseController {
     handleSubmit = () => {
         if (this.state.password !== this.state.password2)
             this.setValue("password2Message", "Passwords don't match");
@@ -33,7 +33,7 @@ export function Register(props) {
         password2: useState(""),
         password2Message: useState(null),
     };
-    let model = new Model(props, hooks);
+    let model = new Controller(props, hooks);
     let {username, email, password, password2, password2Message} = model.getValues();
 
     let {emailMessage, userIdMessage, passwordMessage} = props;

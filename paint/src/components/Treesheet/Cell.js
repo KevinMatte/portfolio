@@ -2,16 +2,16 @@ import React from "react";
 import PropTypes from "prop-types";
 
 import TextField from "@material-ui/core/TextField";
-import {BaseModel} from "../../core/BaseModel";
+import {BaseController} from "../../core/BaseController";
 
-export class Model extends BaseModel {
+export class Controller extends BaseController {
     handleChangeEvent = (event) => {
         this.props.setValue(event.target.value);
     };
 }
 
 export function Cell(props) {
-    let model = new Model(props);
+    let model = new Controller(props);
     let {value, doEdit, dataTestId} = props;
 
     if (doEdit) {

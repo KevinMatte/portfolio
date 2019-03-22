@@ -2,7 +2,7 @@ import {getGridCellStyle, getValueByPath} from "../../general/Utils";
 import React from "react";
 import {connect} from "react-redux";
 
-// export class Model { }
+// export class Controller { }
 
 export function TopLeftCorner(props) {
 

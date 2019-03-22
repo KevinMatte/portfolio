@@ -4,7 +4,7 @@ import Popover from '@material-ui/core/Popover';
 import {withStyles} from '@material-ui/core/styles';
 
 import Typography from '@material-ui/core/Typography';
-import {BaseModel} from "./BaseModel";
+import {BaseController} from "./BaseController";
 
 const styles = theme => ({
     popover: {
@@ -15,7 +15,7 @@ const styles = theme => ({
     },
 });
 
-export class Model extends BaseModel {
+export class Controller extends BaseController {
     static handleMouse(targetModel, stateName, event) {
         switch (event.type) {
             case "mouseenter":
@@ -100,8 +100,8 @@ HelpText.addedPropTypes = {
 HelpText.getProps = (targetModel, stateName) => {
     let targetProps = {
         ...targetModel.props,
-        onMouseEnter: event => Model.handleMouse(targetModel, stateName, event),
-        onMouseLeave: event => Model.handleMouse(targetModel, stateName, event),
+        onMouseEnter: event => Controller.handleMouse(targetModel, stateName, event),
+        onMouseLeave: event => Controller.handleMouse(targetModel, stateName, event),
     };
     let {corner, helpText} = targetModel.props;
     targetProps.name = stateName;

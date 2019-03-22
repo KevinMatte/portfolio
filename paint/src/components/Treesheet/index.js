@@ -17,9 +17,9 @@ import TopLeftCorner from './TopLeftCorner';
 import TreeControls from './TreeControls';
 
 import './Treesheet.css'
-import {BaseModel} from "../../core/BaseModel";
+import {BaseController} from "../../core/BaseController";
 
-export class Model extends BaseModel {
+export class Controller extends BaseController {
     constructor(props, hooks) {
         super(props, hooks);
         this.topDivId = "TopDiv";
@@ -56,7 +56,7 @@ export function Treesheet(props) {
     let hooks = {
         rowModel: useState(() => new RowModel(props))
     };
-    let model = new Model(props, hooks);
+    let model = new Controller(props, hooks);
     let rowModel = model.getValue("rowModel");
 
 

@@ -10,9 +10,9 @@ import Button from "../../core/Button";
 import {getValueByPath} from "../../general/Utils";
 import Drawing from "../../redux/drawing";
 import TempValues from "../../redux/tempValues";
-import {BaseModel} from "../../core/BaseModel";
+import {BaseController} from "../../core/BaseController";
 
-export class Model extends BaseModel {
+export class Controller extends BaseController {
     handleDuplicate = () => {
         let rowPath = [...this.props.selectedPath];
         rowPath.pop();
@@ -35,7 +35,7 @@ export class Model extends BaseModel {
 
 }
 export function TreeControls(props) {
-    let model = new Model(props);
+    let model = new Controller(props);
 
 
     let {selectedPath} = props;

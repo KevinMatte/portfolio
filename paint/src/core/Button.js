@@ -4,16 +4,16 @@ import React from "react";
 import MaterialButton from "@material-ui/core/Button";
 
 import HelpText from './HelpText';
-import {BaseModel} from "./BaseModel";
+import {BaseController} from "./BaseController";
 
-export class Model extends BaseModel {
+export class Controller extends BaseController {
 }
 
 export function Button(props) {
     let hooks = {
       helpValue: useState(null),
     };
-    let model = new Model(props, hooks);
+    let model = new Controller(props, hooks);
 
     let {targetProps, helpProps} = HelpText.getProps(model, "helpValue");
     return (

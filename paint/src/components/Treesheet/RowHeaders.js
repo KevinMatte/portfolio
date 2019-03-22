@@ -3,9 +3,9 @@ import React from "react";
 import {connect} from "react-redux";
 import TempValues from "../../redux/tempValues";
 import Drawing from "../../redux/drawing";
-import {BaseModel} from "../../core/BaseModel";
+import {BaseController} from "../../core/BaseController";
 
-export class Model extends BaseModel {
+export class Controller extends BaseController {
 
     setTempValueByPath = (field, value) => this.props.setTempValueByPath(`${this.props.name}/${field}`, value);
 
@@ -43,7 +43,7 @@ export class Model extends BaseModel {
 }
 
 export function RowHeaders(props)  {
-    let model = new Model(props);
+    let model = new Controller(props);
 
     // Render grid div
 

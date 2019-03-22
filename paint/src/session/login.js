@@ -8,9 +8,9 @@ import {connect} from "react-redux";
 import Button from "@material-ui/core/Button";
 import TextField from "@material-ui/core/TextField";
 import Messages from "../redux/messages";
-import {BaseModel} from "../core/BaseModel";
+import {BaseController} from "../core/BaseController";
 
-export class Model extends BaseModel {
+export class Controller extends BaseController {
     handleSubmit = () => {
         let {username, password} = this.getValues();
         this.props.sessionLogin(username, password);
@@ -22,7 +22,7 @@ export function Login(props) {
         username: useState("guest"),
         password: useState("guest"),
     };
-    let model = new Model(props, hooks);
+    let model = new Controller(props, hooks);
     let {username, password} = model.getValues();
 
     let {userIdMessage, passwordMessage} = props;

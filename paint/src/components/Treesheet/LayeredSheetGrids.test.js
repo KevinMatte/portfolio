@@ -2,7 +2,7 @@
 import React from 'react';
 import {render, fireEvent, cleanup, waitForElement} from 'react-testing-library';
 import 'jest-dom/extend-expect'
-import {LayeredSheetGrids, Model} from './LayeredSheetGrids';
+import {LayeredSheetGrids, Controller} from './LayeredSheetGrids';
 import RowModel from "./RowModel";
 import Drawing from "../../redux/drawing";
 

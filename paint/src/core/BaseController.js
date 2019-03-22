@@ -1,4 +1,4 @@
-export class BaseModel {
+export class BaseController {
 
     constructor(props, hooks = null) {
         this.props = props;

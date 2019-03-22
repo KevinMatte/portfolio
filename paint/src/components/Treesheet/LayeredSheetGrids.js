@@ -18,12 +18,12 @@ import './Treesheet.css'
 import Drawing from "../../redux/drawing";
 import TempValues from "../../redux/tempValues";
 import {connect} from "react-redux";
-import {BaseModel} from "../../core/BaseModel";
+import {BaseController} from "../../core/BaseController";
 
-export class Model extends BaseModel {
+export class Controller extends BaseController {
     setSheetPropValue = (field, value) => this.props.setTempValueByPath(`${this.props.name}/${field}`, value);
 
-    // Model to simplify paths to setTempValueByPath calls.
+    // Controller to simplify paths to setTempValueByPath calls.
     setEditValue = value => this.setSheetPropValue('editValue', value);
 
     // Determine row and path of cell.
@@ -97,7 +97,7 @@ export class Model extends BaseModel {
 }
 
 export function LayeredSheetGrids(props) {
-    let model = new Model(props);
+    let model = new Controller(props);
 
     // Returns an object keyed by sheet name with arrays of <Cell/>'s properly styled for their CSS grid.
     // Includes:
