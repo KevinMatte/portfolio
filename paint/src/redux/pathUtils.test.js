@@ -1,5 +1,6 @@
 import * as pathUtils from "./pathUtils";
 
+// noinspection ES6ModulesDependencies
 test('setStateValueByPath(state, path, value)', () => {
 
     let result, expected;
@@ -22,6 +23,7 @@ test('setStateValueByPath(state, path, value)', () => {
 
 });
 
+// noinspection ES6ModulesDependencies
 test('deleteStateValueByPath(state, path, value)', () => {
 
     let result, expected;
@@ -47,6 +49,7 @@ test('deleteStateValueByPath(state, path, value)', () => {
 });
 
 
+// noinspection ES6ModulesDependencies
 test('duplicateStateValueByPath(state, path, newField)', () => {
 
     let result, expected;
@@ -94,6 +97,7 @@ test('duplicateStateValueByPath(state, path, newField)', () => {
     expect(state).toEqual(orgState);
 });
 
+// noinspection ES6ModulesDependencies
 test('cloneParentState', () => {
     let state = {a: [1, 2, 3], b: {c: [4]}};
 

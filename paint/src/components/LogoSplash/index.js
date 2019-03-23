@@ -1,7 +1,7 @@
 /* Copyright (C) 2019 Kevin Matte - All Rights Reserved */
 
 import React, {Component} from 'react';
-import PropTypes from 'prop-types';
+import {PropTypes} from 'prop-types';
 import Logo from "./logo";
 
 class LogoSplash extends Component {

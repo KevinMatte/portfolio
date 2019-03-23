@@ -111,8 +111,8 @@ const muiTheme = createMuiTheme({
 
 export class App extends Component {
 
-    constructor(props, context) {
-        super(props, context);
+    constructor(props) {
+        super(props);
 
         // noinspection ES6ModulesDependencies, JSUnresolvedVariable
         let isProduction = process.env.NODE_ENV === "production";
@@ -276,7 +276,7 @@ export class App extends Component {
         </Menu>;
     }
 
-    main = (props) => {
+    main = () => {
         return (
             <div className="doIndent max_size" style={{overflow: "auto"}}>
                 <h1>Main App</h1>
@@ -357,7 +357,7 @@ export class App extends Component {
                     <Route path="/paint/about" render={() => (
                         <div>
                             <h1>About</h1>
-                            {this.aboutDescription()}
+                            {this.constructor.aboutDescription()}
                         </div>
                     )}/>
                     <Route path="/paint/login" render={() => (<Redirect to="/paint/"/>)}/>
@@ -384,13 +384,13 @@ export class App extends Component {
                 <h1>Please log in.</h1>
                 <p>The login is easy, the username and password are already entered. Just click login.</p>
 
-                {this.aboutDescription()}
+                {this.constructor.aboutDescription()}
                 <p><Link to="/paint/login"><button>Login</button></Link></p>
             </div>
         );
-    }
+    };
 
-    aboutDescription() {
+    static aboutDescription() {
         return <div>
             <p>Use the session menu in the top right corner.</p>
             <p>This is a demo to show some of my abilities. The code is okay, but no tests and few comments.
@@ -399,11 +399,11 @@ export class App extends Component {
             <ul>
                 <li>React JS</li>
                 <li>React Redux: You can use the Chrome redux tool to view state.</li>
-                <li>Tree of data: Demnonstration of a complex one-page app layout with:
+                <li>Tree of data: Demonstration of a complex one-page app layout with:
                     <ul>
                         <li>Row & Column headers that scroll and align with scrolling of main data area.</li>
                         <li>Multiple overlapping grids for the different tree node contents.</li>
-                        <li>Editting capability.</li>
+                        <li>Editing capability.</li>
                     </ul>
                 </li>
                 <li>Apache server / WSGI / Flask / Python backend</li>

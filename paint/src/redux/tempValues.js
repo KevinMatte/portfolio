@@ -5,11 +5,12 @@ import {ReduxState} from "./reduxState";
 
 export default class TempValues extends ReduxState {
     constructor(initialState={values: {}}) {
-        super(TempValues, initialState)
+        super(initialState);
     }
 
     static SET_VALUE_BY_PATH = "SET_VALUE_BY_PATH";
 
+    // noinspection JSUnusedGlobalSymbols
     static setValueByPath(path, value) {
         return {
             type: TempValues.SET_VALUE_BY_PATH,
@@ -18,6 +19,7 @@ export default class TempValues extends ReduxState {
         };
     }
 
+    // noinspection JSUnusedGlobalSymbols
     static setValueByPathReducer(editValue, action) {
         let {path, value} = action;
         return {

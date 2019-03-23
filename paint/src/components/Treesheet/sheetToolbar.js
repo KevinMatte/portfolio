@@ -41,12 +41,13 @@ export function sheetToolbar(props) {
     let {selectedPath} = props;
     let message = "";
     if (selectedPath) {
+        let path;
         if (props.selectedCol !== null) {
-            message = [...selectedPath];
-            message.pop();
+            path = [...selectedPath];
+            path.pop();
         } else
-            message = selectedPath;
-        message = `path ${message.join("/")}`
+            path = selectedPath;
+        message = `path ${path.join("/")}`
     } else {
         message = "No selection."
     }

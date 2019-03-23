@@ -1,7 +1,6 @@
 /* Copyright (C) 2019 Kevin Matte - All Rights Reserved */
 
 import {deleteStateValueByPath, duplicateStateValueByPath, setStateValueByPath} from "./pathUtils";
-import {getActionMap} from "./utils";
 import {ReduxState} from "./reduxState";
 
 export default class TreeModel extends ReduxState {
@@ -10,7 +9,7 @@ export default class TreeModel extends ReduxState {
         types: {},
         models: [],
     }) {
-        super(TreeModel, initialState);
+        super(initialState);
     }
 
     static SET_VALUE_BY_PATH = "SET_VALUE_BY_PATH";
@@ -23,6 +22,7 @@ export default class TreeModel extends ReduxState {
         };
     }
 
+    // noinspection JSUnusedGlobalSymbols
     static setValueByPathReducer(state, action) {
         let {path, value} = action;
 
@@ -41,6 +41,7 @@ export default class TreeModel extends ReduxState {
         };
     }
 
+    // noinspection JSUnusedGlobalSymbols
     static setDrawingsReducer(state, action) {
         return {
             ...state,
@@ -57,6 +58,7 @@ export default class TreeModel extends ReduxState {
         };
     }
 
+    // noinspection JSUnusedGlobalSymbols
     static setTypesReducer(state, action) {
         return {
             ...state,
@@ -75,6 +77,7 @@ export default class TreeModel extends ReduxState {
         };
     }
 
+    // noinspection JSUnusedGlobalSymbols
     static deletePathReducer(state, action) {
         let {path, value, newField} = action;
 
@@ -94,6 +97,7 @@ export default class TreeModel extends ReduxState {
         };
     }
 
+    // noinspection JSUnusedGlobalSymbols
     static duplicatePathReducer(state, action) {
         let {path, newField} = action;
 

@@ -9,7 +9,7 @@ import Session from './session';
 import Messages from './messages';
 import TreeModel from './treeModel';
 
-var rootReducer = combineReducers({
+const rootReducer = combineReducers({
     session: new Session().reducer,
     options: new Options().reducer,
     tempValues: new TempValues().reducer,

@@ -5,29 +5,6 @@ import React from 'react';
 
 export const ID_TOKEN_KEY = 'sessionid_token';
 
-export class Utils {
-
-    static compareObjects(o1, o2) {
-        let p;
-        for (p in o1) {
-            if (o1.hasOwnProperty(p)) {
-                if (o1[p] !== o2[p]) {
-                    return false;
-                }
-            }
-        }
-        for (p in o2) {
-            if (o2.hasOwnProperty(p)) {
-                if (o1[p] !== o2[p]) {
-                    return false;
-                }
-            }
-        }
-        return true;
-    }
-
-}
-
 export function getValueByPath(obj, path, defaultValue) {
     let {value} = getValueInfoByPath(obj, path);
 
@@ -54,7 +31,9 @@ export function getValueInfoByPath(obj, path) {
     let parent, parentPath, value, valuePath;
     path = getPathArray(path);
     if (path === null)
-        return {parent, parentPath, value, valuePath}
+        { // noinspection JSUnusedAssignment
+            return {parent, parentPath, value, valuePath};
+        }
 
     parent = obj;
     value = parent;
@@ -77,6 +56,7 @@ export function getValueInfoByPath(obj, path) {
     return {parent, parentPath, value, valuePath}
 }
 
+// noinspection JSUnusedGlobalSymbols
 export function compareObjects(obj1, obj2) {
     return Object.keys(obj1).length === Object.keys(obj2).length &&
         Object.keys(obj1).every(key =>
@@ -91,6 +71,7 @@ export function getGridCellStyle(startRow, startCol, endRow, endCol) {
     return {gridArea: `${startRow} / ${startCol} / ${endRow} / ${endCol}`};
 }
 
+// noinspection JSUnusedGlobalSymbols
 export function setValueByPath(obj, path, value) {
     let field, parentPath, parentObj;
     if (Array.isArray(path)) {
@@ -105,6 +86,7 @@ export function setValueByPath(obj, path, value) {
 }
 
 
+// noinspection JSUnusedGlobalSymbols
 export function getRootMatchPath(match) {
     let path = match.path;
     let iColon = path.indexOf('/:');
@@ -113,6 +95,7 @@ export function getRootMatchPath(match) {
     return path;
 }
 
+// noinspection JSUnusedGlobalSymbols
 export function replaceMatchPathWithParameters(match) {
     let pos = 1;
     let path = match.path;
@@ -144,11 +127,11 @@ export function replaceMatchPathWithParameters(match) {
 export function renderText(text) {
     let lines;
     if (Array.isArray(text))
-        lines = text.map(line => line.trimEnd());
+        lines = text.map(line => line.trimRight());
     else if (text instanceof Response) {
         lines = [`${text.status}: ${text.statusText}`]
     } else
-        lines = (text || "").trimEnd().split("\n");
+        lines = (text || "").trimRight().split("\n");
     return lines.map((line, idx) => <pre key={"key_" + idx}>{line}</pre>);
 }
 
@@ -195,15 +178,11 @@ export function apiPost(url, postData = {}) {
         body: JSON.stringify(postData), // body data type must match "Content-Type" header
     }).then((response) => {
         if (response.ok)
-            return Promise.all([response, response.json()]);
+            return response.json();
         else
             return Promise.reject(response);
-    }).then(([response2, data]) => {
-        if (response2.ok) {
-            return data;
-        } else {
-            return {status: data.status, result: response2.statusText};
-        }
+    }).then(data => {
+        return data;
     }).catch(result => {
         return Promise.resolve({status: "error", result});
     });

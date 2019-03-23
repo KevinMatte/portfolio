@@ -9,10 +9,8 @@ export default class Messages extends ReduxState {
         messageId: 0,
         messageByField: {}
     }) {
-        super(Messages, initialState);
+        super(initialState);
     }
-
-    static SESSION_MESSAGE = "SESSION_MESSAGE";
 
     static _add(dispatch, status, message, field = undefined) {
 
@@ -25,7 +23,7 @@ export default class Messages extends ReduxState {
                 Messages._add(dispatch, messageStatus, message.message, messageField);
             } else {
                 return dispatch({
-                    type: Messages.SESSION_MESSAGE,
+                    type: Messages.MESSAGES_ADD,
                     message,
                     field,
                     status,
@@ -33,7 +31,7 @@ export default class Messages extends ReduxState {
             }
         } else {
             return dispatch({
-                type: Messages.SESSION_MESSAGE,
+                type: Messages.MESSAGES_ADD,
                 message,
                 field,
                 status,
@@ -41,12 +39,15 @@ export default class Messages extends ReduxState {
         }
     }
 
+    static MESSAGES_ADD = "MESSAGES_ADD";
+
     static add = (status, message) => dispatch => {
-        Messages._add(dispatch, status, message);
+        this._add(dispatch, status, message);
     };
 
     static getMessage = (message) => message ? message.message : null;
 
+    // noinspection JSUnusedGlobalSymbols
     static addReducer(messages, action) {
         let messageId = messages.messageId + 1;
         let {status, message, field} = action;
@@ -74,15 +75,17 @@ export default class Messages extends ReduxState {
         }
     }
 
-    static MESSAGE_REMOVE_BY_FIELD = "MESSAGE_REMOVE_BY_FIELD";
+    static MESSAGES_REMOVE_BY_FIELD = "MESSAGES_REMOVE_BY_FIELD";
 
+    // noinspection JSUnusedGlobalSymbols
     static removeByField(field) {
         return {
-            type: Messages.MESSAGE_REMOVE_BY_FIELD,
+            type: Messages.MESSAGES_REMOVE_BY_FIELD,
             field,
         };
     }
 
+    // noinspection JSUnusedGlobalSymbols
     static removeByFieldReducer(messages, action) {
         let predicate;
         if (action.field.endsWith('/'))
@@ -97,15 +100,17 @@ export default class Messages extends ReduxState {
         };
     }
 
-    static MESSAGE_REMOVE = "MESSAGE_REMOVE";
+    static MESSAGES_REMOVE = "MESSAGES_REMOVE";
 
+    // noinspection JSUnusedGlobalSymbols
     static remove(messageId) {
         return {
-            type: Messages.MESSAGE_REMOVE,
+            type: Messages.MESSAGES_REMOVE,
             messageId,
         };
     }
 
+    // noinspection JSUnusedGlobalSymbols
     static removeReducer(messages, action) {
         let predicate = message => message.messageId !== action.messageId;
         return {
@@ -115,21 +120,24 @@ export default class Messages extends ReduxState {
         };
     }
 
-    static MESSAGE_TAKE = "MESSAGE_TAKE";
+    static MESSAGES_TAKE = "MESSAGES_TAKE";
 
+    // noinspection JSUnusedGlobalSymbols
     static take(field) {
         return {
-            type: Messages.MESSAGE_TAKE,
+            type: Messages.MESSAGES_TAKE,
             field,
         };
     }
 
+    // noinspection JSUnusedGlobalSymbols
     static takeReducer(messages, action) {
         let predicate;
+        let {messageKey} = action;
         if (action.field.endsWith('/'))
-            predicate = message => !message.field || !message.field.startsWith(action.messageKey);
+            predicate = message => !message.field || !message.field.startsWith(messageKey);
         else
-            predicate = message => !message.field || message.field !== action.messageKey;
+            predicate = message => !message.field || message.field !== messageKey;
 
         return {
             ...messages,

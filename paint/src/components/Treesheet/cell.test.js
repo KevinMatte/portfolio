@@ -8,6 +8,7 @@ import Cell from './cell';
 // automatically unmount and cleanup DOM after the test is finished.
 afterEach(cleanup);
 
+// noinspection ES6ModulesDependencies
 test('Cell: Edit mode: off', () => {
   let tree, value;
 
@@ -22,6 +23,7 @@ test('Cell: Edit mode: off', () => {
 
 });
 
+// noinspection ES6ModulesDependencies
 test('Cell: Edit mode: on', () => {
   let tree, value;
   let mockSetValue = jest.fn();

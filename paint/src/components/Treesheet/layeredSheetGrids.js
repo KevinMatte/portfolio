@@ -4,12 +4,12 @@
  * Used in Treesheet to display edit area.
  *
  * Layers a set of div's styled with grids.
- * Each grid has the layout for different child descendency levels of the tree.
+ * Each grid has the layout for different child descendancy levels of the tree.
  */
 
 
 import React from 'react';
-import PropTypes from 'prop-types'
+import {PropTypes} from 'prop-types'
 
 import {getGridCellStyle, getValueByPath} from "../../general/utils";
 import Cell from "./cell";
@@ -219,7 +219,7 @@ export function LayeredSheetGrids(props) {
                     {sheetCells}
                 </div>);
         });
-    };
+    }
 
     return (
         <div className="max_size overflowAuto">

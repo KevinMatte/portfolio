@@ -10,6 +10,7 @@ import {setupDemo, types, dataTree} from "../../demo";
 // automatically unmount and cleanup DOM after the test is finished.
 afterEach(cleanup);
 
+// noinspection ES6ModulesDependencies
 test('LayeredSheetGrids: Basic', () => {
     let tree, value;
 

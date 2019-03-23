@@ -108,6 +108,7 @@ export default class Logo {
             this.colors = this.colors.concat(c, c, c, c);
         }
 
+        // noinspection PointlessArithmeticExpressionJS
         this.indices = [...this.indices,
             is + 0, is + 1, is + 2, is + 0, is + 2, is + 3,    // front
             is + 4, is + 5, is + 6, is + 4, is + 6, is + 7,    // back

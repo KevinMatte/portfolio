@@ -10,7 +10,7 @@ export function cloneParentState(state, path) {
 
     parentPath.forEach((field) => {
         let value = parent[field];
-        value = Array.isArray(value) ? [...value] : {...value}
+        value = Array.isArray(value) ? [...value] : {...value};
         parent[field] = value;
         parent = value;
     });

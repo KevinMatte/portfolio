@@ -1,5 +1,5 @@
 import React from "react";
-import PropTypes from 'prop-types';
+import {PropTypes} from 'prop-types';
 import Popover from '@material-ui/core/Popover';
 import {withStyles} from '@material-ui/core/styles';
 
@@ -98,6 +98,7 @@ HelpText.addedPropTypes = {
 };
 
 HelpText.setupController = (controller, stateName) => {
+    // noinspection JSUnusedGlobalSymbols
     let targetProps = {
         ...controller.props,
         onMouseEnter: event => Controller.handleMouse(controller, stateName, event),

@@ -64,8 +64,8 @@ let models = [
     },
 ];
 
-var treeModel = new TreeModel({types, models});
-var rootReducer = combineReducers({
+const treeModel = new TreeModel({types, models});
+const rootReducer = combineReducers({
     treeModel: treeModel.reducer,
     tempValues: new TempValues().reducer,
 });
@@ -81,6 +81,7 @@ const store = createStore(rootReducer, {}, composeEnhancers(
     applyMiddleware(...middleWare)
 ));
 
+// noinspection ES6ModulesDependencies
 test('RowModel', () => {
 
     let name = "treesheet";

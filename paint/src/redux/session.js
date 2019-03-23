@@ -18,11 +18,12 @@ export default class Session extends ReduxState {
         permissions: [],
         title: "Kevin Matte's Portfolio",
     }) {
-        super(Session, initialState);
+        super(initialState);
     }
 
     static SESSION_REGISTER = "SESSION_REGISTER";
 
+    // noinspection JSUnusedGlobalSymbols
     static register(email, user, password) {
         return dispatch => {
             dispatch(Messages.removeByField('register/'));
@@ -42,6 +43,7 @@ export default class Session extends ReduxState {
         }
     }
 
+    // noinspection JSUnusedGlobalSymbols
     static registerReducer(session, action) {
         return {
             ...session,
@@ -51,6 +53,7 @@ export default class Session extends ReduxState {
 
     static SESSION_LOGIN = "SESSION_LOGIN";
 
+    // noinspection JSUnusedGlobalSymbols
     static login(user, password) {
         return dispatch => {
             dispatch(Messages.removeByField("login/"));
@@ -70,6 +73,7 @@ export default class Session extends ReduxState {
         }
     }
 
+    // noinspection JSUnusedGlobalSymbols
     static loginReducer(session, action) {
         return {
             ...session,
@@ -79,6 +83,7 @@ export default class Session extends ReduxState {
 
     static SESSION_LOGOUT = "SESSION_LOGOUT";
 
+    // noinspection JSUnusedGlobalSymbols
     static logout() {
         return dispatch => {
             return apiPost('logout').then(({status, result}) => {
@@ -99,6 +104,7 @@ export default class Session extends ReduxState {
         }
     }
 
+    // noinspection JSUnusedGlobalSymbols
     static logoutReducer(/* session, action */) {
         return {...Session.initialState, sessionId: null};
     }

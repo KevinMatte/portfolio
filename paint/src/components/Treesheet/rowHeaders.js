@@ -11,7 +11,6 @@ export class Controller extends BaseController {
 
     handleCellSelect = (sheetName, cellRow, cellCol) => {
         let row;
-        console.log(`select ${sheetName} ${cellRow} ${cellCol}`)
         let {selectedRow, selectedCol, rowModel, editValue} = this.props;
         if (cellRow !== selectedRow || selectedCol !== cellCol) {
             if (selectedRow !== null && selectedCol != null) {

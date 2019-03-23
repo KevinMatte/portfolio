@@ -174,7 +174,7 @@ def send_build(filename="index.html"):
     except NotFound:
         if '.' in filename:
             raise
-        return abort(404)
+        return abort(404, description=f'file: {filename}')
 
 @APP.route(ROOT_URL + 'api/yaml/dump', methods=['PUT'])
 def yaml_dump():
