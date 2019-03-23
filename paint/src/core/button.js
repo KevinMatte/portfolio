@@ -13,15 +13,15 @@ export function Button(props) {
     let hooks = {
       helpValue: useState(null),
     };
-    let controller = new Controller(props, hooks);
+    let controller = Controller.getController(Controller, props, hooks);
 
-    let {targetProps, helpProps} = HelpText.getProps(controller, "helpValue");
+    HelpText.setupController(controller, "helpValue");
     return (
         <div>
-            <MaterialButton {...targetProps}>
-                {targetProps.children}
+            <MaterialButton {...controller.targetProps}>
+                {controller.targetProps.children}
             </MaterialButton>
-            <HelpText {...helpProps} />
+            <HelpText {...controller.helpProps} />
         </div>
     );
 }

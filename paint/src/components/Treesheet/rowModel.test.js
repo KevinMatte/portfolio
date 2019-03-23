@@ -67,7 +67,7 @@ let models = [
 var treeModel = new TreeModel({types, models});
 var rootReducer = combineReducers({
     treeModel: treeModel.reducer,
-    tempValues: TempValues.reducer,
+    tempValues: new TempValues().reducer,
 });
 
 const middleWare = [

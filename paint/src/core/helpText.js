@@ -97,18 +97,20 @@ HelpText.addedPropTypes = {
     helpText: PropTypes.string, // Help text to display.
 };
 
-HelpText.getProps = (targetModel, stateName) => {
+HelpText.setupController = (controller, stateName) => {
     let targetProps = {
-        ...targetModel.props,
-        onMouseEnter: event => Controller.handleMouse(targetModel, stateName, event),
-        onMouseLeave: event => Controller.handleMouse(targetModel, stateName, event),
+        ...controller.props,
+        onMouseEnter: event => Controller.handleMouse(controller, stateName, event),
+        onMouseLeave: event => Controller.handleMouse(controller, stateName, event),
     };
-    let {corner, helpText} = targetModel.props;
+    let {corner, helpText} = controller.props;
     targetProps.name = stateName;
-    let anchorEl = targetModel.getValue(stateName);
+    let anchorEl = controller.getValue(stateName);
     delete targetProps.helpText;
     delete targetProps.corner;
-    return {targetProps, helpProps: {anchorEl, corner, helpText}};
+
+    controller.targetProps = targetProps;
+    controller.helpProps = {anchorEl, corner, helpText};
 };
 
 

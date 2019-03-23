@@ -1,0 +1,49 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Button 1`] = `
+<DocumentFragment>
+  <div>
+    <button
+      class="MuiButtonBase-root-27 MuiButton-root-1 MuiButton-text-3 MuiButton-flat-6"
+      controller="[object Object]"
+      name="helpValue"
+      tabindex="0"
+      type="button"
+    >
+      <span
+        class="MuiButton-label-2"
+      >
+        Start
+      </span>
+      <span
+        class="MuiTouchRipple-root-32"
+      />
+    </button>
+    <div />
+  </div>
+</DocumentFragment>
+`;
+
+exports[`Button 2`] = `
+<DocumentFragment>
+  <div>
+    <button
+      class="MuiButtonBase-root-27 MuiButton-root-1 MuiButton-text-3 MuiButton-flat-6"
+      controller="[object Object]"
+      name="helpValue"
+      tabindex="0"
+      type="button"
+    >
+      <span
+        class="MuiButton-label-2"
+      >
+        Start
+      </span>
+      <span
+        class="MuiTouchRipple-root-32"
+      />
+    </button>
+    <div />
+  </div>
+</DocumentFragment>
+`;

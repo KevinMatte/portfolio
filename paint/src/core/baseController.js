@@ -14,6 +14,19 @@ export class BaseController {
         }, {}
     );
 
+    static getController(aClass, props, hooks=null) {
+        let controller;
+        if (props.controller) {
+            controller = props.controller;
+            controller.props = props;
+            controller.hooks = hooks
+        }
+        else
+            controller = new aClass(props, hooks);
+
+        return controller;
+    }
+
     handleTextChange = (event) => {
         this.setValue(event.target.name, event.target.value);
     };
