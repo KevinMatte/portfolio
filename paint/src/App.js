@@ -288,11 +288,14 @@ export class App extends Component {
                 <h1>Sample Programs</h1>
                 <p>Select something from the top-left hamburger/menu icon:</p>
                 <ul>
-                    <li><Link to="/paint/treesheet"><button>Treesheet</button></Link>: Overlays CSS3 grids for a non-grid, but tree-like display. You can:
+                    <li><Link to="/paint/treesheet">
+                        <button>Treesheet</button>
+                    </Link>: Overlays CSS3 grids for a non-grid, but tree-like display. You can:
                         <ul>
                             <li>Open & Collapse rows.</li>
                             <li>See row & column header selection and content change as the mouse
-                                hovers over the body area.</li>
+                                hovers over the body area.
+                            </li>
                             <li>Click a value and change it.</li>
                             <li>Select a row in the row headers and from the bottom tool bar:
                                 <ul>
@@ -306,7 +309,9 @@ export class App extends Component {
                             <li>The data is stored in React-Redux and a refresh will restore the contents.</li>
                         </ul>
                     </li>
-                    <li><Link to="/paint/logosplash"><button>LogoSplash</button></Link>: Plays with WebGL.
+                    <li><Link to="/paint/logosplash">
+                        <button>LogoSplash</button>
+                    </Link>: Plays with WebGL.
                     </li>
                 </ul>
             </div>
@@ -385,32 +390,48 @@ export class App extends Component {
                 <p>The login is easy, the username and password are already entered. Just click login.</p>
 
                 {this.constructor.aboutDescription()}
-                <p><Link to="/paint/login"><button>Login</button></Link></p>
+                <p><Link to="/paint/login">
+                    <button>Login</button>
+                </Link></p>
             </div>
         );
     };
 
+    static linkCode(path) {
+        let pathUrl = `https://github.com/KevinMatte/portfolio/tree/master/${path}`
+        return (
+            <a target="code" className="anchor" href={pathUrl}>{path}</a>
+        );
+    }
+
     static aboutDescription() {
-        return <div>
-            <p>Use the session menu in the top right corner.</p>
-            <p>This is a demo to show some of my abilities. The code is okay, but no tests and few comments.
-                I'm keeping the code readable.</p>
-            <p>The UI consists of:</p>
-            <ul>
-                <li>React JS</li>
-                <li>React Redux: You can use the Chrome redux tool to view state.</li>
-                <li>Tree of data: Demonstration of a complex one-page app layout with:
-                    <ul>
-                        <li>Row & Column headers that scroll and align with scrolling of main data area.</li>
-                        <li>Multiple overlapping grids for the different tree node contents.</li>
-                        <li>Editing capability.</li>
-                    </ul>
-                </li>
-                <li>Apache server / WSGI / Flask / Python backend</li>
-                <li>Web Services with authentication.</li>
-                <li>MySQL database</li>
-            </ul>
-        </div>;
+        return (
+            <div>
+                <p>Use the session menu in the top right corner.</p>
+                <p>This is a demo to show some of my abilities. The code is okay, but no tests and few comments.
+                    I'm keeping the code readable.</p>
+                <p>The UI consists of:</p>
+                <ul>
+                    <li>React JS</li>
+                    <li>React Redux: You can use the Chrome redux tool to view state.</li>
+                    <li>Jest Unit/Integration Tests</li>
+                    <li>Tree of data: Demonstration of a complex one-page app layout with:
+                        <ul>
+                            <li>Multiple overlapping grids for the different tree node contents.</li>
+                            <li>Row & Column headers that scroll and align with scrolling of main data area.</li>
+                            <li>Editing capability.</li>
+                        </ul>
+                    </li>
+                    <li>Apache server / WSGI / Flask / Python backend</li>
+                    <li>Web Services with authentication.</li>
+                    <li>MySQL database</li>
+                </ul>
+                <p>I believe I've done a few interesting things in the code:</p>
+                <ul>
+                    <li>See README.md {this.linkCode("paint/src/redux")} for my design of simplifying coding redux.</li>
+                </ul>
+            </div>
+        );
     }
 
     renderMessages() {
