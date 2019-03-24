@@ -189,3 +189,22 @@ export function apiPost(url, postData = {}) {
 }
 
 
+export function cloneObject(obj) {
+    let newObject = obj;
+
+    if (Array.isArray(obj)) {
+        newObject = [];
+        obj.every(value => {
+            newObject.push(cloneObject(value));
+            return true;
+        });
+    } else if (typeof (obj) === "object") {
+        newObject = {};
+        Object.keys(obj).every(key => {
+            newObject[key] = cloneObject(obj[key]);
+            return true;
+        });
+    }
+
+    return newObject;
+}

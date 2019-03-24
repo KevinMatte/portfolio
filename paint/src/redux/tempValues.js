@@ -1,6 +1,5 @@
 /* Copyright (C) 2019 Kevin Matte - All Rights Reserved */
 
-import {setStateValueByPath} from "./pathUtils";
 import {ReduxState} from "./reduxState";
 
 export default class TempValues extends ReduxState {
@@ -24,7 +23,7 @@ export default class TempValues extends ReduxState {
         let {path, value} = action;
         return {
             ...editValue,
-            values: setStateValueByPath(editValue.values, path, value),
+            values: this.setStateValueByPath(editValue.values, path, value),
         };
     }
 }

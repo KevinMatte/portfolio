@@ -1,4 +1,5 @@
-import * as pathUtils from "./pathUtils";
+import {cloneObject} from "../general/utils";
+import {ReduxState} from "./reduxState";
 
 // noinspection ES6ModulesDependencies
 test('setStateValueByPath(state, path, value)', () => {
@@ -7,17 +8,17 @@ test('setStateValueByPath(state, path, value)', () => {
     let state = { a: [1,2,3], b: { c:[4]}};
     let orgState = { a: [1,2,3], b: { c:[4]}};
 
-    expected = pathUtils.cloneObject(state);
-    result = pathUtils.setStateValueByPath(state, null, null);
+    expected = cloneObject(state);
+    result = ReduxState.setStateValueByPath(state, null, null);
     expect(result).not.toBe(state);
     expect(result).toEqual(expected);
     expect(state).toEqual(orgState);
 
-    expected = pathUtils.cloneObject(state);
+    expected = cloneObject(state);
     expected.a[1] = 5;
-    result = pathUtils.setStateValueByPath(state, "a/1", 5);
+    result = ReduxState.setStateValueByPath(state, "a/1", 5);
     expect(result).toEqual(expected);
-    result = pathUtils.setStateValueByPath(state, ["a", 1], 5);
+    result = ReduxState.setStateValueByPath(state, ["a", 1], 5);
     expect(result).toEqual(expected);
     expect(state).toEqual(orgState);
 
@@ -30,19 +31,19 @@ test('deleteStateValueByPath(state, path, value)', () => {
     let state = { a: [1,2,3], b: { c:[4]}};
     let orgState = { a: [1,2,3], b: { c:[4]}};
 
-    expected = pathUtils.cloneObject(state);
+    expected = cloneObject(state);
     expected.a = [1, 3];
-    result = pathUtils.deleteStateValueByPath(state, "a/1");
+    result = ReduxState.deleteStateValueByPath(state, "a/1");
     expect(result).toEqual(expected);
-    result = pathUtils.deleteStateValueByPath(state, ["a", 1]);
+    result = ReduxState.deleteStateValueByPath(state, ["a", 1]);
     expect(result).toEqual(expected);
     expect(state).toEqual(orgState);
 
-    expected = pathUtils.cloneObject(state);
+    expected = cloneObject(state);
     expected.b = {};
-    result = pathUtils.deleteStateValueByPath(state, "b/c");
+    result = ReduxState.deleteStateValueByPath(state, "b/c");
     expect(result).toEqual(expected);
-    result = pathUtils.deleteStateValueByPath(state, ["b", "c"]);
+    result = ReduxState.deleteStateValueByPath(state, ["b", "c"]);
     expect(result).toEqual(expected);
     expect(state).toEqual(orgState);
 
@@ -56,43 +57,43 @@ test('duplicateStateValueByPath(state, path, newField)', () => {
     let state = { a: [1,2,3], b: { c:[4]}};
     let orgState = { a: [1,2,3], b: { c:[4]}};
 
-    expected = pathUtils.cloneObject(state);
-    expected.b.d = pathUtils.cloneObject(expected.b.c);
-    result = pathUtils.duplicateStateValueByPath(state, "b/c", "d");
+    expected = cloneObject(state);
+    expected.b.d = cloneObject(expected.b.c);
+    result = ReduxState.duplicateStateValueByPath(state, "b/c", "d");
     expect(result).toEqual(expected);
-    result = pathUtils.duplicateStateValueByPath(state, ["b", "c"], "d");
-    expect(result).toEqual(expected);
-    expect(state).toEqual(orgState);
-
-    expected = pathUtils.cloneObject(state);
-    expected.b.d = pathUtils.cloneObject(expected.b.c);
-    result = pathUtils.duplicateStateValueByPath(state, "b/c", "d");
-    expect(result).toEqual(expected);
-    result = pathUtils.duplicateStateValueByPath(state, ["b", "c"], "d");
+    result = ReduxState.duplicateStateValueByPath(state, ["b", "c"], "d");
     expect(result).toEqual(expected);
     expect(state).toEqual(orgState);
 
-    expected = pathUtils.cloneObject(state);
+    expected = cloneObject(state);
+    expected.b.d = cloneObject(expected.b.c);
+    result = ReduxState.duplicateStateValueByPath(state, "b/c", "d");
+    expect(result).toEqual(expected);
+    result = ReduxState.duplicateStateValueByPath(state, ["b", "c"], "d");
+    expect(result).toEqual(expected);
+    expect(state).toEqual(orgState);
+
+    expected = cloneObject(state);
     expected.a = [1, 2, 2, 3];
-    result = pathUtils.duplicateStateValueByPath(state, "a/1");
+    result = ReduxState.duplicateStateValueByPath(state, "a/1");
     expect(result).toEqual(expected);
-    result = pathUtils.duplicateStateValueByPath(state, ["a", 1]);
+    result = ReduxState.duplicateStateValueByPath(state, ["a", 1]);
     expect(result).toEqual(expected);
     expect(state).toEqual(orgState);
 
-    expected = pathUtils.cloneObject(state);
+    expected = cloneObject(state);
     expected.a = [1, 1, 2, 3];
-    result = pathUtils.duplicateStateValueByPath(state, "a/0");
+    result = ReduxState.duplicateStateValueByPath(state, "a/0");
     expect(result).toEqual(expected);
-    result = pathUtils.duplicateStateValueByPath(state, ["a", 0]);
+    result = ReduxState.duplicateStateValueByPath(state, ["a", 0]);
     expect(result).toEqual(expected);
     expect(state).toEqual(orgState);
 
-    expected = pathUtils.cloneObject(state);
+    expected = cloneObject(state);
     expected.a = [1, 2, 3, 3];
-    result = pathUtils.duplicateStateValueByPath(state, "a/2");
+    result = ReduxState.duplicateStateValueByPath(state, "a/2");
     expect(result).toEqual(expected);
-    result = pathUtils.duplicateStateValueByPath(state, ["a", 2]);
+    result = ReduxState.duplicateStateValueByPath(state, ["a", 2]);
     expect(result).toEqual(expected);
     expect(state).toEqual(orgState);
 });
@@ -101,7 +102,7 @@ test('duplicateStateValueByPath(state, path, newField)', () => {
 test('cloneParentState', () => {
     let state = {a: [1, 2, 3], b: {c: [4]}};
 
-   expect(pathUtils.cloneParentState(state, "a/2")).toEqual({
+   expect(ReduxState.cloneParentState(state, "a/2")).toEqual({
        newState: {...state},
        parent: [1,2,3],
        parentPath: ["a"],
@@ -109,7 +110,7 @@ test('cloneParentState', () => {
        valuePath: [2],
    });
 
-   expect(pathUtils.cloneParentState(state, "b/c/1/2")).toEqual({
+   expect(ReduxState.cloneParentState(state, "b/c/1/2")).toEqual({
        newState: {...state},
        parent: [4],
        parentPath: ["b", "c"],

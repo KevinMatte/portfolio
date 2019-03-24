@@ -19,11 +19,17 @@ The [ReduxState](./reduxState.js) class provides a reducer method to be used in 
 # State Classes (sub-classes of [ReduxState](./reduxState.js))
 
 ## [Session](./session.js)
-TBD
+
+Handles user session services such as login and logout.
+
 ## [Options](./options.js)
-TBD
+
+Minor UI states. Currently only 'advancedMode' option. Not very useful.
+
 ## [TempValues](./tempValues.js)
-TBD
+
+Temporary states
+
 ## [TreeModel](./treeModel.js)
 TBD
 ## [Messages](./messages.js)

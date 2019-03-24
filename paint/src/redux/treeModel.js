@@ -1,6 +1,5 @@
 /* Copyright (C) 2019 Kevin Matte - All Rights Reserved */
 
-import {deleteStateValueByPath, duplicateStateValueByPath, setStateValueByPath} from "./pathUtils";
 import {ReduxState} from "./reduxState";
 
 export default class TreeModel extends ReduxState {
@@ -28,7 +27,7 @@ export default class TreeModel extends ReduxState {
 
         return {
             ...state,
-            models: setStateValueByPath(state.models, path, value),
+            models: this.setStateValueByPath(state.models, path, value),
         };
     }
 
@@ -83,7 +82,7 @@ export default class TreeModel extends ReduxState {
 
         return {
             ...state,
-            models: deleteStateValueByPath(state.models, path, value, newField),
+            models: this.deleteStateValueByPath(state.models, path, value, newField),
         };
     }
 
@@ -103,7 +102,7 @@ export default class TreeModel extends ReduxState {
 
         return {
             ...state,
-            models: duplicateStateValueByPath(state.models, path, newField),
+            models: this.duplicateStateValueByPath(state.models, path, newField),
         };
     }
 }
