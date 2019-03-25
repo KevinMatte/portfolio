@@ -1,3 +1,5 @@
+/* Copyright (C) 2019 Kevin Matte - All Rights Reserved */
+
 import store from "./redux";
 import TreeState from "./redux/treeState";
 

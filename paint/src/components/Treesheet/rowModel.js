@@ -1,3 +1,5 @@
+/* Copyright (C) 2019 Kevin Matte - All Rights Reserved */
+
 import {getValueByPath} from "../../general/utils";
 import {cloneObject} from "../../general/utils";
 

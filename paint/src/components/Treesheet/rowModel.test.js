@@ -1,3 +1,5 @@
+/* Copyright (C) 2019 Kevin Matte - All Rights Reserved */
+
 import RowModel from "./rowModel";
 import TreeState from "../../redux/treeState";
 import {applyMiddleware, combineReducers, compose, createStore} from "redux";

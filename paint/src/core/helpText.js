@@ -1,3 +1,5 @@
+/* Copyright (C) 2019 Kevin Matte - All Rights Reserved */
+
 import React from "react";
 import {PropTypes} from 'prop-types';
 import Popover from '@material-ui/core/Popover';

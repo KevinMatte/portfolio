@@ -1,3 +1,5 @@
+/* Copyright (C) 2019 Kevin Matte - All Rights Reserved */
+
 // Cell.react.test.js
 import React from 'react';
 import {render, fireEvent, cleanup, waitForElement} from 'react-testing-library';

@@ -1,3 +1,5 @@
+/* Copyright (C) 2019 Kevin Matte - All Rights Reserved */
+
 import {cloneObject, getValueInfoByPath} from "../general/utils";
 
 export class ReduxState {

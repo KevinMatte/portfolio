@@ -1,3 +1,5 @@
+/* Copyright (C) 2019 Kevin Matte - All Rights Reserved */
+
 import * as utils from "./utils";
 
 // noinspection ES6ModulesDependencies
