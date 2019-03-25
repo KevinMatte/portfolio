@@ -18,13 +18,13 @@ export default class UserSessionState extends ReduxState {
         permissions: [],
         title: "Kevin Matte's Portfolio",
     }) {
-        super(initialState);
+        super("UserSessionState", initialState);
     }
 
     static USER_SESSION_REGISTER = "USER_SESSION_REGISTER";
 
     // noinspection JSUnusedGlobalSymbols
-    static register(email, user, password) {
+    static register = (email, user, password) => {
         return dispatch => {
             dispatch(MessagesState.removeByField('register/'));
             return apiPost('register', {email, user, password}).then(({status, result}) => {
@@ -41,20 +41,20 @@ export default class UserSessionState extends ReduxState {
                 }
             });
         }
-    }
+    };
 
     // noinspection JSUnusedGlobalSymbols
-    static registerReducer(session, action) {
+    static registerReducer = (session, action) => {
         return {
             ...session,
             ...action.session
         };
-    }
+    };
 
     static USER_SESSION_LOGIN = "USER_SESSION_LOGIN";
 
     // noinspection JSUnusedGlobalSymbols
-    static login(user, password) {
+    static login = (user, password) => {
         return dispatch => {
             dispatch(MessagesState.removeByField("login/"));
             return apiPost('login', {user: user, password}).then(({status, result}) => {
@@ -71,20 +71,20 @@ export default class UserSessionState extends ReduxState {
                 }
             });
         }
-    }
+    };
 
     // noinspection JSUnusedGlobalSymbols
-    static loginReducer(session, action) {
+    static loginReducer = (session, action) => {
         return {
             ...session,
             ...action.session
         };
-    }
+    };
 
     static USER_SESSION_LOGOUT = "USER_SESSION_LOGOUT";
 
     // noinspection JSUnusedGlobalSymbols
-    static logout() {
+    static logout = () => {
         return dispatch => {
             return apiPost('logout').then(({status, result}) => {
                 if (status === "success") {
@@ -102,10 +102,10 @@ export default class UserSessionState extends ReduxState {
             });
 
         }
-    }
+    };
 
     // noinspection JSUnusedGlobalSymbols
-    static logoutReducer(/* session, action */) {
+    static logoutReducer = (/* session, action */) => {
         return {...UserSessionState.initialState, sessionId: null};
     }
 }

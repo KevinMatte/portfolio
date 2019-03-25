@@ -4,20 +4,20 @@ import {ReduxState} from "./reduxState";
 
 export default class OptionsState extends ReduxState {
     constructor(initialState={advancedMode: false}) {
-        super(initialState);
+        super("OptionsState", initialState);
     }
 
     static TOGGLE_ADVANCED_MODE = "TOGGLE_ADVANCED_MODE";
 
     // noinspection JSUnusedGlobalSymbols
-    static toggleAdvancedMode() {
+    static toggleAdvancedMode = () => {
         return {
             type: this.TOGGLE_ADVANCED_MODE,
         };
     }
 
     // noinspection JSUnusedGlobalSymbols
-    static toggleAdvancedModeReducer(options, /* action */) {
+    static toggleAdvancedModeReducer = (options, /* action */) => {
         return {
             ...options,
             advancedMode: !options.advancedMode,

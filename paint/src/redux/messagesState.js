@@ -9,7 +9,7 @@ export default class MessagesState extends ReduxState {
         messageId: 0,
         messageByField: {}
     }) {
-        super(initialState);
+        super("MessagesState", initialState);
     }
 
     static _add(dispatch, status, message, field = undefined) {
@@ -48,7 +48,7 @@ export default class MessagesState extends ReduxState {
     static getMessage = (message) => message ? message.message : null;
 
     // noinspection JSUnusedGlobalSymbols
-    static addReducer(messages, action) {
+    static addReducer = (messages, action) => {
         let messageId = messages.messageId + 1;
         let {status, message, field} = action;
         let newMessage = {
@@ -78,7 +78,7 @@ export default class MessagesState extends ReduxState {
     static MESSAGES_REMOVE_BY_FIELD = "MESSAGES_REMOVE_BY_FIELD";
 
     // noinspection JSUnusedGlobalSymbols
-    static removeByField(field) {
+    static removeByField = (field) => {
         return {
             type: MessagesState.MESSAGES_REMOVE_BY_FIELD,
             field,
@@ -86,7 +86,7 @@ export default class MessagesState extends ReduxState {
     }
 
     // noinspection JSUnusedGlobalSymbols
-    static removeByFieldReducer(messages, action) {
+    static removeByFieldReducer = (messages, action) => {
         let predicate;
         if (action.field.endsWith('/'))
             predicate = message => !message.field || !message.field.startsWith(action.field);
@@ -103,7 +103,7 @@ export default class MessagesState extends ReduxState {
     static MESSAGES_REMOVE = "MESSAGES_REMOVE";
 
     // noinspection JSUnusedGlobalSymbols
-    static remove(messageId) {
+    static remove = (messageId) => {
         return {
             type: MessagesState.MESSAGES_REMOVE,
             messageId,
@@ -111,7 +111,7 @@ export default class MessagesState extends ReduxState {
     }
 
     // noinspection JSUnusedGlobalSymbols
-    static removeReducer(messages, action) {
+    static removeReducer = (messages, action) => {
         let predicate = message => message.messageId !== action.messageId;
         return {
             ...messages,
@@ -123,7 +123,7 @@ export default class MessagesState extends ReduxState {
     static MESSAGES_TAKE = "MESSAGES_TAKE";
 
     // noinspection JSUnusedGlobalSymbols
-    static take(field) {
+    static take = (field) => {
         return {
             type: MessagesState.MESSAGES_TAKE,
             field,
@@ -131,7 +131,7 @@ export default class MessagesState extends ReduxState {
     }
 
     // noinspection JSUnusedGlobalSymbols
-    static takeReducer(messages, action) {
+    static takeReducer = (messages, action) => {
         let predicate;
         let {messageKey} = action;
         if (action.field.endsWith('/'))

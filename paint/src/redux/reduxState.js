@@ -2,7 +2,8 @@ import {cloneObject, getValueInfoByPath} from "../general/utils";
 
 export class ReduxState {
 
-    constructor(initialState) {
+    constructor(className, initialState) {
+        this.className = className;
         this.map = null;
         this.initialState = initialState;
     }
@@ -26,7 +27,7 @@ export class ReduxState {
         let self = this;
         let map = {};
         let model = this.constructor;
-        let classSnakeName = ReduxState.toSnake(this.constructor.name);
+        let classSnakeName = ReduxState.toSnake(this.className);
         Object.getOwnPropertyNames(model).forEach((k) => {
                 if (typeof (model[k]) === "function" && !k.endsWith("Reducer") && model.hasOwnProperty(`${k}Reducer`)) {
                     // noinspection JSUnresolvedFunction
@@ -36,10 +37,10 @@ export class ReduxState {
                     let const_name;
                     const_name = `${classSnakeName}_${methodSnakeName}`; // className_methodName
                     if (!model.hasOwnProperty(const_name) && classSnakeName.endsWith('_STATE'))
-                         // Exclude State in classname
+                    // Exclude State in classname
                         const_name = `${classSnakeName.slice(0, -6)}_${methodSnakeName}`;
                     if (!model.hasOwnProperty(const_name))
-                        // Just the method name
+                    // Just the method name
                         const_name = methodSnakeName;
 
                     // Final check something was found.
@@ -75,7 +76,7 @@ export class ReduxState {
     }
 
 
-    static cloneParentState(state, path) {
+    static cloneParentState = (state, path) => {
         let {parentPath, value, valuePath} = getValueInfoByPath(state, path);
 
         let newState = Array.isArray(state) ? [...state] : {...state};
@@ -93,7 +94,7 @@ export class ReduxState {
         return {newState, parent, parentPath, value, valuePath};
     }
 
-    static setStateValueByPath(state, path, value) {
+    static setStateValueByPath = (state, path, value) => {
         if (path === null) {
             return Array.isArray(state) ? [...state] : {...state};
         }
@@ -113,7 +114,7 @@ export class ReduxState {
         return newState;
     }
 
-    static deleteStateValueByPath(state, path) {
+    static deleteStateValueByPath = (state, path) => {
         if (path === null) {
             return Array.isArray(state) ? [] : {};
         }
@@ -128,7 +129,7 @@ export class ReduxState {
         return newState;
     }
 
-    static duplicateStateValueByPath(state, path, newField = null) {
+    static duplicateStateValueByPath = (state, path, newField = null) => {
         if (path === null) {
             return Array.isArray(state) ? [...state] : {...state};
         }

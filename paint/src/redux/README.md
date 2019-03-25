@@ -12,6 +12,15 @@ The [ReduxState](./reduxState.js) class provides a reducer method to be used in 
  * A Redux Action type constant which is an upper case string snake case name. This name may be prefixed with the
  name of the sub-class.
  
+ To get around minification, all sub-classes must define their static methods in fields, not as a method.
+ 
+Example:
+ 
+Use the form: `static aMethod = (...) => {...}`
+ 
+Rather than: `static aMethod(...) {...}`
+ 
+ 
  See example code in userSessionState.js, options.js, tempState.js, treeState.js, and messagesState.js.
 
 

@@ -8,12 +8,12 @@ export default class TreeState extends ReduxState {
         types: {},
         models: [],
     }) {
-        super(initialState);
+        super("TreeState", initialState);
     }
 
     static SET_VALUE_BY_PATH = "SET_VALUE_BY_PATH";
 
-    static setValueByPath(path, value) {
+    static setValueByPath = (path, value) => {
         return {
             type: TreeState.SET_VALUE_BY_PATH,
             path: Array.isArray(path) ? path : [path],
@@ -22,7 +22,7 @@ export default class TreeState extends ReduxState {
     }
 
     // noinspection JSUnusedGlobalSymbols
-    static setValueByPathReducer(state, action) {
+    static setValueByPathReducer = (state, action) => {
         let {path, value} = action;
 
         return {
@@ -33,7 +33,7 @@ export default class TreeState extends ReduxState {
 
     static SET_DRAWINGS = "SET_DRAWINGS";
 
-    static setDrawings(models) {
+    static setDrawings = (models) => {
         return {
             type: TreeState.SET_DRAWINGS,
             models
@@ -41,7 +41,7 @@ export default class TreeState extends ReduxState {
     }
 
     // noinspection JSUnusedGlobalSymbols
-    static setDrawingsReducer(state, action) {
+    static setDrawingsReducer = (state, action) => {
         return {
             ...state,
             models: action.models,
@@ -50,7 +50,7 @@ export default class TreeState extends ReduxState {
 
     static SET_TYPES = "SET_TYPES";
 
-    static setTypes(types) {
+    static setTypes = (types) => {
         return {
             type: TreeState.SET_TYPES,
             types
@@ -58,7 +58,7 @@ export default class TreeState extends ReduxState {
     }
 
     // noinspection JSUnusedGlobalSymbols
-    static setTypesReducer(state, action) {
+    static setTypesReducer = (state, action) => {
         return {
             ...state,
             types: action.types,
@@ -67,7 +67,7 @@ export default class TreeState extends ReduxState {
 
     static DELETE_PATH = "DELETE_PATH";
 
-    static deletePath(path, value, newField = null) {
+    static deletePath = (path, value, newField = null) => {
         return {
             type: TreeState.DELETE_PATH,
             path: Array.isArray(path) ? path : [path],
@@ -77,7 +77,7 @@ export default class TreeState extends ReduxState {
     }
 
     // noinspection JSUnusedGlobalSymbols
-    static deletePathReducer(state, action) {
+    static deletePathReducer = (state, action) => {
         let {path, value, newField} = action;
 
         return {
@@ -88,7 +88,7 @@ export default class TreeState extends ReduxState {
 
     static DUPLICATE_PATH = "DUPLICATE_PATH";
 
-    static duplicatePath(path, newField = null) {
+    static duplicatePath = (path, newField = null) => {
         return {
             type: TreeState.DUPLICATE_PATH,
             path: Array.isArray(path) ? path : [path],
@@ -97,7 +97,7 @@ export default class TreeState extends ReduxState {
     }
 
     // noinspection JSUnusedGlobalSymbols
-    static duplicatePathReducer(state, action) {
+    static duplicatePathReducer = (state, action) => {
         let {path, newField} = action;
 
         return {
