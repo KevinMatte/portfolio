@@ -6,8 +6,8 @@ import PropTypes from 'prop-types';
 import {connect} from "react-redux";
 import Button from "@material-ui/core/Button";
 import TextField from "@material-ui/core/TextField";
-import Session from "../redux/session";
-import Messages from "../redux/messages";
+import UserSessionState from "../redux/userSessionState";
+import MessagesState from "../redux/messagesState";
 import {BaseController} from "../core/baseController";
 
 export class Controller extends BaseController {
@@ -111,14 +111,14 @@ Register.propTypes = {
 
 const mapStateToProps = (state /*, ownProps*/) => {
     return {
-        emailMessage: Messages.getMessage(state.messages.messageByField['register/email']),
-        userIdMessage: Messages.getMessage(state.messages.messageByField['register/userid']),
-        passwordMessage: Messages.getMessage(state.messages.messageByField['register/password']),
+        emailMessage: MessagesState.getMessage(state.messages.messageByField['register/email']),
+        userIdMessage: MessagesState.getMessage(state.messages.messageByField['register/userid']),
+        passwordMessage: MessagesState.getMessage(state.messages.messageByField['register/password']),
     }
 };
 
 const mapDispatchToProps = {
-    sessionRegister: Session.register,
+    sessionRegister: UserSessionState.register,
 };
 
 export default connect(

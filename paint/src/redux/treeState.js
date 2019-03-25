@@ -2,7 +2,7 @@
 
 import {ReduxState} from "./reduxState";
 
-export default class TreeModel extends ReduxState {
+export default class TreeState extends ReduxState {
 
     constructor(initialState = {
         types: {},
@@ -15,7 +15,7 @@ export default class TreeModel extends ReduxState {
 
     static setValueByPath(path, value) {
         return {
-            type: TreeModel.SET_VALUE_BY_PATH,
+            type: TreeState.SET_VALUE_BY_PATH,
             path: Array.isArray(path) ? path : [path],
             value
         };
@@ -35,7 +35,7 @@ export default class TreeModel extends ReduxState {
 
     static setDrawings(models) {
         return {
-            type: TreeModel.SET_DRAWINGS,
+            type: TreeState.SET_DRAWINGS,
             models
         };
     }
@@ -52,7 +52,7 @@ export default class TreeModel extends ReduxState {
 
     static setTypes(types) {
         return {
-            type: TreeModel.SET_TYPES,
+            type: TreeState.SET_TYPES,
             types
         };
     }
@@ -69,7 +69,7 @@ export default class TreeModel extends ReduxState {
 
     static deletePath(path, value, newField = null) {
         return {
-            type: TreeModel.DELETE_PATH,
+            type: TreeState.DELETE_PATH,
             path: Array.isArray(path) ? path : [path],
             value,
             newField,
@@ -90,7 +90,7 @@ export default class TreeModel extends ReduxState {
 
     static duplicatePath(path, newField = null) {
         return {
-            type: TreeModel.DUPLICATE_PATH,
+            type: TreeState.DUPLICATE_PATH,
             path: Array.isArray(path) ? path : [path],
             newField,
         };

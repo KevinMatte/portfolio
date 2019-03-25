@@ -1,5 +1,5 @@
 import store from "./redux";
-import TreeModel from "./redux/treeModel";
+import TreeState from "./redux/treeState";
 
 export let types = {
     drawing: {
@@ -114,6 +114,6 @@ export let dataTree = [
 ];
 
 export function setupDemo() {
-    store.dispatch(TreeModel.setTypes(types));
-    store.dispatch(TreeModel.setDrawings(dataTree));
+    store.dispatch(TreeState.setTypes(types));
+    store.dispatch(TreeState.setDrawings(dataTree));
 }

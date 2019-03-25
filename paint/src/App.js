@@ -25,9 +25,9 @@ import './styles.css'
 import './App.css';
 import Register from "./session/register";
 import Login from './session/login';
-import Session from "./redux/session";
-import Options from "./redux/options";
-import Messages from './redux/messages';
+import UserSessionState from "./redux/userSessionState";
+import OptionsState from "./redux/optionsState";
+import MessagesState from './redux/messagesState';
 import {renderText} from "./general/utils";
 import Treesheet from "./components/Treesheet";
 import LogoSplash from "./components/LogoSplash";
@@ -498,9 +498,9 @@ App.propTypes = {
 };
 
 const mapDispatchToProps = {
-    sessionLogout: Session.logout,
-    toggleAdvancedMode: Options.toggleAdvancedMode,
-    messageRemove: Messages.remove,
+    sessionLogout: UserSessionState.logout,
+    toggleAdvancedMode: OptionsState.toggleAdvancedMode,
+    messageRemove: MessagesState.remove,
 };
 const mapStateToProps = (state /*, ownProps*/) => {
     return {

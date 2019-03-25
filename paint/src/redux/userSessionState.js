@@ -9,10 +9,10 @@
  */
 
 import {apiPost, ID_TOKEN_KEY} from "../general/utils";
-import Messages from './messages';
+import MessagesState from './messagesState';
 import {ReduxState} from "./reduxState";
 
-export default class Session extends ReduxState {
+export default class UserSessionState extends ReduxState {
     constructor(initialState = {
         sessionId: sessionStorage.getItem(ID_TOKEN_KEY),
         permissions: [],
@@ -21,23 +21,23 @@ export default class Session extends ReduxState {
         super(initialState);
     }
 
-    static SESSION_REGISTER = "SESSION_REGISTER";
+    static USER_SESSION_REGISTER = "USER_SESSION_REGISTER";
 
     // noinspection JSUnusedGlobalSymbols
     static register(email, user, password) {
         return dispatch => {
-            dispatch(Messages.removeByField('register/'));
+            dispatch(MessagesState.removeByField('register/'));
             return apiPost('register', {email, user, password}).then(({status, result}) => {
                 if (status === "success") {
                     sessionStorage.setItem(ID_TOKEN_KEY, result);
                     dispatch({
-                        type: Session.SESSION_REGISTER,
+                        type: UserSessionState.USER_SESSION_REGISTER,
                         session: {
                             sessionId: result,
                         }
                     });
                 } else {
-                    dispatch(Messages.add(status, result));
+                    dispatch(MessagesState.add(status, result));
                 }
             });
         }
@@ -51,23 +51,23 @@ export default class Session extends ReduxState {
         };
     }
 
-    static SESSION_LOGIN = "SESSION_LOGIN";
+    static USER_SESSION_LOGIN = "USER_SESSION_LOGIN";
 
     // noinspection JSUnusedGlobalSymbols
     static login(user, password) {
         return dispatch => {
-            dispatch(Messages.removeByField("login/"));
+            dispatch(MessagesState.removeByField("login/"));
             return apiPost('login', {user: user, password}).then(({status, result}) => {
                 if (status === "success") {
                     sessionStorage.setItem(ID_TOKEN_KEY, result);
                     dispatch({
-                        type: Session.SESSION_LOGIN,
+                        type: UserSessionState.USER_SESSION_LOGIN,
                         session: {
                             sessionId: result,
                         }
                     });
                 } else {
-                    dispatch(Messages.add(status, result));
+                    dispatch(MessagesState.add(status, result));
                 }
             });
         }
@@ -81,7 +81,7 @@ export default class Session extends ReduxState {
         };
     }
 
-    static SESSION_LOGOUT = "SESSION_LOGOUT";
+    static USER_SESSION_LOGOUT = "USER_SESSION_LOGOUT";
 
     // noinspection JSUnusedGlobalSymbols
     static logout() {
@@ -90,14 +90,14 @@ export default class Session extends ReduxState {
                 if (status === "success") {
                     sessionStorage.removeItem(ID_TOKEN_KEY);
                     dispatch({
-                        type: Session.SESSION_LOGOUT,
+                        type: UserSessionState.USER_SESSION_LOGOUT,
                     });
                 } else {
                     sessionStorage.removeItem(ID_TOKEN_KEY);
                     dispatch({
-                        type: Session.SESSION_LOGOUT,
+                        type: UserSessionState.USER_SESSION_LOGOUT,
                     });
-                    dispatch(Messages.add(status, result));
+                    dispatch(MessagesState.add(status, result));
                 }
             });
 
@@ -106,7 +106,7 @@ export default class Session extends ReduxState {
 
     // noinspection JSUnusedGlobalSymbols
     static logoutReducer(/* session, action */) {
-        return {...Session.initialState, sessionId: null};
+        return {...UserSessionState.initialState, sessionId: null};
     }
 }
 

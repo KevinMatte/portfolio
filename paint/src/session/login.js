@@ -3,11 +3,11 @@
 import React, {useState} from 'react';
 // noinspection ES6CheckImport
 import PropTypes from 'prop-types';
-import Session from "../redux/session";
+import UserSessionState from "../redux/userSessionState";
 import {connect} from "react-redux";
 import Button from "@material-ui/core/Button";
 import TextField from "@material-ui/core/TextField";
-import Messages from "../redux/messages";
+import MessagesState from "../redux/messagesState";
 import {BaseController} from "../core/baseController";
 
 export class Controller extends BaseController {
@@ -70,13 +70,13 @@ Login.propTypes = {
 
 const mapStateToProps = (state /*, ownProps*/) => {
     return {
-        userIdMessage: Messages.getMessage(state.messages.messageByField['login/userid']),
-        passwordMessage: Messages.getMessage(state.messages.messageByField['login/password']),
+        userIdMessage: MessagesState.getMessage(state.messages.messageByField['login/userid']),
+        passwordMessage: MessagesState.getMessage(state.messages.messageByField['login/password']),
     }
 };
 
 const mapDispatchToProps = {
-    sessionLogin: Session.login,
+    sessionLogin: UserSessionState.login,
 };
 
 export default connect(

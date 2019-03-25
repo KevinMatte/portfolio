@@ -3,7 +3,7 @@
 import {filterObject} from "../general/utils";
 import {ReduxState} from "./reduxState";
 
-export default class Messages extends ReduxState {
+export default class MessagesState extends ReduxState {
     constructor(initialState={
         list: [],
         messageId: 0,
@@ -16,14 +16,14 @@ export default class Messages extends ReduxState {
 
         if (typeof (message) !== 'string') {
             if (Array.isArray(message)) {
-                message.forEach(submessage => Messages._add(dispatch, status, submessage));
+                message.forEach(submessage => MessagesState._add(dispatch, status, submessage));
             } else if (message.hasOwnProperty('message')) {
                 let messageField = message.hasOwnProperty('field') ? message.field : undefined;
                 let messageStatus = message.hasOwnProperty('status') ? message.status : undefined;
-                Messages._add(dispatch, messageStatus, message.message, messageField);
+                MessagesState._add(dispatch, messageStatus, message.message, messageField);
             } else {
                 return dispatch({
-                    type: Messages.MESSAGES_ADD,
+                    type: MessagesState.MESSAGES_ADD,
                     message,
                     field,
                     status,
@@ -31,7 +31,7 @@ export default class Messages extends ReduxState {
             }
         } else {
             return dispatch({
-                type: Messages.MESSAGES_ADD,
+                type: MessagesState.MESSAGES_ADD,
                 message,
                 field,
                 status,
@@ -80,7 +80,7 @@ export default class Messages extends ReduxState {
     // noinspection JSUnusedGlobalSymbols
     static removeByField(field) {
         return {
-            type: Messages.MESSAGES_REMOVE_BY_FIELD,
+            type: MessagesState.MESSAGES_REMOVE_BY_FIELD,
             field,
         };
     }
@@ -105,7 +105,7 @@ export default class Messages extends ReduxState {
     // noinspection JSUnusedGlobalSymbols
     static remove(messageId) {
         return {
-            type: Messages.MESSAGES_REMOVE,
+            type: MessagesState.MESSAGES_REMOVE,
             messageId,
         };
     }
@@ -125,7 +125,7 @@ export default class Messages extends ReduxState {
     // noinspection JSUnusedGlobalSymbols
     static take(field) {
         return {
-            type: Messages.MESSAGES_TAKE,
+            type: MessagesState.MESSAGES_TAKE,
             field,
         };
     }

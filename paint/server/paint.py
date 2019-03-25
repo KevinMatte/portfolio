@@ -354,7 +354,7 @@ def get_info():
 
 @APP.after_request
 def apply_caching(response):
-    response.headers["X-Frame-Options"] = "SAMEORIGIN"
+    response.headers["X-Frame-OptionsState"] = "SAMEORIGIN"
     response.headers["Cache-Control"] = "no-cache, no-store, must-revalidate"
     response.headers["Pragma"] = "no-cache"
     response.headers["Expires"] = "0"

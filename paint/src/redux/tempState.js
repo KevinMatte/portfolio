@@ -2,7 +2,7 @@
 
 import {ReduxState} from "./reduxState";
 
-export default class TempValues extends ReduxState {
+export default class TempState extends ReduxState {
     constructor(initialState={values: {}}) {
         super(initialState);
     }
@@ -12,7 +12,7 @@ export default class TempValues extends ReduxState {
     // noinspection JSUnusedGlobalSymbols
     static setValueByPath(path, value) {
         return {
-            type: TempValues.SET_VALUE_BY_PATH,
+            type: TempState.SET_VALUE_BY_PATH,
             path,
             value,
         };

@@ -3,18 +3,18 @@
 import thunk from 'redux-thunk';
 import {createStore, applyMiddleware, compose} from 'redux';
 import {combineReducers} from "redux";
-import Options from './options';
-import TempValues from './tempValues'
-import Session from './session';
-import Messages from './messages';
-import TreeModel from './treeModel';
+import OptionsState from './optionsState';
+import TempState from './tempState'
+import UserSessionState from './userSessionState';
+import MessagesState from './messagesState';
+import TreeState from './treeState';
 
 const rootReducer = combineReducers({
-    session: new Session().reducer,
-    options: new Options().reducer,
-    tempValues: new TempValues().reducer,
-    messages: new Messages().reducer,
-    treeModel: new TreeModel().reducer,
+    session: new UserSessionState().reducer,
+    options: new OptionsState().reducer,
+    tempValues: new TempState().reducer,
+    messages: new MessagesState().reducer,
+    treeModel: new TreeState().reducer,
 });
 
 

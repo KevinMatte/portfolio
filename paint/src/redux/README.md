@@ -12,28 +12,31 @@ The [ReduxState](./reduxState.js) class provides a reducer method to be used in 
  * A Redux Action type constant which is an upper case string snake case name. This name may be prefixed with the
  name of the sub-class.
  
- See example code in session.js, options.js, tempValues.js, treeModel.js, and messages.js.
+ See example code in userSessionState.js, options.js, tempState.js, treeState.js, and messagesState.js.
 
 
 
 # State Classes (sub-classes of [ReduxState](./reduxState.js))
 
-## [Session](./session.js)
+## [MessagesState](messagesState.js)
+Message queue for UI that user may dismiss.
 
-Handles user session services such as login and logout.
-
-## [Options](./options.js)
+## [Options](optionsState.js)
 
 Minor UI states. Currently only 'advancedMode' option. Not very useful.
 
-## [TempValues](./tempValues.js)
+## [TempState](tempState.js)
 
 Temporary states
 
-## [TreeModel](./treeModel.js)
-TBD
-## [Messages](./messages.js)
-TBD
+## [TreeState](treeState.js)
+
+A hierarchical tree of data (Javascript Objects) that can be referenced and updated by paths.
+
+## [UserSessionState](userSessionState.js)
+
+Handles user session services such as login and logout.
+
  
  
  

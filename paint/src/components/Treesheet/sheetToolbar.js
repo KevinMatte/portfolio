@@ -8,8 +8,8 @@ import Typography from '@material-ui/core/Typography';
 
 import Button from "../../core/button";
 import {getValueByPath} from "../../general/utils";
-import TreeModel from "../../redux/treeModel";
-import TempValues from "../../redux/tempValues";
+import TreeState from "../../redux/treeState";
+import TempState from "../../redux/tempState";
 import {BaseController} from "../../core/baseController";
 
 export class Controller extends BaseController {
@@ -100,9 +100,9 @@ const mapStateToProps = (state, ownProps) => {
 };
 
 const mapDispatchToProps = {
-    duplicatePath: TreeModel.duplicatePath,
-    deletePath: TreeModel.deletePath,
-    setTempValueByPath: TempValues.setValueByPath,
+    duplicatePath: TreeState.duplicatePath,
+    deletePath: TreeState.deletePath,
+    setTempValueByPath: TempState.setValueByPath,
 };
 
 export default connect(

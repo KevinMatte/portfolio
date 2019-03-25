@@ -2,7 +2,7 @@
 
 import {ReduxState} from "./reduxState";
 
-export default class Options extends ReduxState {
+export default class OptionsState extends ReduxState {
     constructor(initialState={advancedMode: false}) {
         super(initialState);
     }

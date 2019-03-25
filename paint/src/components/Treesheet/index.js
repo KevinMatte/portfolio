@@ -18,7 +18,7 @@ import TreeControls from './sheetToolbar';
 
 import './treesheet.css'
 import {BaseController} from "../../core/baseController";
-import TreeModel from "../../redux/treeModel";
+import TreeState from "../../redux/treeState";
 
 export class Controller extends BaseController {
     constructor(props, hooks) {
@@ -136,8 +136,8 @@ const mapStateToProps = (state, ownProps) => {
 };
 
 const mapDispatchToProps = {
-    duplicatePath: TreeModel.duplicatePath,
-    deletePath: TreeModel.duplicatePath,
+    duplicatePath: TreeState.duplicatePath,
+    deletePath: TreeState.duplicatePath,
 };
 
 export default connect(

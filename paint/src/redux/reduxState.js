@@ -18,27 +18,42 @@ export class ReduxState {
             return state;
     };
 
+    static toSnake(name) {
+        return [...name].map((ch, index) => (index > 0 && 'A' <= ch && ch <= 'Z') ? `_${ch}` : ch.toUpperCase()).join("");
+    }
+
     getActionMap() {
         let self = this;
         let map = {};
         let model = this.constructor;
+        let classSnakeName = ReduxState.toSnake(this.constructor.name);
         Object.getOwnPropertyNames(model).forEach((k) => {
-            if (typeof (model[k]) === "function" && !k.endsWith("Reducer") && model.hasOwnProperty(`${k}Reducer`)) {
-                // noinspection JSUnresolvedFunction
-                let const_name = [...k].map(ch => ('A' <= ch && ch <= 'Z') ? `_${ch}` : ch.toUpperCase()).join("");
-                let const_name_full = `${this.constructor.name.toUpperCase()}_${const_name}`;
+                if (typeof (model[k]) === "function" && !k.endsWith("Reducer") && model.hasOwnProperty(`${k}Reducer`)) {
+                    // noinspection JSUnresolvedFunction
+                    let methodSnakeName = ReduxState.toSnake(k);
 
-                const_name = model.hasOwnProperty(const_name_full) ? const_name_full : const_name;
-                if (model.hasOwnProperty(const_name)) {
+                    // Check most-specific to least specific constant name combinations.
+                    let const_name;
+                    const_name = `${classSnakeName}_${methodSnakeName}`; // className_methodName
+                    if (!model.hasOwnProperty(const_name) && classSnakeName.endsWith('_STATE'))
+                         // Exclude State in classname
+                        const_name = `${classSnakeName.slice(0, -6)}_${methodSnakeName}`;
+                    if (!model.hasOwnProperty(const_name))
+                        // Just the method name
+                        const_name = methodSnakeName;
+
+                    // Final check something was found.
+                    if (!model.hasOwnProperty(const_name))
+                        throw new Error(`${this.constructor.name}(reduxState) has no Action type for ${k}`);
+
+                    // Add reducer to map.
                     let method = model[`${k}Reducer`];
                     map[model[const_name]] = function () {
                         return method.apply(self.constructor, arguments);
                     };
-                } else {
-                    throw new Error(`${this.constructor.name}(reduxState) has no Action type for ${k}`);
                 }
             }
-        });
+        );
         return map;
     }
 

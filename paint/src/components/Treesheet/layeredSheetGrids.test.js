@@ -4,7 +4,7 @@ import {render, fireEvent, cleanup, waitForElement} from 'react-testing-library'
 import 'jest-dom/extend-expect'
 import {LayeredSheetGrids, Controller} from './layeredSheetGrids';
 import RowModel from "./rowModel";
-import TreeModel from "../../redux/treeModel";
+import TreeState from "../../redux/treeState";
 import {setupDemo, types, dataTree} from "../../demo";
 
 // automatically unmount and cleanup DOM after the test is finished.

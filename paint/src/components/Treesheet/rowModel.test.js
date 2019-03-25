@@ -1,8 +1,8 @@
 import RowModel from "./rowModel";
-import TreeModel from "../../redux/treeModel";
+import TreeState from "../../redux/treeState";
 import {applyMiddleware, combineReducers, compose, createStore} from "redux";
 import thunk from "redux-thunk";
-import TempValues from "../../redux/tempValues";
+import TempState from "../../redux/tempState";
 
 let types = {
     drawing: {
@@ -64,10 +64,10 @@ let models = [
     },
 ];
 
-const treeModel = new TreeModel({types, models});
+const treeModel = new TreeState({types, models});
 const rootReducer = combineReducers({
     treeModel: treeModel.reducer,
-    tempValues: new TempValues().reducer,
+    tempValues: new TempState().reducer,
 });
 
 const middleWare = [

@@ -1,8 +1,8 @@
 import {getGridCellStyle, getValueByPath} from "../../general/utils";
 import React from "react";
 import {connect} from "react-redux";
-import TempValues from "../../redux/tempValues";
-import TreeModel from "../../redux/treeModel";
+import TempState from "../../redux/tempState";
+import TreeState from "../../redux/treeState";
 import {BaseController} from "../../core/baseController";
 
 export class Controller extends BaseController {
@@ -86,8 +86,8 @@ const mapStateToProps = (state, ownProps) => {
 };
 
 const mapDispatchToProps = {
-    setValueByPath: TreeModel.setValueByPath,
-    setTempValueByPath: TempValues.setValueByPath,
+    setValueByPath: TreeState.setValueByPath,
+    setTempValueByPath: TempState.setValueByPath,
 };
 
 export default connect(
