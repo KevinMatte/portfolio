@@ -1,11 +1,12 @@
-# Portfolio Project
+# Portfolio Project 
+**(Inactive for 6 years. Working for Shaw/Rogers)**
 
 This Web Site hosts my Portfolio.
 
 I've just really started Feb 5th, 2019 and going fast, just to get a full stack app react running
 before my next career move.
 
-* Web Site: [http://24.64.174.212/](http://24.64.174.212/)
+* Inactive: Web Site: [http://24.64.174.212/](http://24.64.174.212/)
 
 * GitHub: [https://github.com/KevinMatte/portfolio](https://github.com/KevinMatte/portfolio)
 
